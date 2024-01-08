@@ -67,16 +67,17 @@ def rename_file_with_same_extension(old_name, new_name_without_extension):
     new_name = file_dir + '/' + new_name_without_extension + file_extension
 
     # 重命名文件
+
     try:
         os.rename(old_name, new_name)
         print(old_name, "文件成功重命名为", new_name)
         return True, new_name
     except FileNotFoundError:
         print(f"未找到文件: '{old_name}'")
-        return False, (f"未找到文件: '{old_name}'")
+        return False, f"未找到文件: '{old_name}'"
     except OSError as e:
         print(f"重命名文件时出错: {e}")
-        return False, (f"重命名文件时出错: {e}")
+        return False, f"重命名文件时出错: {e}"
 
 
 def rename_directory(current_dir, new_name):
@@ -236,7 +237,7 @@ def create_torrent(folder_path, torrent_path):
             os.remove(torrent_file_path)
 
         # 创建 Torrent 对象
-        t = Torrent(path=folder_path, trackers=['http://tracker.example.com/announce'], created_by='ph-bjd')
+        t = Torrent(path=folder_path, trackers=['http://tracker.example.com/announce'], created_by='ph')
 
         # 生成和写入 Torrent 文件
         t.generate()

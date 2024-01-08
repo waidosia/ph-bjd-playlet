@@ -624,7 +624,7 @@ class Ui_Mainwindow(object):
 
     def retranslateUi(self, Mainwindow):
         _translate = QtCore.QCoreApplication.translate
-        Mainwindow.setWindowTitle(_translate("Mainwindow", "ph-bjd"))
+        Mainwindow.setWindowTitle(_translate("Mainwindow", "ph"))
         self.label_7.setText(_translate("Mainwindow", "Publish Helper for Playlet"))
         self.label_16.setText(_translate("Mainwindow", "输入"))
         self.label.setText(_translate("Mainwindow", "中文名称："))

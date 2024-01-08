@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 import requests
 
-from tool import generate_image_filename
+from .tool import (generate_image_filename)
 
 
 # 参数：video_path：源视频路径；output_path：输出图片路径；num_images：截图的总数量；start_pct：截图的起始帧占比，避免截取黑帧；

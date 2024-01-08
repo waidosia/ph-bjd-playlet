@@ -154,7 +154,7 @@ def get_media_info(file_path):
                     if value is not None:
                         output += f"{label:36}: {value}\n"
                 output += "\n"
-        output += "Created by ph-bjd"
+        output += "Created by ph"
 
         return True, output
 

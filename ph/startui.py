@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import time
 
@@ -6,14 +7,14 @@ from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QDialog
 
-from mediainfo import get_media_info
-from rename import get_video_info
-from screenshot import extract_complex_keyframes, upload_screenshot, upload_free_screenshot, get_thumbnails
-from tool import update_settings, get_settings, get_file_path, rename_file_with_same_extension, \
+from .mediainfo import get_media_info
+from .rename import get_video_info
+from .screenshot import extract_complex_keyframes, upload_screenshot, upload_free_screenshot, get_thumbnails
+from .tool import update_settings, get_settings, get_file_path, rename_file_with_same_extension, \
     get_folder_path, check_path_and_find_video, rename_directory, create_torrent, load_names, chinese_name_to_pinyin, \
     get_video_files
-from ui.mainwindow import Ui_Mainwindow
-from ui.settings import Ui_Settings
+from .ui.mainwindow import Ui_Mainwindow
+from .ui.settings import Ui_Settings
 
 
 def starui():
@@ -431,9 +432,25 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
                 if rename_file:
                     print("对文件重新命名")
                     self.debugBrowser.append("开始对文件重新命名")
-                    i = 1
                     for video_file in video_files:
-                        e = str(i)
+                        # 使用正则提取集数，分为2种情况，一种是E??，一种是???
+                        # 先尝试使用E??提取,如果提取不到则更换???,否则退出
+                        episode_number = 0
+                        match_e = re.search(r'E(\d+)', video_file)
+                        if match_e:
+                            # 如果匹配成功，则提取集数
+                            episode_number = match_e.group(1)
+                        else:
+                            # 如果使用E??提取不到，尝试使用纯数字匹配
+                            match_digits = re.search(r'(\d+)', video_file)
+                            if match_digits:
+                                # 如果匹配成功，则提取集数
+                                episode_number = match_digits.group(1)
+                        if episode_number == 0:
+                            # 如果集数为0，则退出
+                            self.debugBrowser.append("提取集数失败，退出")
+                            break
+                        e = str(episode_number)
                         while len(e) < len(str(len(video_files))):
                             e = '0' + e
                         rename_file_success, output = rename_file_with_same_extension(video_file,
@@ -445,8 +462,6 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
                             self.debugBrowser.append("视频成功重新命名为：" + videoPath)
                         else:
                             self.debugBrowser.append("重命名失败：" + output)
-                        i += 1
-
                     print("对文件夹重新命名")
                     self.debugBrowser.append("开始对文件夹重新命名")
                     rename_directory_success, output = rename_directory(os.path.dirname(videoPath),
