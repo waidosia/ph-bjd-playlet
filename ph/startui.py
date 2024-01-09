@@ -1,7 +1,6 @@
 import os
 import re
 import sys
-import time
 
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtGui import QIcon
@@ -10,6 +9,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QDialog
 from .mediainfo import get_media_info
 from .rename import get_video_info
 from .screenshot import extract_complex_keyframes, upload_screenshot, upload_free_screenshot, get_thumbnails
+from .upload import upload
 from .tool import update_settings, get_settings, get_file_path, rename_file_with_same_extension, \
     get_folder_path, check_path_and_find_video, rename_directory, create_torrent, load_names, chinese_name_to_pinyin, \
     get_video_files
@@ -48,6 +48,7 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
         self.upload_free_picture_thread4 = None
         self.upload_free_picture_thread5 = None
         self.make_torrent_thread = None
+        self.torrent_path = None
 
         # 初始化
         self.videoPath.setDragEnabled(True)
@@ -88,20 +89,39 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             self.type.addItem(name)
 
     def startButtonClicked(self):
-        self.getNameButtonClicked()
-        QApplication.processEvents()  # 处理所有挂起的事件，更新页面
-        time.sleep(0)  # 等待 0 毫秒
-        self.getPictureButtonClicked()
-        QApplication.processEvents()  # 再次处理事件
-        time.sleep(0)  # 等待 2000 毫秒
-        self.uploadCoverButtonClicked()
-        QApplication.processEvents()  # 再次处理事件
-        time.sleep(2)  # 等待 2000 毫秒
-        self.getMediaInfoButtonClicked()
-        QApplication.processEvents()  # 处理事件
-        time.sleep(2)  # 等待 2000 毫秒
-        self.makeTorrentButtonClicked()
-        QApplication.processEvents()  # 处理事件
+        # self.getNameButtonClicked()
+        # QApplication.processEvents()  # 处理所有挂起的事件，更新页面
+        # time.sleep(0)  # 等待 0 毫秒
+        # self.getPictureButtonClicked()
+        # QApplication.processEvents()  # 再次处理事件
+        # time.sleep(0)  # 等待 2000 毫秒
+        # self.uploadCoverButtonClicked()
+        # QApplication.processEvents()  # 再次处理事件
+        # time.sleep(2)  # 等待 2000 毫秒
+        # self.getMediaInfoButtonClicked()
+        # QApplication.processEvents()  # 处理事件
+        # time.sleep(2)  # 等待 2000 毫秒
+        # self.makeTorrentButtonClicked()
+        # QApplication.processEvents()  # 处理事件
+        # 调用发种函数
+        cookie_str = get_settings("cookie")
+        # 主标题
+        mainTitle = self.mainTitleBrowser.toPlainText()
+        # 副标题
+        secondTitle = self.secondTitleBrowser.toPlainText()
+        # 简介
+        introBrowser = self.introBrowser.toPlainText()
+        # media
+        mediainfoBrowser = self.mediainfoBrowser.toPlainText()
+        # 种子路径
+        torrent_path = self.torrent_path
+        # 判断种子路径是绝对路径还是相对路径，如果是相对则转换为绝对路径
+        current_working_directory = os.getcwd()
+        if torrent_path:
+            if not os.path.isabs(torrent_path):
+                torrent_path = os.path.join(current_working_directory, torrent_path)
+                torrent_path = os.path.abspath(torrent_path)
+        upload(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, mediainfoBrowser)
 
     def settingsClicked(self):  # click对应的槽函数
         self.mySettings = settings()
@@ -116,7 +136,6 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             self.debugBrowser.append("上传封面" + cover_path)
             figureBedPath = get_settings("figureBedPath")  # 图床地址
             figureBedToken = get_settings("figureBedToken")  # 图床Token
-            self.debugBrowser.append("参数获取成功，开始执行截图函数")
             if figureBedPath == "https://img.agsvpt.com/api/upload/" or figureBedPath == "http://img.agsvpt.com/api/upload/":
 
                 self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, cover_path, True)
@@ -303,6 +322,9 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
                     temp = self.introBrowser.toPlainText()
                     temp = api_response + '\n' + temp
                     self.introBrowser.setText(temp)
+                    # 封面后拼接正文部分
+                    text = '剧名： {}\n年代： {}\n语言：国语\n简介：\n'.format(self.chineseNameEdit.text(),self.yearEdit.text())
+                    self.introBrowser.append(text)
                     self.debugBrowser.append("成功将封面链接粘贴到简介前")
                 else:
                     self.introBrowser.append(api_response)
@@ -496,6 +518,7 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
     def handleMakeTorrentResult(self, get_success, response):
         if get_success:
             self.debugBrowser.append("成功制作种子：" + response)
+            self.torrent_path = response
         else:
             self.debugBrowser.append("制作种子失败：" + response)
 
@@ -545,6 +568,10 @@ class settings(QDialog, Ui_Settings):
         self.deleteScreenshot.setChecked(bool(get_settings("deleteScreenshot")))
         self.makeDir.setChecked(bool(get_settings("makeDir")))
         self.renameFile.setChecked(bool(get_settings("renameFile")))
+        self.cookie.setText(get_settings("cookie"))
+        self.qbPath.setText(get_settings("qbPath"))
+        self.qbUser.setText(get_settings("qbUser"))
+        self.qbPasswd.setText(get_settings("qbPasswd"))
 
     def updateSettings(self):
         update_settings("screenshotPath", self.screenshotPath.text())
@@ -555,6 +582,10 @@ class settings(QDialog, Ui_Settings):
         update_settings("screenshotThreshold", str(self.screenshotThreshold.text()))
         update_settings("screenshotStart", str(self.screenshotStart.text()))
         update_settings("screenshotEnd", str(self.screenshotEnd.text()))
+        update_settings("cookie", str(self.cookie.text()))
+        update_settings("qbPath", str(self.qbPath.text()))
+        update_settings("qbUser", str(self.qbUser.text()))
+        update_settings("qbPasswd", str(self.qbPasswd.text()))
         if self.getThumbnails.isChecked():
             update_settings("getThumbnails", "True")
         else:

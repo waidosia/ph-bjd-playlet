@@ -18,3 +18,5 @@ requests==2.31.0
 torf==4.2.4
 urllib3==2.1.0
 xpinyin==0.7.6
+
+selenium~=4.16.0

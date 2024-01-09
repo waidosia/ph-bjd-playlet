@@ -162,32 +162,49 @@ def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
 def upload_screenshot(api_url, api_token, frame_path):
     print("开始上传图床")
     url = api_url
+    # 判断frame_path为url还是本地路径
+    if frame_path[:4] == "http":
+        file_type = 'image/jpeg'
+        # 请求文件拿到文件流
+        try:
+            res = requests.get(frame_path)
+            print("已成功获取文件流")
+        except requests.RequestException as e:
+            print("请求过程中出现错误:", e)
+            return False, {"请求过程中出现错误:" + str(e)}
+        files = {'uploadedFile': (frame_path, res.content, file_type)}
+        data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
+        try:
+            # 发送POST请求
+            res = requests.post(url, data=data, files=files)
+            print("已成功发送上传图床的请求")
+        except requests.RequestException as e:
+            print("请求过程中出现错误:", e)
+            return False, {"请求过程中出现错误:" + str(e)}
+    else:
+        # Determine the MIME type based on file extension
+        file_type = 'image/jpeg'  # default
+        if frame_path.lower().endswith('.png'):
+            file_type = 'image/png'
+        elif frame_path.lower().endswith('.bmp'):
+            file_type = 'image/bmp'
+        elif frame_path.lower().endswith('.gif'):
+            file_type = 'image/gif'
+        elif frame_path.lower().endswith('.webp'):
+            file_type = 'image/webp'
 
-    # Determine the MIME type based on file extension
-    file_type = 'image/jpeg'  # default
-    if frame_path.lower().endswith('.png'):
-        file_type = 'image/png'
-    elif frame_path.lower().endswith('.bmp'):
-        file_type = 'image/bmp'
-    elif frame_path.lower().endswith('.gif'):
-        file_type = 'image/gif'
-    elif frame_path.lower().endswith('.webp'):
-        file_type = 'image/webp'
+        files = {'uploadedFile': (frame_path, open(frame_path, 'rb'), file_type)}
+        data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
+        try:
+            # 发送POST请求
+            res = requests.post(url, data=data, files=files)
+            print("已成功发送上传图床的请求")
+        except requests.RequestException as e:
+            print("请求过程中出现错误:", e)
+            return False, {"请求过程中出现错误:" + str(e)}
 
-    files = {'uploadedFile': (frame_path, open(frame_path, 'rb'), file_type)}
-    data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
-
-    try:
-        # 发送POST请求
-        res = requests.post(url, data=data, files=files)
-        print("已成功发送上传图床的请求")
-    except requests.RequestException as e:
-        print("请求过程中出现错误:", e)
-        return False, {"请求过程中出现错误:" + str(e)}
-
-    # 关闭文件流，避免资源泄露
-    files['uploadedFile'][1].close()
-
+        # 关闭文件流，避免资源泄露
+        files['uploadedFile'][1].close()
     # 将响应文本转换为字典
     try:
         api_response = json.loads(res.text)

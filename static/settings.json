@@ -2,8 +2,8 @@
     "screenshotPath": "temp/pic",
     "torrentPath": "temp/torrent",
     "ptGenPath": "https://api.iyuu.cn/App.Movie.Ptgen",
-    "figureBedPath": "https://freeimage.host/api/1/upload",
-    "figureBedToken": "",
+    "figureBedPath": "https://img.agsvpt.com/api/upload/",
+    "figureBedToken": "08d1f34335865d6d4dc7",
     "screenshotNumber": "3",
     "screenshotThreshold": "0.02",
     "screenshotStart": "0.12",
@@ -15,5 +15,9 @@
     "pasteScreenshotUrl": "True",
     "deleteScreenshot": "True",
     "makeDir": "True",
-    "renameFile": "True"
+    "renameFile": "True",
+    "cookie": "_gcl_au=1.1.1605694823.1701753097; _ga=GA1.3.1169207815.1701753097; __qca=P0-666032292-1701753095036; nmstat=476639e1-f1f4-a34b-15ec-cbb4e351d6ec; mousestats_vi=b253891df4049889dc06; fpestid=dsOgUiY64tePEohlP_Q4UJ12_2lYaba7K8My_hN-3JPuIeU4lhuM3iGF8mR1c5PSk01mBg; _ga=GA1.1.1169207815.1701753097; pvCount=1; _ga_3B8WSW7V1T=GS1.1.1702348203.4.0.1702348206.0.0.0; _ga_9T3VXTE4D3=GS1.1.1702348204.4.0.1702348206.0.0.0; _ga_ZEPV2PX419=GS1.1.1702348204.4.0.1702348206.58.0.0; __51vcke__3GioIyieqTHVseSP=8415c812-42e4-5e82-b00d-c387079e06bc; __51vuft__3GioIyieqTHVseSP=1704190534398; c_secure_uid=NzE2; c_secure_pass=67778eed5595c09a2ae36d8be843a5d5; c_secure_ssl=eWVhaA%3D%3D; c_secure_tracker_ssl=eWVhaA%3D%3D; c_secure_login=bm9wZQ%3D%3D; __51uvsct__3GioIyieqTHVseSP=13; __vtins__3GioIyieqTHVseSP=%7B%22sid%22%3A%20%221419c10b-ef72-52ef-9956-da16a77e3628%22%2C%20%22vd%22%3A%206%2C%20%22stt%22%3A%201752156%2C%20%22dr%22%3A%2013959%2C%20%22expires%22%3A%201704784201601%2C%20%22ct%22%3A%201704782401601%7D",
+    "qbPath": "http://192.168.10.13:8081",
+    "qbUser": "admin",
+    "qbPasswd": "admin"
 }

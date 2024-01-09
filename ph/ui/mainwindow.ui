@@ -319,47 +319,6 @@ QPushButton:pressed {
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QPushButton" name="makeTorrentButton">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-                </property>
-                <property name="text">
-                 <string>制作种子</string>
-                </property>
-               </widget>
-              </item>
              </layout>
             </item>
             <item>
@@ -930,6 +889,47 @@ QPushButton:pressed {
             </property>
             <property name="text">
              <string>获取标准命名</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="makeTorrentButton">
+            <property name="styleSheet">
+             <string notr="true">QPushButton {
+    display: inline-block;
+    padding: 3px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #16bf9d,
+                                      stop:1 #10a266);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #11b998,
+                                      stop:1 #08965e);
+}
+
+QPushButton:pressed {
+    background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #0e9278,
+                                      stop:1 #0e925c);
+}
+</string>
+            </property>
+            <property name="text">
+             <string>制作种子</string>
             </property>
            </widget>
           </item>

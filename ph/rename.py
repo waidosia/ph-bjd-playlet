@@ -18,23 +18,17 @@ def get_video_info(file_path):
         channel_layout = ""
 
         for track in media_info.tracks:
-            if track.track_type == "General":
-                pass
-                # ... 添加其他General信息
-            elif track.track_type == "Video":
+            if track.track_type == "Video":
                 if track.other_width:
                     width = track.other_width[0]
                 if track.other_format:
                     format = track.other_format[0]
                 if track.other_hdr_format:
                     hdr_format = track.other_hdr_format[0]
-                # ... 添加其他Video信息
             elif track.track_type == "Audio":
-                commercial_name = track.commercial_name
+                commercial_name = track.format
                 channel_layout = track.channel_layout
                 break
-                # ... 添加其他Audio信息
-
         return True, [get_abbreviation(width), get_abbreviation(format), get_abbreviation(hdr_format),
                       get_abbreviation(commercial_name), get_abbreviation(channel_layout)]
     except OSError as e:
