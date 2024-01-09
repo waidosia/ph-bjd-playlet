@@ -6,7 +6,13 @@ import subprocess
 
 def build_executable():
     # 执行 PyInstaller 命令
-    pyinstaller_cmd = 'pyinstaller --onefile --noconsole main.py'
+    pyinstaller_cmd = ('pyinstaller '
+                       '--onefile  '
+                       '--strip '
+                       '--noconsole '
+                       '--add-data "Mandarin.dat;xpinyin" '
+                       '--upx-dir=upx.exe '
+                       'main.py')
     subprocess.run(pyinstaller_cmd, shell=True)
     # 将static目录复制到dist目录
     source_static = 'static'
