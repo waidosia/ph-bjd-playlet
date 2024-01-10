@@ -217,7 +217,7 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
                                                                               False)
                             self.upload_picture_thread5.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
                             self.upload_picture_thread5.start()  # 启动线程
-                        print("上传图床线程启动")
+
                         self.debugBrowser.append("上传图床线程启动")
                     else:
                         if len(res) > 0:
@@ -284,8 +284,20 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
                 if pasteScreenshotUrl:
                     if is_cover:
                         temp = self.introBrowser.toPlainText()
-                        temp = bbsurl + '\n' + temp
+                        temp = temp + ('[quote][color=#ff0000][size=5][b]因组内调整，之后新发布，均禁止转载 谢谢！[/b]['
+                                       '/size][/color][/quote]')
+                        temp = temp + api_response
                         self.introBrowser.setText(temp)
+                        # 先插入简介
+                        text = '''
+                        剧名： {}
+                        年代： {}
+                        语言：国语
+                        简介：{}\n
+                        [img]https://img.pterclub.com/images/2024/01/10/3a3a0f41d507ffa05df76996a1ed69e7.png[/img]
+                        '''.format(self.chineseNameEdit.text(), self.yearEdit.text(),
+                                   self.info.text())
+                        self.introBrowser.append(text)
                         self.debugBrowser.append("成功将封面链接粘贴到简介前")
                     else:
                         self.introBrowser.append(bbsurl)
@@ -320,10 +332,18 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             if pasteScreenshotUrl:
                 if is_cover:
                     temp = self.introBrowser.toPlainText()
-                    temp = api_response + '\n' + temp
+                    temp = temp + ('[quote][color=#ff0000][size=5][b]因组内调整，之后新发布，均禁止[color=red]转载[/color] 谢谢！[/b]['
+                                   '/size][/color][/quote]')
+                    temp = temp + api_response
                     self.introBrowser.setText(temp)
-                    # 封面后拼接正文部分
-                    text = '剧名： {}\n年代： {}\n语言：国语\n简介：\n'.format(self.chineseNameEdit.text(),self.yearEdit.text())
+                    # 先插入简介
+                    text = '''剧名： {}
+年代： {}
+语言：国语
+简介：{}\n
+[img]https://img.pterclub.com/images/2024/01/10/7d337b9994669872fa56cdb65a627d75.png[/img]
+                    '''.format(self.chineseNameEdit.text(), self.yearEdit.text(),
+                               self.info.text())
                     self.introBrowser.append(text)
                     self.debugBrowser.append("成功将封面链接粘贴到简介前")
                 else:
@@ -356,7 +376,8 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             get_media_info_success, mediainfo = get_media_info(videoPath)
             if get_media_info_success:
                 self.mediainfoBrowser.setText(mediainfo)
-                self.mediainfoBrowser.append('\n')
+                mediainfo_text = '\n[img]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png[/img]\n[quote]' + mediainfo + '[/quote]'
+                self.introBrowser.append(mediainfo_text)
                 self.debugBrowser.append("成功获取到MediaInfo")
             else:
                 self.debugBrowser.append(mediainfo)
@@ -364,10 +385,8 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             self.debugBrowser.append("您的视频文件路径有误")
 
     def getNameButtonClicked(self):
-
         first_chinese_name = self.chineseNameEdit.text()
         if first_chinese_name:
-
             print('获取中文名成功：' + first_chinese_name)
             self.debugBrowser.append('获取中文名成功：' + first_chinese_name)
             first_english_name = chinese_name_to_pinyin(first_chinese_name)
