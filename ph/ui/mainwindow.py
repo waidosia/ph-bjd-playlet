@@ -595,7 +595,7 @@ class Ui_Mainwindow(object):
 "")
         self.startButton.setObjectName("startButton")
         self.horizontalLayout_9.addWidget(self.startButton)
-        self.gridLayout_2.addLayout(self.horizontalLayout_9, 12, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.horizontalLayout_9, 12, 0, 1, 2)
         Mainwindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=Mainwindow)
         self.statusbar.setObjectName("statusbar")
@@ -630,7 +630,7 @@ class Ui_Mainwindow(object):
         self.selectVideoFolderButton.setText(_translate("Mainwindow", "文件夹"))
         self.label_17.setText(_translate("Mainwindow", "封面路径："))
         self.selectCoverFolderButton.setText(_translate("Mainwindow", "浏览"))
-        self.uploadCoverButton.setText(_translate("Mainwindow", "上传"))
+        self.uploadCoverButton.setText(_translate("Mainwindow", "1、上传"))
         self.label_19.setText(_translate("Mainwindow", " 简介："))
         self.checkBox_0.setText(_translate("Mainwindow", "剧情"))
         self.checkBox_1.setText(_translate("Mainwindow", "爱情"))
@@ -651,8 +651,8 @@ class Ui_Mainwindow(object):
         self.label_13.setText(_translate("Mainwindow", "主标题："))
         self.label_14.setText(_translate("Mainwindow", "副标题："))
         self.label_15.setText(_translate("Mainwindow", "文件名："))
-        self.getNameButton.setText(_translate("Mainwindow", "获取标准命名"))
-        self.makeTorrentButton.setText(_translate("Mainwindow", "制作种子"))
+        self.getNameButton.setText(_translate("Mainwindow", "2、获取标准命名"))
+        self.makeTorrentButton.setText(_translate("Mainwindow", "3、制作种子"))
         self.label_10.setText(_translate("Mainwindow", "MediaInfo"))
         self.mediainfoBrowser.setHtml(_translate("Mainwindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
@@ -662,9 +662,9 @@ class Ui_Mainwindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:\'微软雅黑\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.getMediaInfoButton.setText(_translate("Mainwindow", "获取"))
-        self.getPictureButton.setText(_translate("Mainwindow", "一键生成简介"))
+        self.getMediaInfoButton.setText(_translate("Mainwindow", "4、获取"))
+        self.getPictureButton.setText(_translate("Mainwindow", "5、一键生成简介"))
         self.label_5.setText(_translate("Mainwindow", "截图"))
-        self.startButton.setText(_translate("Mainwindow", "万事俱备，一键启动！"))
+        self.startButton.setText(_translate("Mainwindow", "6、万事俱备，一键启动！"))
         self.menu.setTitle(_translate("Mainwindow", "工具"))
         self.actionsettings.setText(_translate("Mainwindow", "设置"))

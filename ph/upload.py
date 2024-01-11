@@ -1,32 +1,20 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+from bs4 import BeautifulSoup
+from qbittorrentapi import Client, LoginFailed
+
 
 # 编码字典
-encod_map = {
-    'AVC': '1',
-}
-# 音频编码字典
-audio_map = {
-    'AAC': '6',
-}
-
-# 分辨率字典
-resolution_map = {
-    "720P": '3',
-    "1080P": '1',
-    "2160P": '5',
-}
 
 
-def upload(cookies_str, torrent_file, main_title, compose, descr, media):
+def upload(cookies_str, torrent_file, main_title, compose, descr, chinese_name):
     try:
-        resolution, encoding, audio = get_info(main_title)
         browser = webdriver.Chrome()
-        browser.get('https://agsvpt.com/agsvpt')
+        browser.get('https://tjupt.org')
         for name, value in cookie_parse(cookies_str).items():
             cookie_dict = {
-                'domain': '.agsvpt.com',
+                'domain': '.tjupt.org',
                 'name': name,
                 'value': value,
                 "expires": '',
@@ -39,90 +27,63 @@ def upload(cookies_str, torrent_file, main_title, compose, descr, media):
         browser.refresh()
         # 跳转到上传页面
         print("开始跳转")
-        browser.get('https://abroad.agsvpt.com/upload.php')
+        browser.get('https://tjupt.org/upload.php')
         # 等待页面跳转
-        time.sleep(10)
+        time.sleep(5)
         # 开始填写内容
         # 上传文件
         browser.find_element("xpath", '//*[@id="torrent"]').send_keys(torrent_file)
         time.sleep(5)
-        # 填写主标题，先清空再填写
-        browser.find_element("xpath", '//*[@id="name"]').clear()
+        # 选择资源类型
+        dropdown = browser.find_element("xpath", '//*[@id="browsecat"]')
+        select = Select(dropdown)
+        select.select_by_value('402')
         time.sleep(1)
-        browser.find_element("xpath", '//*[@id="name"]').send_keys(main_title)
-        time.sleep(1)
+        # 填写中文名
+        browser.find_element("xpath", '//*[@id="cname"]').send_keys(chinese_name)
+        # 填写主标题
+        browser.find_element("xpath", '//*[@id="ename"]').send_keys(main_title)
+        # 选择剧集类型
+        browser.find_element("xpath", '//*[@id="specificcat1"]').click()
         # 填写副标题
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[4]/td[2]/input').send_keys(compose)
-        time.sleep(1)
+        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[5]/td[2]/input').send_keys(compose)
         # 填写简介
         browser.find_element("xpath", '//*[@id="descr"]').send_keys(descr)
         time.sleep(1)
-        # 填写MediaInfo
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[10]/td[2]/textarea').send_keys(media)
-        # 选择类型
-        dropdown = browser.find_element("xpath", '//*[@id="browsecat"]')
-        select = Select(dropdown)
-        select.select_by_value('419')
-        time.sleep(1)
-        # 选择媒介
-        dropdown = browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[12]/td[2]/select[1]')
-        select = Select(dropdown)
-        select.select_by_value('10')
-        time.sleep(1)
-        # 选择编码
-        dropdown = browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[12]/td[2]/select[2]')
-        select = Select(dropdown)
-        select.select_by_value(encod_map[encoding])
-        time.sleep(1)
-        # 选择音频编码
-        dropdown = browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[12]/td[2]/select[3]')
-        select = Select(dropdown)
-        select.select_by_value(audio_map[audio])
-        time.sleep(1)
-        # 选择分辨率
-        dropdown = browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[12]/td[2]/select[4]')
-        select = Select(dropdown)
-        select.select_by_value(resolution_map[resolution])
-        time.sleep(1)
-        # 选择小组
-        dropdown = browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[12]/td[2]/select[5]')
-        select = Select(dropdown)
-        select.select_by_value('23')
-        time.sleep(1)
         # 勾选标签
-        # 国语
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[14]/td[2]/label[5]/input').click()
-        # 中字
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[14]/td[2]/label[9]/input').click()
-        # 完结
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[14]/td[2]/label[11]/input').click()
         # 驻站
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[14]/td[2]/label[19]/input').click()
-        # 冰种
-        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[14]/td[2]/label[20]/input').click()
+        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[11]/td[2]/label[2]/input').click()
+        # 禁转
+        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[11]/td[2]/label[3]/input').click()
         # 等30秒检查后点击提交
-        time.sleep(5)
+        time.sleep(30)
         # 提交
         browser.find_element("xpath", '//*[@id="qr"]').click()
         # 等待页面跳转
         time.sleep(5)
-        print(browser.current_url)
-        browser.close()
-        # 判断页面是否正常跳转，跳转后的页面地址为https://abroad.agsvpt.com/details.php?id=
-    #     # 判断地址中是否包含指定的字符串
-    #     if 'https://abroad.agsvpt.com/details.php?id=' in browser.current_url:
-    #         # 获取种子地址给qb
-    #         torrent_url = browser.find_element("xpath", '//*[@id="outer"]/table[1]/tbody/tr[7]/td[2]/a').get_attribute(
-    #             'href')
-    #     else:
-    #         # 上传失败
-    #         torrent_url = ''
+        # 判断页面是否正常跳转，跳转后的页面地址为https://tjupt.org/details.php?id=
+        # 判断地址中是否包含指定的字符串
+        if 'https://tjupt.org/details.php' in browser.current_url:
+            # 获取当前页面的源码
+            html = browser.page_source
+            # 关闭浏览器
+            browser.close()
+            # 使用BeautifulSoup解析页面
+            soup = BeautifulSoup(html, 'html.parser')
+            # 获取种子下载链接
+            torrent_url = soup.find('a', {'id': 'direct_link'}).get('href')
+            # 返回种子下载链接
+            return torrent_url
+        else:
+            # 上传失败
+            torrent_url = ''
+            # 关闭浏览器
+            browser.close()
+            return torrent_url
     except Exception as e:
         print(e)
-    #     torrent_url = ''
-    # print(torrent_url)
 
-    return ""
+    return
 
 
 def cookie_parse(cookies_str):
@@ -137,15 +98,18 @@ def cookie_parse(cookies_str):
     return cookie_dict
 
 
-# 从主标题提取信息
-def get_info(main_title):
-    # Hei An Yuan Cheng 2023 S01 1080P WEB-DL AVC AAC-GodDramas
-    # 提取分辨率
-    resolution = main_title.split(' ')[-4]
-    # 提取编码
-    encoding = main_title.split(' ')[-2]
-    # 提取音频编码
-    audio = main_title.split(' ')[-1]
-    audio = audio.split('-')[0]
-    return resolution, encoding, audio
+def qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_url, path) -> bool:
+    qb = Client(host=qbittorrent_host, username=qbittorrent_user, password=qbittorrent_pass)
+    try:
+        qb.auth_log_in()
+    except LoginFailed:
+        print("登陆失败")
+        return False
+    is_add = qb.torrents_add(urls=torrent_url, is_paused=True,savepath=path)
+    if is_add != 'Ok.':
+        print('添加失败')
+        return False
 
+    print('添加成功')
+    qb.auth_log_out()
+    return True

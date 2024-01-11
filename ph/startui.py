@@ -2,36 +2,37 @@ import os
 import re
 import sys
 
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import *
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QDialog
 
 from .mediainfo import get_media_info
 from .rename import get_video_info
 from .screenshot import extract_complex_keyframes, upload_screenshot, upload_free_screenshot, get_thumbnails
-from .upload import upload
 from .tool import update_settings, get_settings, get_file_path, rename_file_with_same_extension, \
     get_folder_path, check_path_and_find_video, rename_directory, create_torrent, load_names, chinese_name_to_pinyin, \
     get_video_files
 from .ui.mainwindow import Ui_Mainwindow
 from .ui.settings import Ui_Settings
+from .upload import upload, qb_download
 
 
 def starui():
     app = QApplication(sys.argv)
-    myMainwindow = mainwindow()
+    myMainwindow = MainWindow()
     myico = QIcon("static/apr-bjd.ico")
     myMainwindow.setWindowIcon(myico)
     myMainwindow.show()
     sys.exit(app.exec())
 
 
-class mainwindow(QMainWindow, Ui_Mainwindow):
+class MainWindow(QMainWindow, Ui_Mainwindow):
     def __init__(self):
         super().__init__()
         self.upload_cover_thread = None
         self.upload_free_cover_thread = None
         self.setupUi(self)  # 设置界面
+        self.mySettings = None
 
         self.get_pt_gen_thread = None
         self.get_pt_gen_for_name_thread = None
@@ -49,6 +50,7 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
         self.upload_free_picture_thread5 = None
         self.make_torrent_thread = None
         self.torrent_path = None
+        self.upload_cover_thread = None
 
         # 初始化
         self.videoPath.setDragEnabled(True)
@@ -89,20 +91,7 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             self.type.addItem(name)
 
     def startButtonClicked(self):
-        # self.getNameButtonClicked()
-        # QApplication.processEvents()  # 处理所有挂起的事件，更新页面
-        # time.sleep(0)  # 等待 0 毫秒
-        # self.getPictureButtonClicked()
-        # QApplication.processEvents()  # 再次处理事件
-        # time.sleep(0)  # 等待 2000 毫秒
-        # self.uploadCoverButtonClicked()
-        # QApplication.processEvents()  # 再次处理事件
-        # time.sleep(2)  # 等待 2000 毫秒
-        # self.getMediaInfoButtonClicked()
-        # QApplication.processEvents()  # 处理事件
-        # time.sleep(2)  # 等待 2000 毫秒
-        # self.makeTorrentButtonClicked()
-        # QApplication.processEvents()  # 处理事件
+
         # 调用发种函数
         cookie_str = get_settings("cookie")
         # 主标题
@@ -110,9 +99,9 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
         # 副标题
         secondTitle = self.secondTitleBrowser.toPlainText()
         # 简介
-        introBrowser = self.introBrowser.toPlainText()
-        # media
-        mediainfoBrowser = self.mediainfoBrowser.toPlainText()
+        introBrowser = self.introBrowser.toPlainText().replace(' ', '.')
+        # 中文标题
+        chinese_name = self.chineseNameEdit.text()
         # 种子路径
         torrent_path = self.torrent_path
         # 判断种子路径是绝对路径还是相对路径，如果是相对则转换为绝对路径
@@ -121,10 +110,31 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, mediainfoBrowser)
+        self.upload_cover_thread = UploadThread(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
+                                                chinese_name)
+        self.upload_cover_thread.finished_signal.connect(self.uploadFinished)
+        self.upload_cover_thread.start()
+
+    def uploadFinished(self, torrent_url):
+        # qbittorrent的地址
+        qbittorrent_host = get_settings("qbPath")
+        # qbittorrent的用户名
+        qbittorrent_user = get_settings("qbUser")
+        # qbittorrent的密码
+        qbittorrent_pass = get_settings("qbPasswd")
+        path = os.path.abspath(os.path.join(self.videoPath.text(), ".."))
+        if torrent_url:
+            self.debugBrowser.append("发种成功：" + torrent_url)
+            is_add = qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_url, path)
+            if is_add:
+                self.debugBrowser.append("做种成功：" + torrent_url)
+            else:
+                self.debugBrowser.append("做种失败：")
+        else:
+            self.debugBrowser.append("发种失败或获取种子链接失败,自行检查")
 
     def settingsClicked(self):  # click对应的槽函数
-        self.mySettings = settings()
+        self.mySettings = Settings()
         self.mySettings.getSettings()
         myico = QIcon("static/apr-bjd.ico")
         self.mySettings.setWindowIcon(myico)
@@ -136,7 +146,8 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             self.debugBrowser.append("上传封面" + cover_path)
             figureBedPath = get_settings("figureBedPath")  # 图床地址
             figureBedToken = get_settings("figureBedToken")  # 图床Token
-            if figureBedPath == "https://img.agsvpt.com/api/upload/" or figureBedPath == "http://img.agsvpt.com/api/upload/":
+            if figureBedPath == "https://img.agsvpt.com/api/upload/" or figureBedPath == ("http://img.agsvpt.com/api"
+                                                                                          "/upload/"):
 
                 self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, cover_path, True)
                 self.upload_cover_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
@@ -153,13 +164,15 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
 
     def getPictureButtonClicked(self):
         self.pictureUrlBrowser.setText("")
-        isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())  # 视频资源的路径
+        isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())
 
         if isVideoPath == 1 or isVideoPath == 2:
-            self.debugBrowser.append("获取视频" + videoPath + "的截图")
-            screenshotPath = get_settings("screenshotPath")  # 截图储存路径
-            figureBedPath = get_settings("figureBedPath")  # 图床地址
-            figureBedToken = get_settings("figureBedToken")  # 图床Token
+            self.debugBrowser.append(f"获取视频 {videoPath} 的截图")
+            self.debugBrowser.append("参数获取成功，开始执行截图函数")
+
+            screenshotPath = get_settings("screenshotPath")
+            figureBedPath = get_settings("figureBedPath")
+            figureBedToken = get_settings("figureBedToken")
             screenshotNumber = int(get_settings("screenshotNumber"))
             screenshotThreshold = float(get_settings("screenshotThreshold"))
             screenshotStart = float(get_settings("screenshotStart"))
@@ -168,198 +181,138 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             rows = int(get_settings("rows"))
             cols = int(get_settings("cols"))
             autoUploadScreenshot = bool(get_settings("autoUploadScreenshot"))
-            self.debugBrowser.append("参数获取成功，开始执行截图函数")
 
-            screenshot_success, res = extract_complex_keyframes(videoPath, screenshotPath, screenshotNumber,
-                                                                screenshotThreshold, screenshotStart,
-                                                                screenshotEnd, min_interval_pct=0.01)
-            print("成功获取截图函数的返回值")
-            self.debugBrowser.append("成功获取截图函数的返回值")
-            if getThumbnails:
-                get_thumbnails_success, sv_path = get_thumbnails(videoPath, screenshotPath, rows, cols, screenshotStart,
-                                                                 screenshotEnd)
-                if get_thumbnails_success:
-                    res.append(sv_path)
-            self.debugBrowser.append("成功获取截图：" + str(res))
+            # 截图函数执行
+
+            screenshot_success, res = self.extract_and_get_thumbnails(videoPath, screenshotPath, screenshotNumber,
+                                                                      screenshotThreshold, screenshotStart,
+                                                                      screenshotEnd,
+                                                                      getThumbnails, rows, cols)
+
             if screenshot_success:
-                # 判断是否需要上传图床
-                if autoUploadScreenshot:
-                    self.debugBrowser.append("开始自动上传截图到图床" + figureBedPath)
-                    self.pictureUrlBrowser.setText("")
-                    if figureBedPath == "https://img.agsvpt.com/api/upload/" or figureBedPath == "http://img.agsvpt.com/api/upload/":
-                        if len(res) > 0:
-                            self.upload_picture_thread0 = UploadPictureThread(figureBedPath, figureBedToken, res[0],
-                                                                              False)
-                            self.upload_picture_thread0.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                            self.upload_picture_thread0.start()  # 启动线程
-                        if len(res) > 1:
-                            self.upload_picture_thread1 = UploadPictureThread(figureBedPath, figureBedToken, res[1],
-                                                                              False)
-                            self.upload_picture_thread1.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                            self.upload_picture_thread1.start()  # 启动线程
-                        if len(res) > 2:
-                            self.upload_picture_thread2 = UploadPictureThread(figureBedPath, figureBedToken, res[2],
-                                                                              False)
-                            self.upload_picture_thread2.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                            self.upload_picture_thread2.start()  # 启动线程
-                        if len(res) > 3:
-                            self.upload_picture_thread3 = UploadPictureThread(figureBedPath, figureBedToken, res[3],
-                                                                              False)
-                            self.upload_picture_thread3.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                            self.upload_picture_thread3.start()  # 启动线程
-                        if len(res) > 4:
-                            self.upload_picture_thread4 = UploadPictureThread(figureBedPath, figureBedToken, res[4],
-                                                                              False)
-                            self.upload_picture_thread4.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                            self.upload_picture_thread4.start()  # 启动线程
-                        if len(res) > 5:
-                            self.upload_picture_thread5 = UploadPictureThread(figureBedPath, figureBedToken, res[5],
-                                                                              False)
-                            self.upload_picture_thread5.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                            self.upload_picture_thread5.start()  # 启动线程
-
-                        self.debugBrowser.append("上传图床线程启动")
-                    else:
-                        if len(res) > 0:
-                            self.upload_free_picture_thread0 = UploadFreePictureThread(figureBedPath, figureBedToken,
-                                                                                       res[0], False)
-                            self.upload_free_picture_thread0.result_signal.connect(
-                                self.handleUploadFreePictureResult)  # 连接信号
-                            self.upload_free_picture_thread0.start()  # 启动线程
-                        if len(res) > 1:
-                            self.upload_free_picture_thread1 = UploadFreePictureThread(figureBedPath, figureBedToken,
-                                                                                       res[1], False)
-                            self.upload_free_picture_thread1.result_signal.connect(
-                                self.handleUploadFreePictureResult)  # 连接信号
-                            self.upload_free_picture_thread1.start()  # 启动线程
-                        if len(res) > 2:
-                            self.upload_free_picture_thread2 = UploadFreePictureThread(figureBedPath, figureBedToken,
-                                                                                       res[2], False)
-                            self.upload_free_picture_thread2.result_signal.connect(
-                                self.handleUploadFreePictureResult)  # 连接信号
-                            self.upload_free_picture_thread2.start()  # 启动线程
-                        if len(res) > 3:
-                            self.upload_free_picture_thread3 = UploadFreePictureThread(figureBedPath, figureBedToken,
-                                                                                       res[3], False)
-                            self.upload_free_picture_thread3.result_signal.connect(
-                                self.handleUploadFreePictureResult)  # 连接信号
-                            self.upload_free_picture_thread3.start()  # 启动线程
-                        if len(res) > 4:
-                            self.upload_free_picture_thread4 = UploadFreePictureThread(figureBedPath, figureBedToken,
-                                                                                       res[4], False)
-                            self.upload_free_picture_thread4.result_signal.connect(
-                                self.handleUploadFreePictureResult)  # 连接信号
-                            self.upload_free_picture_thread4.start()  # 启动线程
-                        if len(res) > 5:
-                            self.upload_free_picture_thread5 = UploadFreePictureThread(figureBedPath, figureBedToken,
-                                                                                       res[5], False)
-                            self.upload_free_picture_thread5.result_signal.connect(
-                                self.handleUploadFreePictureResult)  # 连接信号
-                            self.upload_free_picture_thread5.start()  # 启动线程
-                        print("上传图床线程启动")
-                        self.debugBrowser.append("上传图床线程启动")
-                else:
-                    self.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
-                    output = ""
-                    for r in res:
-                        output += r
-                        output += '\n'
-                    self.pictureUrlBrowser.setText(output)
+                self.handle_screenshot_result(res, figureBedPath, figureBedToken, autoUploadScreenshot)
             else:
-                self.debugBrowser.append("截图失败" + str(res))
+                self.debugBrowser.append("截图失败: " + str(res))
         else:
             self.debugBrowser.append("您的视频文件路径有误")
 
-    def handleUploadPictureResult(self, upload_success, api_response, screenshot_path, is_cover):
-        # 这个函数用于处理上传的结果，它将在主线程中被调用
-        # 更新UI，显示上传结果等
+    @staticmethod
+    def extract_and_get_thumbnails(videoPath, screenshotPath, screenshotNumber, screenshotThreshold,
+                                   screenshotStart, screenshotEnd, getThumbnails, rows, cols):
+        # 执行截图函数
+        screenshot_success, res = extract_complex_keyframes(videoPath, screenshotPath, screenshotNumber,
+                                                            screenshotThreshold, screenshotStart,
+                                                            screenshotEnd, min_interval_pct=0.01)
+
+        # 获取缩略图
+        if getThumbnails:
+            get_thumbnails_success, sv_path = get_thumbnails(videoPath, screenshotPath, rows, cols, screenshotStart,
+                                                             screenshotEnd)
+            if get_thumbnails_success:
+                res.append(sv_path)
+
+        return screenshot_success, res
+
+    def handle_screenshot_result(self, res, figureBedPath, figureBedToken, autoUploadScreenshot):
+        self.debugBrowser.append("成功获取截图：" + str(res))
+
+        if autoUploadScreenshot:
+            self.debugBrowser.append(f"开始自动上传截图到图床 {figureBedPath}")
+            self.pictureUrlBrowser.setText("")
+            for i, screenshot in enumerate(res[:6]):  # 限制上传至多6张截图
+                self.upload_screenshot(figureBedPath, figureBedToken, screenshot, False, index=i)
+            self.debugBrowser.append("上传图床线程启动")
+        else:
+            self.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
+            output = "\n".join(res)
+            self.pictureUrlBrowser.setText(output)
+
+    def upload_screenshot(self, figureBedPath, figureBedToken, screenshot, is_cover, index):
+        thread_class = UploadPictureThread if (
+                    "img.agsvpt.com/api/upload/" in figureBedPath) else UploadFreePictureThread
+
+        upload_thread = thread_class(figureBedPath, figureBedToken, screenshot, is_cover)
+        upload_thread.result_signal.connect(lambda success, api_response, path=screenshot: self.handle_upload_result(
+            success, api_response, path, is_cover, self.paste_url_cover if is_cover else self.paste_url_image,
+            False if ("img.agsvpt.com/api/upload/" in figureBedPath) else True))
+        setattr(self, f"upload_picture_thread{index}", upload_thread)
+        upload_thread.start()
+
+    def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback,
+                             is_free):
         print("接受到线程请求的结果")
         self.debugBrowser.append("接受到线程请求的结果")
+        pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
+        deleteScreenshot = bool(get_settings("deleteScreenshot"))
         if upload_success:
-            if api_response.get("statusCode", "") == "200":
-                pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
-                deleteScreenshot = bool(get_settings("deleteScreenshot"))
-                bbsurl = str(api_response.get("bbsurl", ""))
-                self.pictureUrlBrowser.append(bbsurl)
-                if pasteScreenshotUrl:
-                    if is_cover:
-                        temp = self.introBrowser.toPlainText()
-                        temp = temp + ('[quote][color=#ff0000][size=5][b]因组内调整，之后新发布，均禁止转载 谢谢！[/b]['
-                                       '/size][/color][/quote]')
-                        temp = temp + api_response
-                        self.introBrowser.setText(temp)
-                        # 先插入简介
-                        text = '''
-                        剧名： {}
-                        年代： {}
-                        语言：国语
-                        简介：{}\n
-                        [img]https://img.pterclub.com/images/2024/01/10/3a3a0f41d507ffa05df76996a1ed69e7.png[/img]
-                        '''.format(self.chineseNameEdit.text(), self.yearEdit.text(),
-                                   self.info.text())
-                        self.introBrowser.append(text)
-                        self.debugBrowser.append("成功将封面链接粘贴到简介前")
-                    else:
-                        self.introBrowser.append(bbsurl)
-                        self.debugBrowser.append("成功将图片链接粘贴到简介后")
-                if deleteScreenshot:
-                    if os.path.exists(screenshot_path):
-                        # 删除文件
-                        os.remove(screenshot_path)
-                        print(f"文件 {screenshot_path} 已被删除。")
-                        self.debugBrowser.append(f"文件 {screenshot_path} 已被删除。")
-                    else:
-                        print(f"文件 {screenshot_path} 不存在。")
-                        self.debugBrowser.append(f"文件 {screenshot_path} 不存在。")
-            else:
-                if api_response.get("statusCode", "") == "":
-                    self.debugBrowser.append("未接受到图床的任何响应" + '\n')
+            if not is_free:
+                if api_response.get("statusCode", "") == "200":
+                    bbsurl = str(api_response.get("bbsurl", ""))
+                    self.pictureUrlBrowser.append(bbsurl)
+                    api_response = bbsurl
                 else:
-                    self.debugBrowser.append(str(api_response) + '\n')
+                    if api_response.get("statusCode", "") == "":
+                        self.debugBrowser.append("未接受到图床的任何响应" + '\n')
+                    else:
+                        self.debugBrowser.append(str(api_response) + '\n')
+            else:
+                self.pictureUrlBrowser.append(api_response)
+            if pasteScreenshotUrl:
+                if is_cover:
+                    category = self.get_selected_categories()
+                    print('类型为：' + category)
+                    temp = self.introBrowser.toPlainText()
+                    temp += (
+                        '[quote][size=4]因组内调整，之后新发布，均禁止[color=Red]转载 [color=Black]谢谢！！[/size]\n'
+                        '[img]https://img.pterclub.com/images/2024/01/10/GodDramas-.png[/img][/quote]\n')
+                    temp += api_response
+                    self.introBrowser.setText(temp)
+
+                    text = ('◎片　　名  {}\n◎年　　代  {}\n◎产　　地　大陆\n◎类　　别  {}\n◎语　　言  国语\n◎简　　介  {}'
+                            .format(self.chineseNameEdit.text(), self.yearEdit.text(), category, self.info.text()))
+
+                    self.introBrowser.append(text)
+                    self.debugBrowser.append("成功将封面链接粘贴到简介前")
+                else:
+                    paste_url_callback(api_response)
+                    self.debugBrowser.append("成功将图片链接粘贴到简介后")
+                if deleteScreenshot:
+                    self.delete_screenshot(screenshot_path)
 
         else:
             self.debugBrowser.append("图床响应不是有效的JSON格式")
 
-    def handleUploadFreePictureResult(self, upload_success, api_response, screenshot_path, is_cover):
-        # 这个函数用于处理上传的结果，它将在主线程中被调用
-        # 更新UI，显示上传结果等
-        print("接受到线程请求的结果")
-        self.debugBrowser.append("接受到线程请求的结果")
-        if upload_success:
-            self.pictureUrlBrowser.append(api_response)
-            pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
-            deleteScreenshot = bool(get_settings("deleteScreenshot"))
-            if pasteScreenshotUrl:
-                if is_cover:
-                    temp = self.introBrowser.toPlainText()
-                    temp = temp + ('[quote][color=#ff0000][size=5][b]因组内调整，之后新发布，均禁止[color=red]转载[/color] 谢谢！[/b]['
-                                   '/size][/color][/quote]')
-                    temp = temp + api_response
-                    self.introBrowser.setText(temp)
-                    # 先插入简介
-                    text = '''剧名： {}
-年代： {}
-语言：国语
-简介：{}\n
-[img]https://img.pterclub.com/images/2024/01/10/7d337b9994669872fa56cdb65a627d75.png[/img]
-                    '''.format(self.chineseNameEdit.text(), self.yearEdit.text(),
-                               self.info.text())
-                    self.introBrowser.append(text)
-                    self.debugBrowser.append("成功将封面链接粘贴到简介前")
-                else:
-                    self.introBrowser.append(api_response)
-                    self.debugBrowser.append("成功将图片链接粘贴到简介后")
-            if deleteScreenshot:
-                if os.path.exists(screenshot_path):
-                    # 删除文件
-                    os.remove(screenshot_path)
-                    print(f"文件 {screenshot_path} 已被删除。")
-                    self.debugBrowser.append(f"文件 {screenshot_path} 已被删除。")
-                else:
-                    print(f"文件 {screenshot_path} 不存在。")
-                    self.debugBrowser.append(f"文件 {screenshot_path} 不存在。")
+    def get_selected_categories(self):
+        categories = [
+            '剧情', '爱情', '喜剧', '甜虐', '甜宠', '恐怖', '动作', '穿越', '重生', '逆袭', '科幻', '武侠', '都市', '古装'
+        ]
+
+        selected_categories = [categories[i] for i in range(len(categories)) if
+                               getattr(self, f"checkBox_{i}").isChecked()]
+        return ' '.join(selected_categories)
+
+    def paste_url_cover(self, api_response):
+        self.introBrowser.append(api_response)
+        self.debugBrowser.append("成功将封面链接粘贴到简介前")
+
+    def paste_url_image(self, api_response):
+        self.introBrowser.append(api_response)
+        self.debugBrowser.append("成功将图片链接粘贴到简介后")
+
+    def delete_screenshot(self, screenshot_path):
+        if os.path.exists(screenshot_path):
+            os.remove(screenshot_path)
+            print(f"文件 {screenshot_path} 已被删除。")
+            self.debugBrowser.append(f"文件 {screenshot_path} 已被删除。")
         else:
-            self.debugBrowser.append("图床响应无效：" + api_response)
+            print(f"文件 {screenshot_path} 不存在。")
+            self.debugBrowser.append(f"文件 {screenshot_path} 不存在。")
+
+    def handleUploadPictureResult(self, upload_success, api_response, screenshot_path, is_cover):
+        self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_cover, False)
+
+    def handleUploadFreePictureResult(self, upload_success, api_response, screenshot_path, is_cover):
+        self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_image, True)
 
     def selectCoverFolderButtonClicked(self):
         path = get_file_path()
@@ -369,6 +322,13 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
         path = get_folder_path()
         self.videoPath.setText(path)
 
+    def get_video_info_success(self):
+        is_video_path, video_path = check_path_and_find_video(self.videoPath.text())
+        if is_video_path == 2:
+            return True, get_video_info(video_path)
+        else:
+            return False, "您的视频文件路径有误"
+
     def getMediaInfoButtonClicked(self):
         self.mediainfoBrowser.setText("")
         isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())  # 视频资源的路径
@@ -376,8 +336,11 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             get_media_info_success, mediainfo = get_media_info(videoPath)
             if get_media_info_success:
                 self.mediainfoBrowser.setText(mediainfo)
-                mediainfo_text = '\n[img]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png[/img]\n[quote]' + mediainfo + '[/quote]'
+                mediainfo_text = ('\n[img]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc'
+                                  '.png[/img]\n[quote]') + mediainfo + '[/quote]'
                 self.introBrowser.append(mediainfo_text)
+                self.introBrowser.append('[img]https://img.pterclub.com/images/2024/01/10'
+                                         '/3a3a0f41d507ffa05df76996a1ed69e7.png[/img]')
                 self.debugBrowser.append("成功获取到MediaInfo")
             else:
                 self.debugBrowser.append(mediainfo)
@@ -399,8 +362,6 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             hdr_format = ""
             commercial_name = ""
             channel_layout = ""
-            type = ""
-            category = ""
             rename_file = get_settings("renameFile")
             isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())
             get_video_info_success, output = get_video_info(videoPath)
@@ -421,37 +382,8 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
                 team = self.team.currentText()
                 print("关键参数赋值成功")
                 self.debugBrowser.append("关键参数赋值成功")
-                type += self.type.currentText()
-                if self.checkBox_0.isChecked():
-                    category += '剧情 '
-                if self.checkBox_1.isChecked():
-                    category += '爱情 '
-                if self.checkBox_2.isChecked():
-                    category += '喜剧 '
-                if self.checkBox_3.isChecked():
-                    category += '甜虐 '
-                if self.checkBox_4.isChecked():
-                    category += '甜宠 '
-                if self.checkBox_5.isChecked():
-                    category += '恐怖 '
-                if self.checkBox_6.isChecked():
-                    category += '动作 '
-                if self.checkBox_7.isChecked():
-                    category += '穿越 '
-                if self.checkBox_8.isChecked():
-                    category += '重生 '
-                if self.checkBox_9.isChecked():
-                    category += '逆袭 '
-                if self.checkBox_10.isChecked():
-                    category += '科幻 '
-                if self.checkBox_11.isChecked():
-                    category += '武侠 '
-                if self.checkBox_12.isChecked():
-                    category += '都市 '
-                if self.checkBox_13.isChecked():
-                    category += '古装 '
-                print('类型为：' + category)
-                self.debugBrowser.append('类型为：' + category)
+                type = self.type.currentText()
+                category = self.get_selected_categories()
                 mainTitle = first_english_name + ' ' + year + ' S' + season + ' ' + width + ' ' + source + ' ' + format + ' ' + hdr_format + ' ' + commercial_name + '' + channel_layout + '-' + team
                 mainTitle = mainTitle.replace('  ', ' ')
                 print(mainTitle)
@@ -542,7 +474,7 @@ class mainwindow(QMainWindow, Ui_Mainwindow):
             self.debugBrowser.append("制作种子失败：" + response)
 
 
-class settings(QDialog, Ui_Settings):
+class Settings(QDialog, Ui_Settings):
     def __init__(self):
         super().__init__()
         self.setupUi(self)  # 设置界面
@@ -711,3 +643,23 @@ class MakeTorrentThread(QThread):
         except Exception as e:
             print(f"异常发生: {e}")
             # 这里可以发射一个包含错误信息的信号
+
+
+class UploadThread(QThread):
+    finished_signal = pyqtSignal(str)  # 信号，用于在上传完成时发送消息
+
+    def __init__(self, cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name):
+        super().__init__()
+        self.cookie_str = cookie_str
+        self.torrent_path = torrent_path
+        self.mainTitle = mainTitle
+        self.secondTitle = secondTitle
+        self.introBrowser = introBrowser
+        self.chinese_name = chinese_name
+
+    def run(self):
+        # 在这里执行上传操作
+        torrent_url = upload(self.cookie_str, self.torrent_path, self.mainTitle, self.secondTitle, self.introBrowser,
+                             self.chinese_name)
+
+        self.finished_signal.emit(torrent_url)  # 发送上传完成的信号

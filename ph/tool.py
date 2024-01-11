@@ -8,6 +8,8 @@ from tkinter import filedialog, Tk
 from torf import Torrent
 from xpinyin import Pinyin
 
+from ph.rename import get_video_info
+
 
 # 更新settings
 def update_settings(parameter_name, value):
@@ -272,3 +274,4 @@ def chinese_name_to_pinyin(chinese_name):
         result += c.capitalize()
         result += ' '
     return result
+
