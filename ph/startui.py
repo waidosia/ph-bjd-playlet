@@ -91,15 +91,14 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
             self.type.addItem(name)
 
     def startButtonClicked(self):
-
         # 调用发种函数
         cookie_str = get_settings("cookie")
         # 主标题
-        mainTitle = self.mainTitleBrowser.toPlainText()
+        mainTitle = self.mainTitleBrowser.toPlainText().replace(' ', '.')
         # 副标题
         secondTitle = self.secondTitleBrowser.toPlainText()
         # 简介
-        introBrowser = self.introBrowser.toPlainText().replace(' ', '.')
+        introBrowser = self.introBrowser.toPlainText()
         # 中文标题
         chinese_name = self.chineseNameEdit.text()
         # 种子路径
@@ -122,16 +121,31 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         qbittorrent_user = get_settings("qbUser")
         # qbittorrent的密码
         qbittorrent_pass = get_settings("qbPasswd")
-        path = os.path.abspath(os.path.join(self.videoPath.text(), ".."))
+        # path = os.path.abspath(os.path.join(self.videoPath.text(), ".."))
+        path = get_settings("resourcePath")
         if torrent_url:
             self.debugBrowser.append("发种成功：" + torrent_url)
             is_add = qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_url, path)
             if is_add:
                 self.debugBrowser.append("做种成功：" + torrent_url)
+
             else:
                 self.debugBrowser.append("做种失败：")
         else:
             self.debugBrowser.append("发种失败或获取种子链接失败,自行检查")
+        self.videoPath.setText("")
+        self.coverPath.setText("")
+        self.mainTitleBrowser.setText("")
+        self.secondTitleBrowser.setText("")
+        self.introBrowser.setText("")
+        self.pictureUrlBrowser.setText("")
+        self.mediainfoBrowser.setText("")
+        self.fileNameBrowser.setText("")
+        self.chineseNameEdit.setText("")
+        self.yearEdit.setText("")
+        self.seasonBox.setText("")
+        self.info.setText("")
+        self.debugBrowser.append("所有输入框已清空")
 
     def settingsClicked(self):  # click对应的槽函数
         self.mySettings = Settings()
@@ -262,10 +276,9 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
                     category = self.get_selected_categories()
                     print('类型为：' + category)
                     temp = self.introBrowser.toPlainText()
-                    temp += (
-                        '[quote][size=4]因组内调整，之后新发布，均禁止[color=Red]转载 [color=Black]谢谢！！[/size]\n'
-                        '[img]https://img.pterclub.com/images/2024/01/10/GodDramas-.png[/img][/quote]\n')
+                    temp += '[quote][size=4]因组内调整，之后新发布，均禁止[color=Red]转载 [color=Black]谢谢！！[/size][/quote]\n'
                     temp += api_response
+                    temp += '\n[img]https://img.pterclub.com/images/2024/01/10/GodDramas-.png[/img]\n'
                     self.introBrowser.setText(temp)
 
                     text = ('◎片　　名  {}\n◎年　　代  {}\n◎产　　地　大陆\n◎类　　别  {}\n◎语　　言  国语\n◎简　　介  {}'
@@ -523,6 +536,7 @@ class Settings(QDialog, Ui_Settings):
         self.qbPath.setText(get_settings("qbPath"))
         self.qbUser.setText(get_settings("qbUser"))
         self.qbPasswd.setText(get_settings("qbPasswd"))
+        self.resourcePath.setText(get_settings("resourcePath"))
 
     def updateSettings(self):
         update_settings("screenshotPath", self.screenshotPath.text())
@@ -537,6 +551,7 @@ class Settings(QDialog, Ui_Settings):
         update_settings("qbPath", str(self.qbPath.text()))
         update_settings("qbUser", str(self.qbUser.text()))
         update_settings("qbPasswd", str(self.qbPasswd.text()))
+        update_settings("resourcePath",str(self.resourcePath.text()))
         if self.getThumbnails.isChecked():
             update_settings("getThumbnails", "True")
         else:

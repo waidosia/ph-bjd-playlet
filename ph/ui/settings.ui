@@ -1188,6 +1188,20 @@ QPushButton:pressed {
       </layout>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_13">
+       <item>
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>做种路径：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="resourcePath"/>
+       </item>
+      </layout>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_12">
        <item>
         <widget class="QLabel" name="label_17">
