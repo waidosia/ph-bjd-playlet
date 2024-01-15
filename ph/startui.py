@@ -72,6 +72,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.getNameButton.clicked.connect(self.getNameButtonClicked)
         self.startButton.clicked.connect(self.startButtonClicked)
         self.makeTorrentButton.clicked.connect(self.makeTorrentButtonClicked)
+        self.writeButton.clicked.connect(self.writeButtonClicked)
 
         self.debugBrowser.append("程序初始化成功，使用前请查看设置中的说明")
 
@@ -114,6 +115,43 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.upload_cover_thread.finished_signal.connect(self.uploadFinished)
         self.upload_cover_thread.start()
 
+    def writeButtonClicked(self):
+        # 在temp目录，以中文标题作为文件名，写入主标题，副标题，简介信息
+        # 中文标题
+        chinese_name = self.chineseNameEdit.text() + ".txt"
+        # 主标题
+        mainTitle = self.mainTitleBrowser.toPlainText().replace(' ', '.')
+        # 副标题
+        secondTitle = self.secondTitleBrowser.toPlainText()
+        # 简介
+        introBrowser = self.introBrowser.toPlainText()
+        # 获取保存目录
+        video_info = get_settings("vedioInfo")
+        # 拼接文件路径
+        file_path = os.path.join(video_info,chinese_name)
+        with open(file_path,'w') as file:
+            file.write(f'主标题为： {mainTitle}\n')
+            file.write(f'副标题为： {secondTitle}\n')
+            file.write(f'简介为： \n{introBrowser}\n')
+        self.clear_all_text_inputs()
+
+    # 清空所有输入框
+    def clear_all_text_inputs(self):
+        self.videoPath.setText("")
+        self.coverPath.setText("")
+        self.mainTitleBrowser.setText("")
+        self.secondTitleBrowser.setText("")
+        self.introBrowser.setText("")
+        self.pictureUrlBrowser.setText("")
+        self.mediainfoBrowser.setText("")
+        self.fileNameBrowser.setText("")
+        self.chineseNameEdit.setText("")
+        self.yearEdit.setText("")
+        self.seasonBox.setText("")
+        self.info.setText("")
+        self.debugBrowser.append("所有输入框已清空")
+
+
     def uploadFinished(self, torrent_url):
         # qbittorrent的地址
         qbittorrent_host = get_settings("qbPath")
@@ -133,19 +171,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
                 self.debugBrowser.append("做种失败：")
         else:
             self.debugBrowser.append("发种失败或获取种子链接失败,自行检查")
-        self.videoPath.setText("")
-        self.coverPath.setText("")
-        self.mainTitleBrowser.setText("")
-        self.secondTitleBrowser.setText("")
-        self.introBrowser.setText("")
-        self.pictureUrlBrowser.setText("")
-        self.mediainfoBrowser.setText("")
-        self.fileNameBrowser.setText("")
-        self.chineseNameEdit.setText("")
-        self.yearEdit.setText("")
-        self.seasonBox.setText("")
-        self.info.setText("")
-        self.debugBrowser.append("所有输入框已清空")
+        self.clear_all_text_inputs()
 
     def settingsClicked(self):  # click对应的槽函数
         self.mySettings = Settings()
@@ -537,6 +563,7 @@ class Settings(QDialog, Ui_Settings):
         self.qbUser.setText(get_settings("qbUser"))
         self.qbPasswd.setText(get_settings("qbPasswd"))
         self.resourcePath.setText(get_settings("resourcePath"))
+        self.vedioInfo.setText(get_settings("vedioInfo"))
 
     def updateSettings(self):
         update_settings("screenshotPath", self.screenshotPath.text())
@@ -552,6 +579,7 @@ class Settings(QDialog, Ui_Settings):
         update_settings("qbUser", str(self.qbUser.text()))
         update_settings("qbPasswd", str(self.qbPasswd.text()))
         update_settings("resourcePath",str(self.resourcePath.text()))
+        update_settings("vedioInfo",str(self.vedioInfo.text()))
         if self.getThumbnails.isChecked():
             update_settings("getThumbnails", "True")
         else:

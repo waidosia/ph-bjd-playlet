@@ -51,6 +51,8 @@ def upload(cookies_str, torrent_file, main_title, compose, descr, chinese_name):
         browser.find_element("xpath", '//*[@id="descr"]').send_keys(descr)
         time.sleep(1)
         # 勾选标签
+        # 匿名
+        browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[10]/td[2]/label/input').click()
         # 驻站
         browser.find_element("xpath", '//*[@id="compose"]/table/tbody/tr[11]/td[2]/label[2]/input').click()
         # 禁转

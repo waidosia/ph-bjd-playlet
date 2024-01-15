@@ -133,6 +133,15 @@ class Ui_Settings(object):
         self.selectTorrentPathButton.setObjectName("selectTorrentPathButton")
         self.horizontalLayout_3.addWidget(self.selectTorrentPathButton)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.label_19 = QtWidgets.QLabel(parent=Settings)
+        self.label_19.setObjectName("label_19")
+        self.horizontalLayout_14.addWidget(self.label_19)
+        self.vedioInfo = QtWidgets.QLineEdit(parent=Settings)
+        self.vedioInfo.setObjectName("vedioInfo")
+        self.horizontalLayout_14.addWidget(self.vedioInfo)
+        self.verticalLayout.addLayout(self.horizontalLayout_14)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
@@ -561,6 +570,7 @@ class Ui_Settings(object):
 "}\n"
 ""))
         self.selectTorrentPathButton.setText(_translate("Settings", "浏览"))
+        self.label_19.setText(_translate("Settings", "短剧信息："))
         self.label.setStyleSheet(_translate("Settings", "QPushButton {\n"
 "    display: inline-block;\n"
 "    padding: 5px 5px;\n"

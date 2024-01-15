@@ -9,9 +9,18 @@ def get_media_info(file_path):
         print("文件路径不存在")
         return False, "视频文件路径不存在"
 
+    # 记录工作目录
+    original_working_directory = os.getcwd()
+
     try:
+        # 获取上一级目录的路径
+        parent_directory = os.path.abspath(os.path.join(file_path, os.pardir))
+        # 切换到上一级目录
+        os.chdir(parent_directory)
+        # 将文件路径转换为相对于当前工作目录的相对路径
+        relative_file_path = os.path.relpath(file_path, os.getcwd())
         # 尝试解析媒体信息
-        media_info = MediaInfo.parse(file_path)
+        media_info = MediaInfo.parse(relative_file_path)
         json_data = media_info.to_json()
 
         # 解析 JSON 数据
@@ -56,7 +65,7 @@ def get_media_info(file_path):
                     ("track_id", "ID"),
                     ("other_format", "Format"),
                     ("format_info", "Format/Info"),
-                    ("format_profile", "Format profile"),
+                    # ("format_profile", "Format profile"),
                     ("format_settings", "Format settings"),
                     ("format_settings__cabac", "Format settings, CABAC"),
                     ("other_format_settings__reference_frames", "Format settings, Reference frames"),
@@ -153,7 +162,6 @@ def get_media_info(file_path):
                     value = track[key][0] if isinstance(track.get(key), list) else track.get(key)
                     if value is not None:
                         output += f"{label:36}: {value}\n"
-
         return True, output
 
     except OSError as e:
@@ -164,3 +172,5 @@ def get_media_info(file_path):
         # MediaInfo无法解析文件
         print(f"无法解析文件: {e}")
         return False, f"无法解析文件: {e}"
+    finally:
+        os.chdir(original_working_directory)
