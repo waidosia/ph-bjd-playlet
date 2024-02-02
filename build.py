@@ -11,7 +11,6 @@ def build_executable():
                        '--strip '
                        '--noconsole '
                        '--add-data "Mandarin.dat;xpinyin" '
-                       '--upx-dir=upx.exe '
                        'main.py')
     subprocess.run(pyinstaller_cmd, shell=True)
     # 将static目录复制到dist目录

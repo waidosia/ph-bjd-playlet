@@ -6,38 +6,50 @@ import cv2
 import numpy as np
 import requests
 
+from . import logger
 from .tool import (generate_image_filename)
+from requests.exceptions import RequestException
 
 
-# 参数：video_path：源视频路径；output_path：输出图片路径；num_images：截图的总数量；start_pct：截图的起始帧占比，避免截取黑帧；
-# end_pct：截图的结束帧占比，中间的范围不要太小，否则会导致截图数量不够；min_interval_pct：最小帧间隔占比，避免连续截图；
-# some_threshold：参数，用于判断关键帧的复杂程度，数字越大越复杂，不宜过大，否则可能会导致截图数量不够
-def extract_complex_keyframes(video_path, output_path, num_images, some_threshold, start_pct, end_pct,
-                              min_interval_pct=0.01):
-    # 确保输出路径存在
+def create_directory(output_path):
+    logger.info("创建输出路径")
     try:
         if not os.path.exists(output_path):
             os.makedirs(output_path)
+            logger.info("已创建输出路径")
             print("已创建输出路径")
     except PermissionError:
+        logger.error("权限不足，无法创建目录")
         print("权限不足，无法创建目录。")
         return False, ["权限不足，无法创建目录。"]
     except FileExistsError:
+        logger.error("路径已存在，且不是目录")
         print("路径已存在，且不是目录。")
         return False, ["路径已存在，且不是目录。"]
     except Exception as e:
+        logger.error(f"创建目录时出错：{e}")
         print(f"创建目录时出错：{e}")
         return False, [f"创建目录时出错：{e}"]
+    return True, []
+
+
+def extract_complex_keyframes(video_path, output_path, num_images, some_threshold, start_pct, end_pct,
+                              min_interval_pct=0.01):
+    success, error_message = create_directory(output_path)
+    if not success:
+        return False, error_message
 
     # 加载视频
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
+        logger.error("无法加载视频。")
         print("无法加载视频。")
         return False, ["无法加载视频。"]
     else:
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         fps = cap.get(cv2.CAP_PROP_FPS)
         duration = total_frames / fps
+        logger.info("加载视频成功")
         print("加载视频成功")
 
         # 计算起止时间帧编号
@@ -79,19 +91,10 @@ def extract_complex_keyframes(video_path, output_path, num_images, some_threshol
 
 
 def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
-    try:
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-            print("已创建输出路径")
-    except PermissionError:
-        print("权限不足，无法创建目录。")
-        return False, ["权限不足，无法创建目录。"]
-    except FileExistsError:
-        print("路径已存在，且不是目录。")
-        return False, ["路径已存在，且不是目录。"]
-    except Exception as e:
-        print(f"创建目录时出错：{e}")
-        return False, [f"创建目录时出错：{e}"]
+    global video_capture
+    success, error_message = create_directory(output_path)
+    if not success:
+        return False, error_message
 
     try:
         video_capture = cv2.VideoCapture(video_path)
@@ -110,7 +113,7 @@ def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
 
         images = []
 
-        for i in range((rows * cols)):
+        for i, _ in enumerate(range(rows * cols)):
             frame_number = start_frame + i * interval
             if frame_number >= end_frame:
                 break
@@ -133,16 +136,11 @@ def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
         concatenated_image = np.ones((rows * (resized_images[0].shape[0] + 2 * border_size),
                                       cols * (resized_images[0].shape[1] + 2 * border_size), 3), dtype=np.uint8) * 255
 
-        for i in range(rows):
-            for j in range(cols):
-                index = i * cols + j
-                if index >= len(resized_images):
-                    break
-                y_offset = i * (resized_images[0].shape[0] + 2 * border_size) + border_size
-                x_offset = j * (resized_images[0].shape[1] + 2 * border_size) + border_size
-
-                concatenated_image[y_offset:y_offset + resized_images[0].shape[0],
-                x_offset:x_offset + resized_images[0].shape[1]] = resized_images[index]
+        for i, image in enumerate(resized_images):
+            y_offset = i // cols * (image.shape[0] + 2 * border_size) + border_size
+            x_offset = i % cols * (image.shape[1] + 2 * border_size) + border_size
+            concatenated_image[y_offset:y_offset + image.shape[0],
+            x_offset:x_offset + image.shape[1]] = image
 
         sv_path = generate_image_filename(output_path)
         cv2.imwrite(sv_path, concatenated_image)
@@ -158,29 +156,25 @@ def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
     return True, sv_path
 
 
-# 此处仅提供一个简单的示例，具体实现起来方案有很多，可按需开发
 def upload_screenshot(api_url, api_token, frame_path):
+    logger.info("开始上传图床")
     print("开始上传图床")
     url = api_url
+
     # 判断frame_path为url还是本地路径
-    if frame_path[:4] == "http":
+    if frame_path.startswith("http"):
+        logger.info("输入一个在线图片链接")
         file_type = 'image/jpeg'
         # 请求文件拿到文件流
         try:
             res = requests.get(frame_path)
+            logger.info("已成功获取文件流")
             print("已成功获取文件流")
-        except requests.RequestException as e:
+        except RequestException as e:
+            logger.error("请求过程中出现错误:" + str(e))
             print("请求过程中出现错误:", e)
             return False, {"请求过程中出现错误:" + str(e)}
         files = {'uploadedFile': (frame_path, res.content, file_type)}
-        data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
-        try:
-            # 发送POST请求
-            res = requests.post(url, data=data, files=files)
-            print("已成功发送上传图床的请求")
-        except requests.RequestException as e:
-            print("请求过程中出现错误:", e)
-            return False, {"请求过程中出现错误:" + str(e)}
     else:
         # Determine the MIME type based on file extension
         file_type = 'image/jpeg'  # default
@@ -194,54 +188,38 @@ def upload_screenshot(api_url, api_token, frame_path):
             file_type = 'image/webp'
 
         files = {'uploadedFile': (frame_path, open(frame_path, 'rb'), file_type)}
-        data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
+
+    data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
+
+    retry_count = 0
+    while retry_count < 3:
         try:
             # 发送POST请求
             res = requests.post(url, data=data, files=files)
+            logger.info("已成功发送上传图床的请求")
             print("已成功发送上传图床的请求")
-        except requests.RequestException as e:
+            break  # 请求成功，跳出重试循环
+        except RequestException as e:
+            logger.error("请求过程中出现错误:" + str(e))
             print("请求过程中出现错误:", e)
-            return False, {"请求过程中出现错误:" + str(e)}
+            retry_count += 1
+            if retry_count < 3:
+                logger.info("进行第" + str(retry_count) + "次重试")
+                print("进行第", retry_count, "次重试")
+            else:
+                logger.error("重试次数已用完")
+                return False, {"请求过程中出现错误:" + str(e)}
 
-        # 关闭文件流，避免资源泄露
-        files['uploadedFile'][1].close()
+    # 关闭文件流，避免资源泄露
+    files['uploadedFile'][1].close()
+
     # 将响应文本转换为字典
     try:
         api_response = json.loads(res.text)
     except json.JSONDecodeError:
+        logger.error("响应不是有效的JSON格式")
         print("响应不是有效的JSON格式")
         return False, {}
 
-    # 打印提取的url
-    if api_response.get("statusCode", "") == "200":
-        print(api_response.get("bbsurl", ""))
-
     # 返回完整的响应数据，以便进一步处理
     return True, api_response
-
-
-def upload_free_screenshot(api_url, api_token, frame_path):
-    print('接受到上传其他图床请求')
-    url = api_url
-    files = {'source': (frame_path, open(frame_path, 'rb'), "image/png")}
-    data = {'key': api_token,
-            # 'action': 'upload',
-            'format': 'txt'
-            }
-    print('值已经获取')
-    try:
-        # 发送POST请求
-        print("开始发送上传图床的请求")
-        res = requests.post(url, data=data, files=files)
-        print("已成功发送上传图床的请求")
-    except requests.RequestException as e:
-        print("请求过程中出现错误:", e)
-        return False, "请求过程中出现错误:" + str(e)
-
-    print(res.text)
-    if res.text[:4] == "http":
-        bbsurl = '[img]' + res.text + '[/img]'
-        print(bbsurl)
-        return True, bbsurl
-    else:
-        return False, res.text

@@ -2,8 +2,8 @@
     "screenshotPath": "temp/pic",
     "torrentPath": "temp/torrent",
     "ptGenPath": "https://api.iyuu.cn/App.Movie.Ptgen",
-    "figureBedPath": "xxx",
-    "figureBedToken": "xxx",
+    "figureBedPath": "https://img.agsvpt.com/api/upload/",
+    "figureBedToken": "08d1f34335865d6d4dc7",
     "screenshotNumber": "3",
     "screenshotThreshold": "0.02",
     "screenshotStart": "0.12",
@@ -16,8 +16,10 @@
     "deleteScreenshot": "True",
     "makeDir": "True",
     "renameFile": "True",
-    "cookie": "xxxx",
-    "qbPath": "http://192.168.10.13:8081",
+    "cookie": "\n\naccess_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSlVQVCIsImF1ZCI6MTQwOTc5LCJpYXQiOjE3MDQ3Njc3MTQsImp0aSI6IjAxYzlmNjM3LWMxNzItNDRlYy1iMTBhLTM4YTlmODYwMzcxYSIsImV4cCI6MTcwNTM3MjUxNH0.hCDNLphxmL183tCxbLY07PhoilqOVa0GCpUzfjf3bBw; _ga=GA1.1.1037603336.1704767716; _ga_FBLK8KC677=GS1.1.1704956737.3.0.1704956737.0.0.0\n",
+    "qbPath": "http://192.168.1.106:8080",
     "qbUser": "admin",
-    "qbPasswd": "admin"
+    "qbPasswd": "adminadmin",
+    "resourcePath": "D:\\\\__easyHelper__\\\\10.1\\\\8.2",
+    "vedioInfo": "temp/info"
 }

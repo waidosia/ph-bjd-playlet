@@ -6,14 +6,15 @@ from PyQt6.QtCore import *
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QDialog
 
+from . import logger
 from .mediainfo import get_media_info
 from .rename import get_video_info
-from .screenshot import extract_complex_keyframes, upload_screenshot, upload_free_screenshot, get_thumbnails
+from .screenshot import extract_complex_keyframes, upload_screenshot, get_thumbnails
 from .tool import update_settings, get_settings, get_file_path, rename_file_with_same_extension, \
     get_folder_path, check_path_and_find_video, rename_directory, create_torrent, load_names, chinese_name_to_pinyin, \
     get_video_files
-from .ui.mainwindow import Ui_Mainwindow
-from .ui.settings import Ui_Settings
+from ui.mainwindow import Ui_Mainwindow
+from ui.settings import Ui_Settings
 from .upload import upload, qb_download
 
 
@@ -128,12 +129,15 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         # 获取保存目录
         video_info = get_settings("vedioInfo")
         # 拼接文件路径
-        file_path = os.path.join(video_info,chinese_name)
-        with open(file_path,'w') as file:
-            file.write(f'主标题为： {mainTitle}\n')
-            file.write(f'副标题为： {secondTitle}\n')
-            file.write(f'简介为： \n{introBrowser}\n')
-        self.clear_all_text_inputs()
+        file_path = os.path.join(video_info, chinese_name)
+        try:
+            with open(file_path, 'w') as file:
+                file.write(f'主标题为： {mainTitle}\n')
+                file.write(f'副标题为： {secondTitle}\n')
+                file.write(f'简介为： \n{introBrowser}\n')
+            self.clear_all_text_inputs()
+        except Exception as e:
+            self.debugBrowser.append(f"发生异常: {e}")
 
     # 清空所有输入框
     def clear_all_text_inputs(self):
@@ -150,7 +154,6 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.seasonBox.setText("")
         self.info.setText("")
         self.debugBrowser.append("所有输入框已清空")
-
 
     def uploadFinished(self, torrent_url):
         # qbittorrent的地址
@@ -179,28 +182,6 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         myico = QIcon("static/apr-bjd.ico")
         self.mySettings.setWindowIcon(myico)
         self.mySettings.show()  # 加上self避免页面一闪而过
-
-    def uploadCoverButtonClicked(self):
-        cover_path = self.coverPath.text()
-        if cover_path:
-            self.debugBrowser.append("上传封面" + cover_path)
-            figureBedPath = get_settings("figureBedPath")  # 图床地址
-            figureBedToken = get_settings("figureBedToken")  # 图床Token
-            if figureBedPath == "https://img.agsvpt.com/api/upload/" or figureBedPath == ("http://img.agsvpt.com/api"
-                                                                                          "/upload/"):
-
-                self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, cover_path, True)
-                self.upload_cover_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
-                self.upload_cover_thread.start()  # 启动线程
-                print("上传图床线程启动")
-                self.debugBrowser.append("上传图床线程启动")
-            else:
-                self.upload_free_cover_thread = UploadFreePictureThread(figureBedPath, figureBedToken, cover_path, True)
-                self.upload_free_cover_thread.result_signal.connect(self.handleUploadFreePictureResult)  # 连接信号
-                self.upload_free_cover_thread.start()  # 启动线程
-
-                print("上传图床线程启动")
-                self.debugBrowser.append("上传图床线程启动")
 
     def getPictureButtonClicked(self):
         self.pictureUrlBrowser.setText("")
@@ -266,17 +247,6 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
             self.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
             output = "\n".join(res)
             self.pictureUrlBrowser.setText(output)
-
-    def upload_screenshot(self, figureBedPath, figureBedToken, screenshot, is_cover, index):
-        thread_class = UploadPictureThread if (
-                    "img.agsvpt.com/api/upload/" in figureBedPath) else UploadFreePictureThread
-
-        upload_thread = thread_class(figureBedPath, figureBedToken, screenshot, is_cover)
-        upload_thread.result_signal.connect(lambda success, api_response, path=screenshot: self.handle_upload_result(
-            success, api_response, path, is_cover, self.paste_url_cover if is_cover else self.paste_url_image,
-            False if ("img.agsvpt.com/api/upload/" in figureBedPath) else True))
-        setattr(self, f"upload_picture_thread{index}", upload_thread)
-        upload_thread.start()
 
     def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback,
                              is_free):
@@ -349,9 +319,6 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
 
     def handleUploadPictureResult(self, upload_success, api_response, screenshot_path, is_cover):
         self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_cover, False)
-
-    def handleUploadFreePictureResult(self, upload_success, api_response, screenshot_path, is_cover):
-        self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_image, True)
 
     def selectCoverFolderButtonClicked(self):
         path = get_file_path()
@@ -578,8 +545,8 @@ class Settings(QDialog, Ui_Settings):
         update_settings("qbPath", str(self.qbPath.text()))
         update_settings("qbUser", str(self.qbUser.text()))
         update_settings("qbPasswd", str(self.qbPasswd.text()))
-        update_settings("resourcePath",str(self.resourcePath.text()))
-        update_settings("vedioInfo",str(self.vedioInfo.text()))
+        update_settings("resourcePath", str(self.resourcePath.text()))
+        update_settings("vedioInfo", str(self.vedioInfo.text()))
         if self.getThumbnails.isChecked():
             update_settings("getThumbnails", "True")
         else:
@@ -610,7 +577,7 @@ class Settings(QDialog, Ui_Settings):
 
 class UploadPictureThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信
-    result_signal = pyqtSignal(bool, dict, str, bool)
+    result_signal = pyqtSignal(bool, dict, str, bool, str)
 
     def __init__(self, figureBedPath, figureBedToken, screenshot_path, is_cover):
         super().__init__()
@@ -627,46 +594,18 @@ class UploadPictureThread(QThread):
 
             # 发送信号，包括请求的结果
             print("上传图床成功，开始返回结果")
-            self.result_signal.emit(upload_success, api_response, self.screenshot_path, self.is_cover)
+            self.result_signal.emit(upload_success, api_response, self.screenshot_path, self.is_cover, "")
             print("返回结果成功")
             # self.result_signal(upload_success,api_response)
         except Exception as e:
             print(f"异常发生: {e}")
-            self.result_signal.emit(False, f"异常发生: {e}", self.screenshot_path, self.is_cover)
-            # 这里可以发射一个包含错误信息的信号
-
-
-class UploadFreePictureThread(QThread):
-    # 创建一个信号，用于在数据处理完毕后与主线程通信
-    result_signal = pyqtSignal(bool, str, str, bool)
-
-    def __init__(self, figureBedPath, figureBedToken, screenshot_path, is_cover):
-        super().__init__()
-        self.figureBedPath = figureBedPath
-        self.figureBedToken = figureBedToken
-        self.screenshot_path = screenshot_path
-        self.is_cover = is_cover
-
-    def run(self):
-        try:
-            # 这里放置耗时的HTTP请求操作
-            upload_success, api_response = upload_free_screenshot(self.figureBedPath, self.figureBedToken,
-                                                                  self.screenshot_path)
-
-            # 发送信号，包括请求的结果
-            print("上传图床成功，开始返回结果")
-            self.result_signal.emit(upload_success, api_response, self.screenshot_path, self.is_cover)
-            print("返回结果成功")
-            # self.result_signal(upload_success,api_response)
-        except Exception as e:
-            print(f"异常发生: {e}")
-            self.result_signal.emit(False, f"异常发生: {e}", self.screenshot_path, self.is_cover)
+            self.result_signal.emit(False, f"异常发生: {e}", self.screenshot_path, self.is_cover, str(e))
             # 这里可以发射一个包含错误信息的信号
 
 
 class MakeTorrentThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信
-    result_signal = pyqtSignal(bool, str)
+    result_signal = pyqtSignal(bool, str, str)
 
     def __init__(self, folder_path, torrent_path):
         super().__init__()
@@ -677,19 +616,19 @@ class MakeTorrentThread(QThread):
         try:
             # 这里放置耗时的制作torrent操作
             get_success, response = create_torrent(self.folder_path, self.torrent_path)
-
             # 发送信号
             print("Torrent请求成功，开始等待返回结果")
-            self.result_signal.emit(get_success, response)
+            self.result_signal.emit(get_success, response, "")
             print("返回结果成功")
             # self.result_signal(upload_success,api_response)
         except Exception as e:
+            logger.error("制作种子出现异常")
             print(f"异常发生: {e}")
-            # 这里可以发射一个包含错误信息的信号
+            self.result_signal.emit(False, f"异常发生: {e}", str(e))
 
 
 class UploadThread(QThread):
-    finished_signal = pyqtSignal(str)  # 信号，用于在上传完成时发送消息
+    finished_signal = pyqtSignal(str, str)  # 信号，用于在上传完成时发送消息
 
     def __init__(self, cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name):
         super().__init__()
@@ -702,7 +641,12 @@ class UploadThread(QThread):
 
     def run(self):
         # 在这里执行上传操作
-        torrent_url = upload(self.cookie_str, self.torrent_path, self.mainTitle, self.secondTitle, self.introBrowser,
-                             self.chinese_name)
-
-        self.finished_signal.emit(torrent_url)  # 发送上传完成的信号
+        try:
+            torrent_url = upload(self.cookie_str, self.torrent_path, self.mainTitle, self.secondTitle,
+                                 self.introBrowser,
+                                 self.chinese_name)
+            self.finished_signal.emit(torrent_url, "")  # 发送上传完成的信号
+        except Exception as e:
+            print(f"异常发生: {e}")
+            # 这里可以发射一个包含错误信息的信号
+            self.finished_signal.emit("", str(e))
