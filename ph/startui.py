@@ -130,11 +130,13 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.mySettings.show()
 
     def getPictureButtonClicked(self):
-        getPicture = UploadImages()
+        cover_path = self.coverPath.text()
+        getPicture = UploadImages(cover_path)
         getPicture.getPictureButtonClicked()
 
     def uploadCoverButtonClicked(self):
-        uploadCover = UploadImages()
+        cover_path = self.coverPath.text()
+        uploadCover = UploadImages(cover_path, self.debugBrowser, self.pictureUrlBrowser, self.introBrowser)
         uploadCover.uploadCoverButtonClicked()
 
     def getNameButtonClicked(self):
@@ -158,16 +160,20 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         upload_handler.startButtonClicked()
 
 
-class UploadImages(MainWindow):
-    def __init__(self):
+class UploadImages(MainWindow, Ui_Mainwindow):
+    def __init__(self, cover_path, debugBrowser, pictureUrlBrowser, introBrowser):
         super().__init__()
+        self.cover_path = cover_path
+        self.debugBrowser = debugBrowser
+        self.pictureUrlBrowser = pictureUrlBrowser
+        self.introBrowser = introBrowser
+
     def uploadCoverButtonClicked(self):
-        cover_path = self.coverPath.text()
-        if cover_path:
-            self.debugBrowser.append("上传封面" + cover_path)
+        if self.cover_path:
+            self.debugBrowser.append("上传封面" + self.cover_path)
             figureBedPath = get_settings("figureBedPath")  # 图床地址
             figureBedToken = get_settings("figureBedToken")  # 图床Token
-            self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, cover_path, True)
+            self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, self.cover_path, True)
             self.upload_cover_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
             self.upload_cover_thread.start()  # 启动线程
             print("上传图床线程启动")
@@ -229,14 +235,21 @@ class UploadImages(MainWindow):
         setattr(self, f"upload_picture_thread{index}", upload_thread)
         upload_thread.start()
 
-    def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback,
-                             ):
+    def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback):
         print("接受到线程请求的结果")
         self.debugBrowser.append("接受到线程请求的结果")
         pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
         deleteScreenshot = bool(get_settings("deleteScreenshot"))
         if upload_success:
-            self.pictureUrlBrowser.append(api_response)
+            if api_response.get("statusCode", "") == "200":
+                bbsurl = str(api_response.get("bbsurl", ""))
+                self.pictureUrlBrowser.append(bbsurl)
+                api_response = bbsurl
+            else:
+                if api_response.get("statusCode", "") == "":
+                    self.debugBrowser.append("未接受到图床的任何响应" + '\n')
+                else:
+                    self.debugBrowser.append(str(api_response) + '\n')
             if pasteScreenshotUrl:
                 if is_cover:
                     category = self.get_selected_categories()
@@ -272,7 +285,7 @@ class UploadImages(MainWindow):
             self.debugBrowser.append(f"文件 {screenshot_path} 不存在。")
 
     def handleUploadPictureResult(self, upload_success, api_response, screenshot_path, is_cover, error):
-        if error:
+        if error != "":
             self.debugBrowser.append("上传失败：" + error)
         self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_cover)
 
@@ -280,6 +293,7 @@ class UploadImages(MainWindow):
 class GetName(MainWindow):
     def __init__(self):
         super().__init__()
+
     def getNameButtonClicked(self):
         first_chinese_name = self.chineseNameEdit.text()
         if not first_chinese_name:
@@ -363,6 +377,7 @@ class GetName(MainWindow):
 class WriteFile(MainWindow):
     def __init__(self):
         super().__init__()
+
     def writeButtonClicked(self):
         # 中文标题
         chinese_name = self.chineseNameEdit.text() + ".txt"
@@ -390,6 +405,7 @@ class WriteFile(MainWindow):
 class GetMediaInfo(MainWindow):
     def __init__(self):
         super().__init__()
+
     def getMediaInfoButtonClicked(self):
         self.mediainfoBrowser.setText("")
         isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())  # 视频资源的路径
@@ -412,6 +428,7 @@ class GetMediaInfo(MainWindow):
 class MakeTorrent(MainWindow):
     def __init__(self):
         super().__init__()
+
     def makeTorrentButtonClicked(self):
         isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())  # 视频资源的路径
         if isVideoPath == 1 or isVideoPath == 2:
@@ -439,6 +456,7 @@ class MakeTorrent(MainWindow):
 class UploadHandler(MainWindow):
     def __init__(self):
         super().__init__()
+
     def startButtonClicked(self):
         # 调用发种函数
         cookie_str = get_settings("cookie")
@@ -487,8 +505,6 @@ class UploadHandler(MainWindow):
 
 
 class UploadPictureThread(QThread):
-    def __init__(self):
-        super().__init__()
     # 创建一个信号，用于在数据处理完毕后与主线程通信
     result_signal = pyqtSignal(bool, dict, str, bool, str)
 
@@ -510,12 +526,10 @@ class UploadPictureThread(QThread):
             print("返回结果成功")
         except Exception as e:
             print(f"异常发生: {e}")
-            self.result_signal.emit(False, f"异常发生: {e}", self.screenshot_path, self.is_cover, str(e))
+            self.result_signal.emit(False, f"错误消息为：{e}", self.screenshot_path, self.is_cover, str(e))
 
 
 class MakeTorrentThread(QThread):
-    def __init__(self):
-        super().__init__()
     # 创建一个信号，用于在数据处理完毕后与主线程通信
     result_signal = pyqtSignal(bool, str, str)
 
@@ -539,8 +553,6 @@ class MakeTorrentThread(QThread):
 
 
 class UploadThread(QThread):
-    def __init__(self):
-        super().__init__()
     finished_signal = pyqtSignal(str, str)  # 信号，用于在上传完成时发送消息
 
     def __init__(self, cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name):

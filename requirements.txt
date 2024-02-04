@@ -18,6 +18,7 @@ requests==2.31.0
 torf==4.2.4
 urllib3==2.1.0
 xpinyin==0.7.6
+qbittorrent-api==2024.1.58
 
 selenium~=4.16.0
 beautifulsoup4~=4.12.2
