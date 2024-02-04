@@ -21,3 +21,4 @@ xpinyin==0.7.6
 
 selenium~=4.16.0
 beautifulsoup4~=4.12.2
+pypinyin~=0.50.0

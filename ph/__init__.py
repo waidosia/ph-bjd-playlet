@@ -3,7 +3,7 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 log_file = 'playlet.log'  # 指定日志文件路径
-handler = logging.FileHandler(log_file)
+handler = logging.FileHandler(log_file,encoding='utf-8')
 handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)

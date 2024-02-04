@@ -12,41 +12,33 @@ def get_media_info(file_path):
         logger.error("文件路径不存在")
         print("文件路径不存在")
         return False, "视频文件路径不存在"
-    # 记录工作目录
-    logger.info("记录工作目录")
     original_working_directory = os.getcwd()
-
+    # 获取上一级目录的路径
+    parent_directory = os.path.abspath(os.path.join(file_path, os.pardir))
+    # 将文件路径转换为相对于当前工作目录的相对路径
+    relative_file_path = os.path.relpath(file_path, parent_directory)
+    # 切换到上一级目录
+    os.chdir(parent_directory)
+    logger.info(f"切换到新的工作目录 {parent_directory}")
     try:
-        # 获取上一级目录的路径
-        parent_directory = os.path.abspath(os.path.join(file_path, os.pardir))
-        # 切换到上一级目录
-        os.chdir(parent_directory)
-        logger.info(f"切换到新的工作目录 {parent_directory}")
-        # 将文件路径转换为相对于当前工作目录的相对路径
-        relative_file_path = os.path.relpath(file_path, os.getcwd())
         # 尝试解析媒体信息
         media_info = MediaInfo.parse(relative_file_path)
         json_data = media_info.to_json()
-
         # 解析 JSON 数据
         data = json.loads(json_data)
-
         # 初始化输出字符串
         output = ""
-
-        # 定义不同类型 track 的处理逻辑
-        track_handlers = {
-            "General": handle_general_track,
-            "Video": handle_video_track,
-            "Audio": handle_audio_track,
-            "Text": handle_text_track,
-        }
-
         # 遍历所有 track
         for track in data["tracks"]:
             track_type = track["track_type"]
-            if track_type in track_handlers:
-                output += track_handlers[track_type](track)
+            if track_type == "General":
+                output += handle_general_track(track)
+            elif track_type == "Video":
+                output += handle_video_track(track)
+            elif track_type == "Audio":
+                output += handle_audio_track(track)
+            elif track_type == "Text":
+                output += handle_text_track(track)
 
         return True, output
     except OSError as e:
@@ -96,7 +88,6 @@ def handle_video_track(track):
         ("track_id", "ID"),
         ("other_format", "Format"),
         ("format_info", "Format/Info"),
-        # ("format_profile", "Format profile"),
         ("format_settings", "Format settings"),
         ("format_settings__cabac", "Format settings, CABAC"),
         ("other_format_settings__reference_frames", "Format settings, Reference frames"),

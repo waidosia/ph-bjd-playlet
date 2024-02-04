@@ -10,7 +10,6 @@ def build_executable():
                        '--onefile  '
                        '--strip '
                        '--noconsole '
-                       '--add-data "Mandarin.dat;xpinyin" '
                        'main.py')
     subprocess.run(pyinstaller_cmd, shell=True)
     # 将static目录复制到dist目录
