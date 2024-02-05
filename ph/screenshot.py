@@ -24,6 +24,7 @@ def upload_screenshot(api_url, api_token, frame_path):
         except RequestException as e:
             logger.error("请求过程中出现错误:" + str(e))
             print("请求过程中出现错误:", e)
+            print("请求过程中出现错误:", e)
             return False, {"请求过程中出现错误:" + str(e)}
         files = {'uploadedFile': (frame_path, res.content, file_type)}
     else:

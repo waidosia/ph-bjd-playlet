@@ -303,13 +303,13 @@ def rename_video_files(video_files, file_name) -> list:
             print("提取集数失败，退出")
             break
         episode_number = str(episode_number).zfill(len(str(len(video_files))))
-        renamed_file = rename_file_with_same_extension(video_file, file_name.replace('??', episode_number))
-        if renamed_file:
+        is_success, renamed_file = rename_file_with_same_extension(video_file, file_name.replace('??', episode_number))
+        if is_success:
             renamed_files.append(renamed_file)
     return renamed_files
 
 
-def rename_directory_if_needed(video_path, file_name) -> tuple[bool, str] | None:
+def rename_directory_if_needed(video_path, file_name) -> str | None:
     """
     如果文件夹名中包含E??，则重命名文件夹
     :param video_path: 视频文件路径
@@ -318,7 +318,10 @@ def rename_directory_if_needed(video_path, file_name) -> tuple[bool, str] | None
     """
     directory_path = os.path.dirname(video_path)
     if 'E??' in file_name:
-        return rename_directory(directory_path, file_name.replace('E??', ''))
+        is_success, rename_dir = rename_directory(directory_path, file_name.replace('E??', ''))
+        if is_success:
+            return rename_dir
+        return None
     return None
 
 

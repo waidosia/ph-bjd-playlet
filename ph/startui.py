@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication
 
 from ui.mainwindow import Ui_Mainwindow
 from . import logger
-from .common import title_tem
+from .common import title_tem, medio_tem
 from .mediainfo import get_media_info
 from .rename import get_video_info
 from .screenshot import upload_screenshot
@@ -34,22 +34,13 @@ def starui():
 class MainWindow(QMainWindow, Ui_Mainwindow):
     def __init__(self):
         super().__init__()
-        self.upload_cover_thread = None
-        self.upload_free_cover_thread = None
         self.setupUi(self)  # 设置界面
         self.mySettings = None
 
         self.get_pt_gen_thread = None
         self.get_pt_gen_for_name_thread = None
-        self.upload_picture_thread0 = None
-        self.upload_picture_thread1 = None
-        self.upload_picture_thread2 = None
-        self.upload_picture_thread3 = None
-        self.upload_picture_thread4 = None
-        self.upload_picture_thread5 = None
-        self.make_torrent_thread = None
-        self.torrent_path = None
         self.upload_thread = None
+        self.torrent_path = None
 
         # 初始化
         self.videoPath.setDragEnabled(True)
@@ -109,7 +100,6 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.fileNameBrowser.setText("")
         self.chineseNameEdit.setText("")
         self.yearEdit.setText("")
-        self.seasonBox.setText("")
         self.info.setText("")
         self.debugBrowser.append("所有输入框已清空")
 
@@ -130,29 +120,27 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.mySettings.show()
 
     def getPictureButtonClicked(self):
-        cover_path = self.coverPath.text()
-        getPicture = UploadImages(cover_path)
+        getPicture = UploadImages(self)
         getPicture.getPictureButtonClicked()
 
     def uploadCoverButtonClicked(self):
-        cover_path = self.coverPath.text()
-        uploadCover = UploadImages(cover_path, self.debugBrowser, self.pictureUrlBrowser, self.introBrowser)
+        uploadCover = UploadImages(self)
         uploadCover.uploadCoverButtonClicked()
 
     def getNameButtonClicked(self):
-        get_name = GetName()
+        get_name = GetName(self)
         get_name.getNameButtonClicked()
 
     def makeTorrentButtonClicked(self):
-        make_torrent = MakeTorrent()
+        make_torrent = MakeTorrent(self)
         make_torrent.makeTorrentButtonClicked()
 
     def getMediaInfoButtonClicked(self):
-        get_media_info = GetMediaInfo()
+        get_media_info = GetMediaInfo(self)
         get_media_info.getMediaInfoButtonClicked()
 
     def writeButtonClicked(self):
-        write_file = WriteFile()
+        write_file = WriteFile(self)
         write_file.writeButtonClicked()
 
     def startButtonClicked(self):
@@ -160,32 +148,39 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         upload_handler.startButtonClicked()
 
 
-class UploadImages(MainWindow, Ui_Mainwindow):
-    def __init__(self, cover_path, debugBrowser, pictureUrlBrowser, introBrowser):
-        super().__init__()
-        self.cover_path = cover_path
-        self.debugBrowser = debugBrowser
-        self.pictureUrlBrowser = pictureUrlBrowser
-        self.introBrowser = introBrowser
+class UploadImages(QObject):
+    result_signal = pyqtSignal(bool, dict, str, bool, str)
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+        self.upload_cover_thread = None
+        self.upload_picture_thread0 = None
+        self.upload_picture_thread1 = None
+        self.upload_picture_thread2 = None
+        self.upload_picture_thread3 = None
+        self.upload_picture_thread4 = None
+        self.upload_picture_thread5 = None
 
     def uploadCoverButtonClicked(self):
-        if self.cover_path:
-            self.debugBrowser.append("上传封面" + self.cover_path)
+        if self.parent.coverPath.text():
+            self.parent.debugBrowser.append("上传封面" + self.parent.coverPath.text())
             figureBedPath = get_settings("figureBedPath")  # 图床地址
             figureBedToken = get_settings("figureBedToken")  # 图床Token
-            self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, self.cover_path, True)
+            self.upload_cover_thread = UploadPictureThread(figureBedPath, figureBedToken, self.parent.coverPath.text(),
+                                                           True)
             self.upload_cover_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
             self.upload_cover_thread.start()  # 启动线程
             print("上传图床线程启动")
-            self.debugBrowser.append("上传图床线程启动")
+            self.parent.debugBrowser.append("上传图床线程启动")
 
     def getPictureButtonClicked(self):
-        self.pictureUrlBrowser.setText("")
-        isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())
+        self.parent.pictureUrlBrowser.setText("")
+        isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())
 
         if isVideoPath == 1 or isVideoPath == 2:
-            self.debugBrowser.append(f"获取视频 {videoPath} 的截图")
-            self.debugBrowser.append("参数获取成功，开始执行截图函数")
+            self.parent.debugBrowser.append(f"获取视频 {videoPath} 的截图")
+            self.parent.debugBrowser.append("参数获取成功，开始执行截图函数")
 
             screenshotPath = get_settings("screenshotPath")
             figureBedPath = get_settings("figureBedPath")
@@ -209,23 +204,23 @@ class UploadImages(MainWindow, Ui_Mainwindow):
             if screenshot_success:
                 self.handle_screenshot_result(res, figureBedPath, figureBedToken, autoUploadScreenshot)
             else:
-                self.debugBrowser.append("截图失败: " + str(res))
+                self.parent.debugBrowser.append("截图失败: " + str(res))
         else:
-            self.debugBrowser.append("您的视频文件路径有误")
+            self.parent.debugBrowser.append("您的视频文件路径有误")
 
     def handle_screenshot_result(self, res, figureBedPath, figureBedToken, autoUploadScreenshot):
-        self.debugBrowser.append("成功获取截图：" + str(res))
+        self.parent.debugBrowser.append("成功获取截图：" + str(res))
 
         if autoUploadScreenshot:
-            self.debugBrowser.append(f"开始自动上传截图到图床 {figureBedPath}")
-            self.pictureUrlBrowser.setText("")
+            self.parent.debugBrowser.append(f"开始自动上传截图到图床 {figureBedPath}")
+            self.parent.pictureUrlBrowser.setText("")
             for i, screenshot in enumerate(res[:6]):  # 限制上传至多6张截图
                 self.upload_screenshot(figureBedPath, figureBedToken, screenshot, False, index=i)
-            self.debugBrowser.append("上传图床线程启动")
+            self.parent.debugBrowser.append("上传图床线程启动")
         else:
-            self.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
+            self.parent.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
             output = "\n".join(res)
-            self.pictureUrlBrowser.setText(output)
+            self.parent.pictureUrlBrowser.setText(output)
 
     def upload_screenshot(self, figureBedPath, figureBedToken, screenshot, is_cover, index):
         thread_class = UploadPictureThread
@@ -237,75 +232,77 @@ class UploadImages(MainWindow, Ui_Mainwindow):
 
     def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback):
         print("接受到线程请求的结果")
-        self.debugBrowser.append("接受到线程请求的结果")
+        self.parent.debugBrowser.append("接受到线程请求的结果")
         pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
         deleteScreenshot = bool(get_settings("deleteScreenshot"))
         if upload_success:
             if api_response.get("statusCode", "") == "200":
                 bbsurl = str(api_response.get("bbsurl", ""))
-                self.pictureUrlBrowser.append(bbsurl)
+                self.parent.pictureUrlBrowser.append(bbsurl)
                 api_response = bbsurl
             else:
                 if api_response.get("statusCode", "") == "":
-                    self.debugBrowser.append("未接受到图床的任何响应" + '\n')
+                    self.parent.debugBrowser.append("未接受到图床的任何响应" + '\n')
                 else:
-                    self.debugBrowser.append(str(api_response) + '\n')
+                    self.parent.debugBrowser.append(str(api_response) + '\n')
             if pasteScreenshotUrl:
                 if is_cover:
-                    category = self.get_selected_categories()
+                    category = self.parent.get_selected_categories()
                     print('类型为：' + category)
-                    text = title_tem.format(api_response, self.chineseNameEdit.text(), self.yearEdit.text(), category,
-                                            self.info.text())
-                    self.introBrowser.append(text)
-                    self.debugBrowser.append("成功将封面链接粘贴到简介前")
+                    text = title_tem.format(api_response, self.parent.chineseNameEdit.text(),
+                                            self.parent.yearEdit.text(), category,
+                                            self.parent.info.text())
+                    self.parent.introBrowser.append(text)
+                    self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
                 else:
                     paste_url_callback(api_response)
-                    self.debugBrowser.append("成功将图片链接粘贴到简介后")
+                    self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
                 if deleteScreenshot:
                     self.delete_screenshot(screenshot_path)
 
         else:
-            self.debugBrowser.append("图床响应不是有效的JSON格式")
+            self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
 
     def paste_url_cover(self, api_response):
-        self.introBrowser.append(api_response)
-        self.debugBrowser.append("成功将封面链接粘贴到简介前")
+        self.parent.introBrowser.append(api_response)
+        self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
 
     def paste_url_image(self, api_response):
-        self.introBrowser.append(api_response)
-        self.debugBrowser.append("成功将图片链接粘贴到简介后")
+        self.parent.introBrowser.append(api_response)
+        self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
 
     def delete_screenshot(self, screenshot_path):
         if os.path.exists(screenshot_path):
             os.remove(screenshot_path)
             print(f"文件 {screenshot_path} 已被删除。")
-            self.debugBrowser.append(f"文件 {screenshot_path} 已被删除。")
+            self.parent.debugBrowser.append(f"文件 {screenshot_path} 已被删除。")
         else:
             print(f"文件 {screenshot_path} 不存在。")
-            self.debugBrowser.append(f"文件 {screenshot_path} 不存在。")
+            self.parent.debugBrowser.append(f"文件 {screenshot_path} 不存在。")
 
     def handleUploadPictureResult(self, upload_success, api_response, screenshot_path, is_cover, error):
         if error != "":
-            self.debugBrowser.append("上传失败：" + error)
+            self.parent.debugBrowser.append("上传失败：" + error)
         self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_cover)
 
 
-class GetName(MainWindow):
-    def __init__(self):
+class GetName:
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
 
     def getNameButtonClicked(self):
-        first_chinese_name = self.chineseNameEdit.text()
+        first_chinese_name = self.parent.chineseNameEdit.text()
         if not first_chinese_name:
-            self.debugBrowser.append('获取中文名失败')
+            self.parent.debugBrowser.append('获取中文名失败')
             return
 
         print('获取中文名成功：' + first_chinese_name)
-        self.debugBrowser.append('获取中文名成功：' + first_chinese_name)
+        self.parent.debugBrowser.append('获取中文名成功：' + first_chinese_name)
 
         first_english_name = chinese_name_to_pinyin(first_chinese_name)
-        year = self.yearEdit.text()
-        season = self.seasonBox.text().zfill(2)
+        year = self.parent.yearEdit.text()
+        season = self.parent.seasonBox.text().zfill(2)
 
         width = ""
         format = ""
@@ -313,26 +310,26 @@ class GetName(MainWindow):
         commercial_name = ""
         channel_layout = ""
         rename_file = get_settings("renameFile")
-        isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())
+        isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())
         get_video_info_success, output = get_video_info(videoPath)
         print(get_video_info_success, output)
 
         if isVideoPath != 2:
-            self.debugBrowser.append("您的视频文件路径有误")
+            self.parent.debugBrowser.append("您的视频文件路径有误")
             return
 
-        get_video_files_success, video_files = get_video_files(self.videoPath.text())
+        video_files = get_video_files(self.parent.videoPath.text())
         print(video_files)
         print("获取到关键参数：" + str(output))
-        self.debugBrowser.append("获取到关键参数：" + str(output))
+        self.parent.debugBrowser.append("获取到关键参数：" + str(output))
 
-        if get_video_info_success:
+        if videoPath is not None:
             width, format, hdr_format, commercial_name, channel_layout = output[:5]
 
-        source = self.source.currentText()
-        team = self.team.currentText()
-        type = self.type.currentText()
-        category = self.get_selected_categories()
+        source = self.parent.source.currentText()
+        team = self.parent.team.currentText()
+        type = self.parent.type.currentText()
+        category = self.parent.get_selected_categories()
 
         main_title = f"{first_english_name} {year} S{season} {width} {source} {format} {hdr_format} {commercial_name}{channel_layout}-{team}"
         main_title = ' '.join(main_title.split())
@@ -345,110 +342,115 @@ class GetName(MainWindow):
         file_name = file_name.replace(' – ', '.').replace(': ', '.').replace(' ', '.').replace('..', '.')
         print("FileName" + file_name)
 
-        self.mainTitleBrowser.setText(main_title)
-        self.secondTitleBrowser.setText(second_title)
-        self.fileNameBrowser.setText(file_name)
+        self.parent.mainTitleBrowser.setText(main_title)
+        self.parent.secondTitleBrowser.setText(second_title)
+        self.parent.fileNameBrowser.setText(file_name)
 
         if rename_file:
             print("对文件重新命名")
-            self.debugBrowser.append("开始对文件重新命名")
+            self.parent.debugBrowser.append("开始对文件重新命名")
 
             renamed_files = rename_video_files(video_files, file_name)
             for renamed_file in renamed_files:
                 if renamed_file:
-                    self.videoPath.setText(renamed_file)
+                    self.parent.videoPath.setText(renamed_file)
                     videoPath = renamed_file
-                    self.debugBrowser.append("视频成功重新命名为：" + videoPath)
+                    self.parent.debugBrowser.append("视频成功重新命名为：" + videoPath)
                 else:
-                    self.debugBrowser.append("重命名失败：" + output)
+                    self.parent.debugBrowser.append("重命名失败：" + output)
 
             print("对文件夹重新命名")
-            self.debugBrowser.append("开始对文件夹重新命名")
+            self.parent.debugBrowser.append("开始对文件夹重新命名")
 
             renamed_directory = rename_directory_if_needed(videoPath, file_name)
             if renamed_directory:
-                self.videoPath.setText(renamed_directory)
+                self.parent.videoPath.setText(renamed_directory)
                 videoPath = renamed_directory
-                self.debugBrowser.append("视频地址成功重新命名为：" + videoPath)
+                self.parent.debugBrowser.append("视频地址成功重新命名为：" + videoPath)
             else:
-                self.debugBrowser.append("重命名失败：" + output)
+                self.parent.debugBrowser.append("重命名失败：" + output)
 
 
-class WriteFile(MainWindow):
-    def __init__(self):
+class WriteFile:
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
 
     def writeButtonClicked(self):
         # 中文标题
-        chinese_name = self.chineseNameEdit.text() + ".txt"
+        chinese_name = self.parent.chineseNameEdit.text() + ".txt"
         # 主标题
-        mainTitle = self.mainTitleBrowser.toPlainText().replace(' ', '.')
+        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
         # 副标题
-        secondTitle = self.secondTitleBrowser.toPlainText()
+        secondTitle = self.parent.secondTitleBrowser.toPlainText()
         # 简介
-        introBrowser = self.introBrowser.toPlainText()
+        introBrowser = self.parent.introBrowser.toPlainText()
         # 获取保存目录
         video_info = get_settings("vedioInfo")
         # 拼接文件路径
         file_path = os.path.join(video_info, chinese_name)
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
         try:
-            with open(file_path, 'w') as file:
+            with open(file_path, 'w', encoding='utf-8') as file:
                 file.write(f'主标题为： {mainTitle}\n')
                 file.write(f'副标题为： {secondTitle}\n')
                 file.write(f'简介为： \n{introBrowser}\n')
-            self.clear_all_text_inputs()
+            self.parent.clear_all_text_inputs()
         except Exception as e:
-            self.debugBrowser.append(f"发生异常: {e}")
-            self.clear_all_text_inputs()
+            self.parent.debugBrowser.append(f"发生异常: {e}")
+            self.parent.clear_all_text_inputs()
 
 
 class GetMediaInfo(MainWindow):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
 
     def getMediaInfoButtonClicked(self):
-        self.mediainfoBrowser.setText("")
-        isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())  # 视频资源的路径
+        self.parent.mediainfoBrowser.setText("")
+        isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())  # 视频资源的路径
         if isVideoPath == 1 or isVideoPath == 2:
             get_media_info_success, mediainfo = get_media_info(videoPath)
             if get_media_info_success:
-                self.mediainfoBrowser.setText(mediainfo)
-                mediainfo_text = ('\n[img]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc'
-                                  '.png[/img]\n[quote]') + mediainfo + '[/quote]'
-                self.introBrowser.append(mediainfo_text)
-                self.introBrowser.append('[img]https://img.pterclub.com/images/2024/01/10'
-                                         '/3a3a0f41d507ffa05df76996a1ed69e7.png[/img]')
-                self.debugBrowser.append("成功获取到MediaInfo")
+                self.parent.mediainfoBrowser.setText(mediainfo)
+                mediainfo_text = medio_tem.format(mediainfo)
+                self.parent.introBrowser.append(mediainfo_text)
+                self.parent.debugBrowser.append("成功获取到MediaInfo")
             else:
-                self.debugBrowser.append(mediainfo)
+                self.parent.debugBrowser.append("获取MediaInfo失败,请重试")
         else:
-            self.debugBrowser.append("您的视频文件路径有误")
+            self.parent.debugBrowser.append("您的视频文件路径有误")
 
 
-class MakeTorrent(MainWindow):
-    def __init__(self):
-        super().__init__()
+class MakeTorrent(QObject):
+    result_signal = pyqtSignal(bool, str, str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.make_torrent_thread = None
 
     def makeTorrentButtonClicked(self):
-        isVideoPath, videoPath = check_path_and_find_video(self.videoPath.text())  # 视频资源的路径
+        isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())  # 视频资源的路径
         if isVideoPath == 1 or isVideoPath == 2:
             torrent_path = str(get_settings("torrentPath"))
             folder_path = os.path.dirname(videoPath)
-            self.debugBrowser.append("开始将" + folder_path + "制作种子，储存在" + torrent_path)
+            self.parent.debugBrowser.append("开始将" + folder_path + "制作种子，储存在" + torrent_path)
             self.make_torrent_thread = MakeTorrentThread(folder_path, torrent_path)
             self.make_torrent_thread.result_signal.connect(self.handleMakeTorrentResult)  # 连接信号
-            self.make_torrent_thread.start()  # 启动线程
-            self.debugBrowser.append("制作种子线程启动成功")
+            self.make_torrent_thread.start()
+            self.parent.debugBrowser.append("制作种子线程启动成功")
         else:
-            self.debugBrowser.append("制作种子失败：" + videoPath)
+            self.parent.debugBrowser.append("制作种子失败：" + videoPath)
 
     def handleMakeTorrentResult(self, get_success, response, error):
-        if error != "":
+        print("开始处理制作后的逻辑")
+        if error == "":
             if get_success:
-                self.debugBrowser.append("成功制作种子：" + response)
-                self.torrent_path = response
+                self.parent.debugBrowser.append("成功制作种子：" + response)
+                self.parent.torrent_path = response
             else:
-                self.debugBrowser.append("制作种子失败：" + response)
+                self.parent.debugBrowser.append("制作种子失败：" + response)
         else:
             logger.error(f"发生异常: {error}")
 
@@ -533,8 +535,8 @@ class MakeTorrentThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信
     result_signal = pyqtSignal(bool, str, str)
 
-    def __init__(self, folder_path, torrent_path):
-        super().__init__()
+    def __init__(self, folder_path, torrent_path, parent=None):
+        super().__init__(parent)
         self.folder_path = folder_path
         self.torrent_path = torrent_path
 
