@@ -15,7 +15,7 @@ from .setting import Settings
 from .tool import get_settings, get_file_path, get_folder_path, check_path_and_find_video, create_torrent, load_names, \
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files
-from .upload import upload, qb_download
+from .upload import upload_tjupt
 
 
 def starui():
@@ -42,6 +42,9 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.upload_thread = None
         self.torrent_path = None
 
+        self.tjuTorrentLink = None
+        self.agsvTorrentLink = None
+        self.peterTorrentLink = None
         # 初始化
         self.videoPath.setDragEnabled(True)
         self.introBrowser.setText("")
@@ -60,7 +63,10 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.selectCoverFolderButton.clicked.connect(self.selectCoverFolderButtonClicked)
         self.getMediaInfoButton.clicked.connect(self.getMediaInfoButtonClicked)
         self.getNameButton.clicked.connect(self.getNameButtonClicked)
-        self.startButton.clicked.connect(self.startButtonClicked)
+        self.sendTjuButton.clicked.connect(self.sendTjuClicked)
+        self.sendAgsvButton.clicked.connect(self.sendAgsvClicked)
+        self.sendPeterButton.clicked.connect(self.sendPeterClicked)
+        self.seedMak.clicked.connect(self.seedMakClicked)
         self.makeTorrentButton.clicked.connect(self.makeTorrentButtonClicked)
         self.writeButton.clicked.connect(self.writeButtonClicked)
 
@@ -143,9 +149,21 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         write_file = WriteFile(self)
         write_file.writeButtonClicked()
 
-    def startButtonClicked(self):
-        upload_handler = UploadHandler()
-        upload_handler.startButtonClicked()
+    def sendTjuClicked(self):
+        upload_handler = UploadHandler(self)
+        upload_handler.sendTjuClicked()
+
+    def sendAgsvClicked(self):
+        upload_handler = UploadHandler(self)
+        upload_handler.sendAgsvClicked()
+
+    def sendPeterClicked(self):
+        upload_handler = UploadHandler(self)
+        upload_handler.sendPeterClicked()
+
+    def seedMakClicked(self):
+        seed_mak = SeedMak(self)
+        seed_mak.seedMak()
 
 
 class UploadImages(QObject):
@@ -455,55 +473,71 @@ class MakeTorrent(QObject):
             logger.error(f"发生异常: {error}")
 
 
-class UploadHandler(MainWindow):
-    def __init__(self):
+class UploadHandler:
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
 
-    def startButtonClicked(self):
-        # 调用发种函数
+    def sendTjuClicked(self):
+        self.parent.debugBrowser.append("开始上传种子到TJUPT")
         cookie_str = get_settings("cookie")
-        # 主标题
-        mainTitle = self.mainTitleBrowser.toPlainText().replace(' ', '.')
-        # 副标题
-        secondTitle = self.secondTitleBrowser.toPlainText()
-        # 简介
-        introBrowser = self.introBrowser.toPlainText()
-        # 中文标题
-        chinese_name = self.chineseNameEdit.text()
-        # 种子路径
-        torrent_path = self.torrent_path
-        # 判断种子路径是绝对路径还是相对路径，如果是相对则转换为绝对路径
+        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
+        secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        introBrowser = self.parent.introBrowser.toPlainText()
+        chinese_name = self.parent.chineseNameEdit.text()
+        torrent_path = self.parent.torrent_path
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        self.upload_thread = UploadThread(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
-                                          chinese_name)
-        self.upload_thread.finished_signal.connect(self.uploadFinished)
-        self.upload_thread.start()
-
-    def uploadFinished(self, torrent_url, error):
-        qbittorrent_host = get_settings("qbPath")
-        if qbittorrent_host == "":
-            self.debugBrowser.append("请先设置qBittorrent的地址")
-            return
-        qbittorrent_user = get_settings("qbUser")
-        qbittorrent_pass = get_settings("qbPasswd")
-        path = get_settings("resourcePath")
-        if error:
-            self.debugBrowser.append("发种失败：" + error)
-            return
-        if torrent_url:
-            self.debugBrowser.append("发种成功：" + torrent_url)
-            is_add = qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_url, path)
-            if is_add:
-                self.debugBrowser.append("做种成功：" + torrent_url)
-            else:
-                self.debugBrowser.append("做种失败：")
+        tju_link = upload_tjupt(cookie_str,torrent_path,mainTitle, secondTitle, introBrowser, chinese_name)
+        if tju_link:
+            self.parent.tjuTorrentLink = tju_link
+            self.parent.debugBrowser.append("上传种子到TJUPT成功")
         else:
-            self.debugBrowser.append("发种失败或获取种子链接失败，请自行检查")
-        self.clear_all_text_inputs()
+            self.parent.debugBrowser.append("上传种子到TJUPT失败")
+
+    def sendAgsvClicked(self):
+        self.parent.debugBrowser.append("开始上传种子到agsv")
+        self.parent.agsvTorrentLink = "agsv"
+        self.parent.debugBrowser.append("上传种子到agsv成功")
+
+    def sendPeterClicked(self):
+        self.parent.debugBrowser.append("开始上传种子到Pter")
+        self.parent.peterTorrentLink = "Pter"
+        self.parent.debugBrowser.append("上传种子到Pter成功")
+
+
+class SeedMak:
+    def __init__(self, parent):
+        super().__init__()
+        self.parent = parent
+
+    def seedMak(self):
+        self.parent.debugBrowser.append(f"开始做种Tju:{self.parent.tjuTorrentLink}")
+        self.parent.debugBrowser.append(f"开始做种Agsv:{self.parent.agsvTorrentLink}" )
+        self.parent.debugBrowser.append(f"开始做种Pter:{self.parent.peterTorrentLink}" )
+        # qbittorrent_host = get_settings("qbPath")
+        # if qbittorrent_host == "":
+        #     self.debugBrowser.append("请先设置qBittorrent的地址")
+        #     return
+        # qbittorrent_user = get_settings("qbUser")
+        # qbittorrent_pass = get_settings("qbPasswd")
+        # path = get_settings("resourcePath")
+        # if error:
+        #     self.debugBrowser.append("发种失败：" + error)
+        #     return
+        # if torrent_url:
+        #     self.debugBrowser.append("发种成功：" + torrent_url)
+        #     is_add = qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_url, path)
+        #     if is_add:
+        #         self.debugBrowser.append("做种成功：" + torrent_url)
+        #     else:
+        #         self.debugBrowser.append("做种失败：")
+        # else:
+        #     self.debugBrowser.append("发种失败或获取种子链接失败，请自行检查")
+        # self.clear_all_text_inputs()
 
 
 class UploadPictureThread(QThread):
@@ -553,27 +587,26 @@ class MakeTorrentThread(QThread):
             print(f"异常发生: {e}")
             self.result_signal.emit(False, f"异常发生: {e}", str(e))
 
-
-class UploadThread(QThread):
-    finished_signal = pyqtSignal(str, str)  # 信号，用于在上传完成时发送消息
-
-    def __init__(self, cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name):
-        super().__init__()
-        self.cookie_str = cookie_str
-        self.torrent_path = torrent_path
-        self.mainTitle = mainTitle
-        self.secondTitle = secondTitle
-        self.introBrowser = introBrowser
-        self.chinese_name = chinese_name
-
-    def run(self):
-        # 在这里执行上传操作
-        try:
-            torrent_url = upload(self.cookie_str, self.torrent_path, self.mainTitle, self.secondTitle,
-                                 self.introBrowser,
-                                 self.chinese_name)
-            self.finished_signal.emit(torrent_url, "")  # 发送上传完成的信号
-        except Exception as e:
-            print(f"异常发生: {e}")
-            # 这里可以发射一个包含错误信息的信号
-            self.finished_signal.emit("", str(e))
+# class UploadThread(QThread):
+#     finished_signal = pyqtSignal(str, str)  # 信号，用于在上传完成时发送消息
+#
+#     def __init__(self, cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name):
+#         super().__init__()
+#         self.cookie_str = cookie_str
+#         self.torrent_path = torrent_path
+#         self.mainTitle = mainTitle
+#         self.secondTitle = secondTitle
+#         self.introBrowser = introBrowser
+#         self.chinese_name = chinese_name
+#
+#     def run(self):
+#         # 在这里执行上传操作
+#         try:
+#             torrent_url = upload(self.cookie_str, self.torrent_path, self.mainTitle, self.secondTitle,
+#                                  self.introBrowser,
+#                                  self.chinese_name)
+#             self.finished_signal.emit(torrent_url, "")  # 发送上传完成的信号
+#         except Exception as e:
+#             print(f"异常发生: {e}")
+#             # 这里可以发射一个包含错误信息的信号
+#             self.finished_signal.emit("", str(e))
