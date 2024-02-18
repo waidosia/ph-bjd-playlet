@@ -12,12 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
-        Settings.resize(776, 735)
+        Settings.resize(628, 695)
         self.gridLayout = QtWidgets.QGridLayout(Settings)
         self.gridLayout.setObjectName("gridLayout")
-        self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
@@ -38,7 +35,7 @@ class Ui_Settings(object):
         self.figureBedToken.setClearButtonEnabled(True)
         self.figureBedToken.setObjectName("figureBedToken")
         self.horizontalLayout_4.addWidget(self.figureBedToken)
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.gridLayout.addLayout(self.horizontalLayout_4, 0, 0, 1, 1)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -85,7 +82,7 @@ class Ui_Settings(object):
 "")
         self.selectScreenshotPathButton.setObjectName("selectScreenshotPathButton")
         self.horizontalLayout_2.addWidget(self.selectScreenshotPathButton)
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -132,7 +129,7 @@ class Ui_Settings(object):
 "")
         self.selectTorrentPathButton.setObjectName("selectTorrentPathButton")
         self.horizontalLayout_3.addWidget(self.selectTorrentPathButton)
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 1)
         self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.label_19 = QtWidgets.QLabel(parent=Settings)
@@ -141,7 +138,7 @@ class Ui_Settings(object):
         self.vedioInfo = QtWidgets.QLineEdit(parent=Settings)
         self.vedioInfo.setObjectName("vedioInfo")
         self.horizontalLayout_14.addWidget(self.vedioInfo)
-        self.verticalLayout.addLayout(self.horizontalLayout_14)
+        self.gridLayout.addLayout(self.horizontalLayout_14, 3, 0, 1, 1)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
@@ -163,7 +160,7 @@ class Ui_Settings(object):
         self.screenshotThreshold.setProperty("value", 0.1)
         self.screenshotThreshold.setObjectName("screenshotThreshold")
         self.horizontalLayout_7.addWidget(self.screenshotThreshold)
-        self.verticalLayout.addLayout(self.horizontalLayout_7)
+        self.gridLayout.addLayout(self.horizontalLayout_7, 4, 0, 1, 1)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
@@ -187,7 +184,7 @@ class Ui_Settings(object):
         self.screenshotEnd.setProperty("value", 0.9)
         self.screenshotEnd.setObjectName("screenshotEnd")
         self.horizontalLayout_8.addWidget(self.screenshotEnd)
-        self.verticalLayout.addLayout(self.horizontalLayout_8)
+        self.gridLayout.addLayout(self.horizontalLayout_8, 5, 0, 1, 1)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
@@ -203,7 +200,7 @@ class Ui_Settings(object):
         self.deleteScreenshot.setChecked(True)
         self.deleteScreenshot.setObjectName("deleteScreenshot")
         self.horizontalLayout_9.addWidget(self.deleteScreenshot)
-        self.verticalLayout.addLayout(self.horizontalLayout_9)
+        self.gridLayout.addLayout(self.horizontalLayout_9, 6, 0, 1, 1)
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
@@ -228,7 +225,7 @@ class Ui_Settings(object):
         self.cols.setProperty("value", 4)
         self.cols.setObjectName("cols")
         self.horizontalLayout_11.addWidget(self.cols)
-        self.verticalLayout.addLayout(self.horizontalLayout_11)
+        self.gridLayout.addLayout(self.horizontalLayout_11, 7, 0, 1, 1)
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
@@ -243,7 +240,7 @@ class Ui_Settings(object):
         self.makeDir.setChecked(False)
         self.makeDir.setObjectName("makeDir")
         self.horizontalLayout_10.addWidget(self.makeDir)
-        self.verticalLayout.addLayout(self.horizontalLayout_10)
+        self.gridLayout.addLayout(self.horizontalLayout_10, 8, 0, 1, 1)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.label_14 = QtWidgets.QLabel(parent=Settings)
@@ -252,7 +249,7 @@ class Ui_Settings(object):
         self.qbPath = QtWidgets.QLineEdit(parent=Settings)
         self.qbPath.setObjectName("qbPath")
         self.horizontalLayout_6.addWidget(self.qbPath)
-        self.verticalLayout.addLayout(self.horizontalLayout_6)
+        self.gridLayout.addLayout(self.horizontalLayout_6, 9, 0, 1, 1)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.label_15 = QtWidgets.QLabel(parent=Settings)
@@ -267,7 +264,7 @@ class Ui_Settings(object):
         self.qbPasswd = QtWidgets.QLineEdit(parent=Settings)
         self.qbPasswd.setObjectName("qbPasswd")
         self.horizontalLayout_5.addWidget(self.qbPasswd)
-        self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.gridLayout.addLayout(self.horizontalLayout_5, 10, 0, 1, 1)
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
         self.label_18 = QtWidgets.QLabel(parent=Settings)
@@ -276,28 +273,37 @@ class Ui_Settings(object):
         self.resourcePath = QtWidgets.QLineEdit(parent=Settings)
         self.resourcePath.setObjectName("resourcePath")
         self.horizontalLayout_13.addWidget(self.resourcePath)
-        self.verticalLayout.addLayout(self.horizontalLayout_13)
+        self.gridLayout.addLayout(self.horizontalLayout_13, 11, 0, 1, 1)
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
         self.label_17 = QtWidgets.QLabel(parent=Settings)
         self.label_17.setObjectName("label_17")
         self.horizontalLayout_12.addWidget(self.label_17)
-        self.cookie = QtWidgets.QLineEdit(parent=Settings)
-        self.cookie.setObjectName("cookie")
-        self.horizontalLayout_12.addWidget(self.cookie)
+        self.tjuCookie = QtWidgets.QLineEdit(parent=Settings)
+        self.tjuCookie.setObjectName("tjuCookie")
+        self.horizontalLayout_12.addWidget(self.tjuCookie)
         self.verticalLayout.addLayout(self.horizontalLayout_12)
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
         self.label_9 = QtWidgets.QLabel(parent=Settings)
-        self.label_9.setMaximumSize(QtCore.QSize(16777215, 20))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.label_9.setFont(font)
-        self.label_9.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_9.setObjectName("label_9")
-        self.verticalLayout.addWidget(self.label_9)
+        self.horizontalLayout_15.addWidget(self.label_9)
+        self.agsvCookie = QtWidgets.QLineEdit(parent=Settings)
+        self.agsvCookie.setObjectName("agsvCookie")
+        self.horizontalLayout_15.addWidget(self.agsvCookie)
+        self.verticalLayout.addLayout(self.horizontalLayout_15)
+        self.horizontalLayout_16 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
         self.label_11 = QtWidgets.QLabel(parent=Settings)
-        self.label_11.setMaximumSize(QtCore.QSize(16777215, 220))
         self.label_11.setObjectName("label_11")
-        self.verticalLayout.addWidget(self.label_11)
+        self.horizontalLayout_16.addWidget(self.label_11)
+        self.pterCookie = QtWidgets.QLineEdit(parent=Settings)
+        self.pterCookie.setObjectName("pterCookie")
+        self.horizontalLayout_16.addWidget(self.pterCookie)
+        self.verticalLayout.addLayout(self.horizontalLayout_16)
+        self.gridLayout.addLayout(self.verticalLayout, 12, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(30, -1, 30, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -371,8 +377,7 @@ class Ui_Settings(object):
 "")
         self.cancelButton.setObjectName("cancelButton")
         self.horizontalLayout.addWidget(self.cancelButton)
-        self.verticalLayout.addLayout(self.horizontalLayout)
-        self.gridLayout.addLayout(self.verticalLayout, 0, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 13, 0, 1, 1)
 
         self.retranslateUi(Settings)
         QtCore.QMetaObject.connectSlotsByName(Settings)
@@ -1002,43 +1007,8 @@ class Ui_Settings(object):
         self.label_15.setText(_translate("Settings", "QB用户名："))
         self.label_16.setText(_translate("Settings", "QB密码"))
         self.label_18.setText(_translate("Settings", "做种路径："))
-        self.label_17.setText(_translate("Settings", "cookie："))
-        self.label_9.setText(_translate("Settings", "说明"))
-        self.label_11.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.label_11.setText(_translate("Settings", "截图数量最多5个，图片越多、视频越高清速度越慢，请耐心等待。\n"
-"关键帧复杂度指对画面的要求，数字越大画面越复杂，符合条件的画面也会越少，过大会导致截图数量不足。\n"
-"截图起始点指截图开始的时刻在整个电影长度的占比，不易过小，以免截取片头。\n"
-"截图终止点一定要比起始点大，否则无法截图，间隔如果太小也会导致截图数量不足。\n"
-"对文件夹处理时仅获取其中第一个视频的参数信息，并仅对文件夹重命名。\n"
-"制作种子时，如果选中的资源是文件夹，则直接制作；如果是文件，则对上级文件夹制作。\n"
-"一键启动功能为避免线程冲突增加了等待时间，执行完需要5-10秒，请耐心等待，切勿反复点击。\n"
-"文件越大制作种子越慢，可查看任务管理器获取程序运行情况，资源路径可以直接复制文件粘贴到文本框中。\n"
-"\n"
-"目前支持的图床：\n"
-"https://img.agsvpt.com/\n"
-"https://freeimage.host/\n"
-"图床的api地址和密钥请到图床主页获取。"))
+        self.label_17.setText(_translate("Settings", "tju_cookie："))
+        self.label_9.setText(_translate("Settings", "agsv_cookie:"))
+        self.label_11.setText(_translate("Settings", "Pter_cookie:"))
         self.saveButton.setText(_translate("Settings", "保存"))
         self.cancelButton.setText(_translate("Settings", "取消"))

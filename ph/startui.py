@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 
 from PyQt6.QtCore import *
@@ -15,7 +16,7 @@ from .setting import Settings
 from .tool import get_settings, get_file_path, get_folder_path, check_path_and_find_video, create_torrent, load_names, \
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files
-from .upload import upload_tjupt
+from .upload import upload_tjupt, upload_agsv
 
 
 def starui():
@@ -480,7 +481,7 @@ class UploadHandler:
 
     def sendTjuClicked(self):
         self.parent.debugBrowser.append("开始上传种子到TJUPT")
-        cookie_str = get_settings("cookie")
+        cookie_str = get_settings("tjuCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
@@ -491,17 +492,38 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        tju_link = upload_tjupt(cookie_str,torrent_path,mainTitle, secondTitle, introBrowser, chinese_name)
-        if tju_link:
+        upload_success,tju_link = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name)
+        if upload_success:
             self.parent.tjuTorrentLink = tju_link
-            self.parent.debugBrowser.append("上传种子到TJUPT成功")
+            self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为："+tju_link)
         else:
-            self.parent.debugBrowser.append("上传种子到TJUPT失败")
+            self.parent.debugBrowser.append("上传种子到TJUPT失败，失败原因为："+tju_link)
 
     def sendAgsvClicked(self):
         self.parent.debugBrowser.append("开始上传种子到agsv")
-        self.parent.agsvTorrentLink = "agsv"
-        self.parent.debugBrowser.append("上传种子到agsv成功")
+        cookie_str = get_settings("agsvCookie")
+        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        introBrowser = self.parent.introBrowser.toPlainText()
+        # 去除指定一段落的内容
+
+        modified_content = re.sub(
+            r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
+            '', introBrowser, flags=re.DOTALL)
+        media_info = self.parent.mediainfoBrowser.toPlainText()
+        torrent_path = self.parent.torrent_path
+        current_working_directory = os.getcwd()
+        if torrent_path:
+            if not os.path.isabs(torrent_path):
+                torrent_path = os.path.join(current_working_directory, torrent_path)
+                torrent_path = os.path.abspath(torrent_path)
+        upload_success, agsv_link = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle, modified_content,
+                                                media_info)
+        if upload_success:
+            self.parent.agsvTorrentLink = agsv_link
+            self.parent.debugBrowser.append("上传种子到agsv成功,种子链接为：" + agsv_link)
+        else:
+            self.parent.debugBrowser.append("上传种子到agsv失败，失败原因为：" + agsv_link)
 
     def sendPeterClicked(self):
         self.parent.debugBrowser.append("开始上传种子到Pter")
@@ -516,28 +538,8 @@ class SeedMak:
 
     def seedMak(self):
         self.parent.debugBrowser.append(f"开始做种Tju:{self.parent.tjuTorrentLink}")
-        self.parent.debugBrowser.append(f"开始做种Agsv:{self.parent.agsvTorrentLink}" )
-        self.parent.debugBrowser.append(f"开始做种Pter:{self.parent.peterTorrentLink}" )
-        # qbittorrent_host = get_settings("qbPath")
-        # if qbittorrent_host == "":
-        #     self.debugBrowser.append("请先设置qBittorrent的地址")
-        #     return
-        # qbittorrent_user = get_settings("qbUser")
-        # qbittorrent_pass = get_settings("qbPasswd")
-        # path = get_settings("resourcePath")
-        # if error:
-        #     self.debugBrowser.append("发种失败：" + error)
-        #     return
-        # if torrent_url:
-        #     self.debugBrowser.append("发种成功：" + torrent_url)
-        #     is_add = qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_url, path)
-        #     if is_add:
-        #         self.debugBrowser.append("做种成功：" + torrent_url)
-        #     else:
-        #         self.debugBrowser.append("做种失败：")
-        # else:
-        #     self.debugBrowser.append("发种失败或获取种子链接失败，请自行检查")
-        # self.clear_all_text_inputs()
+        self.parent.debugBrowser.append(f"开始做种Agsv:{self.parent.agsvTorrentLink}")
+        self.parent.debugBrowser.append(f"开始做种Pter:{self.parent.peterTorrentLink}")
 
 
 class UploadPictureThread(QThread):
