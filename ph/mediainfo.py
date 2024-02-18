@@ -75,7 +75,8 @@ def handle_general_track(track):
         ("writing_library", "Writing library"),
         ("comment", "Comment")
     ]:
-        value = track.get(key)
+
+        value = track[key][0] if isinstance(track.get(key), list) else track.get(key)
         if value is not None:
             output += f"{label:36}: {value}\n"
     output += "\n"
@@ -121,7 +122,7 @@ def handle_video_track(track):
         ("maximum_frameaverage_light_level", "Maximum Frame-Average Light Level"),
         ("maxfall_original", "MaxFALL Original"),
     ]:
-        value = track.get(key)
+        value = track[key][0] if isinstance(track.get(key), list) else track.get(key)
         if value is not None:
             output += f"{label:36}: {value}\n"
     output += "\n"
@@ -156,7 +157,7 @@ def handle_audio_track(track):
         ("other_bed_channel_count", "Bed channel count"),
         ("bed_channel_configuration", "Bed channel configuration"),
     ]:
-        value = track.get(key)
+        value = track[key][0] if isinstance(track.get(key), list) else track.get(key)
         if value is not None:
             output += f"{label:36}: {value}\n"
     output += "\n"
@@ -181,7 +182,7 @@ def handle_text_track(track):
         ("default", "Default"),
         ("forced", "Forced"),
     ]:
-        value = track.get(key)
+        value = track[key][0] if isinstance(track.get(key), list) else track.get(key)
         if value is not None:
             output += f"{label:36}: {value}\n"
     output += "\n"
