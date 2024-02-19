@@ -168,7 +168,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
 
     def sendKylinClicked(self):
         upload_handler = UploadHandler(self)
-        upload_handler.sendAgsvClicked()
+        upload_handler.sendKylinClicked()
 
     def seedMakClicked(self):
         seed_mak = SeedMak(self)
@@ -428,7 +428,7 @@ class WriteFile:
             self.parent.clear_all_text_inputs()
 
 
-class GetMediaInfo(MainWindow):
+class GetMediaInfo:
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
