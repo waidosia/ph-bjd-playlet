@@ -206,7 +206,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
-    if main_title.split(' ') > 4:
+    if len(main_title.split(' ')) > 4:
         resolution = main_title.split(' ')[-4].upper()
     else:
         return False, '主标题格式错误,无法正确获取分辨率'
@@ -505,7 +505,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
-    if main_title.split(' ') > 6:
+    if len(main_title.split(' ')) > 6:
         resolution = main_title.split(' ')[-4].upper()
         year = main_title.split(' ')[-6]
     else:
