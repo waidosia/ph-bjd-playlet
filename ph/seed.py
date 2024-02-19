@@ -11,7 +11,7 @@ def qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_ur
         print("登陆失败")
         return False, "登陆失败, 请检查地址或账号密码"
     for torrent_url in torrent_urls:
-        if torrent_url != "":
+        if torrent_url is not None:
             is_add = qb.torrents_add(urls=torrent_url, is_paused=True, savepath=path)
             if is_add != 'Ok.':
                 print(f'{torrent_url}添加失败')
