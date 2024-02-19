@@ -425,7 +425,7 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="vedioInfo"/>
+      <widget class="QLineEdit" name="videoInfo"/>
      </item>
     </layout>
    </item>
@@ -1242,6 +1242,20 @@ QPushButton:pressed {
        </item>
        <item>
         <widget class="QLineEdit" name="pterCookie"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <item>
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>kylin_cookie:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="kylinCookie"/>
        </item>
       </layout>
      </item>

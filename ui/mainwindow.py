@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'ui/mainwindow.ui'
+# Form implementation generated from reading ui file 'mainwindow.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -727,6 +727,50 @@ class Ui_Mainwindow(object):
 "")
         self.sendAgsvButton.setObjectName("sendAgsvButton")
         self.horizontalLayout_9.addWidget(self.sendAgsvButton)
+        self.sendKylinButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.sendKylinButton.setMinimumSize(QtCore.QSize(0, 80))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        font.setStrikeOut(False)
+        self.sendKylinButton.setFont(font)
+        self.sendKylinButton.setStyleSheet("QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 15px 25px;\n"
+"    font-size: 24px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #16bf9d,\n"
+"                                      stop:1 #10a266);\n"
+"    border: none;\n"
+"    border-radius: 20px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #11b998,\n"
+"                                      stop:1 #08965e);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #0e9278,\n"
+"                                      stop:1 #0e925c);\n"
+"}\n"
+"")
+        self.sendKylinButton.setObjectName("sendKylinButton")
+        self.horizontalLayout_9.addWidget(self.sendKylinButton)
         self.seedMak = QtWidgets.QPushButton(parent=self.centralwidget)
         self.seedMak.setMinimumSize(QtCore.QSize(0, 80))
         font = QtGui.QFont()
@@ -771,6 +815,50 @@ class Ui_Mainwindow(object):
 "")
         self.seedMak.setObjectName("seedMak")
         self.horizontalLayout_9.addWidget(self.seedMak)
+        self.clear = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.clear.setMinimumSize(QtCore.QSize(0, 80))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        font.setStrikeOut(False)
+        self.clear.setFont(font)
+        self.clear.setStyleSheet("QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 15px 25px;\n"
+"    font-size: 24px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #16bf9d,\n"
+"                                      stop:1 #10a266);\n"
+"    border: none;\n"
+"    border-radius: 20px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #11b998,\n"
+"                                      stop:1 #08965e);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #0e9278,\n"
+"                                      stop:1 #0e925c);\n"
+"}\n"
+"")
+        self.clear.setObjectName("clear")
+        self.horizontalLayout_9.addWidget(self.clear)
         self.gridLayout_2.addLayout(self.horizontalLayout_9, 12, 0, 1, 2)
         Mainwindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=Mainwindow)
@@ -842,6 +930,8 @@ class Ui_Mainwindow(object):
         self.sendTjuButton.setText(_translate("Mainwindow", "发北洋"))
         self.sendPeterButton.setText(_translate("Mainwindow", "发猫站"))
         self.sendAgsvButton.setText(_translate("Mainwindow", "发末日"))
+        self.sendKylinButton.setText(_translate("Mainwindow", "发麒麟"))
         self.seedMak.setText(_translate("Mainwindow", "做种"))
+        self.clear.setText(_translate("Mainwindow", "清空"))
         self.menu.setTitle(_translate("Mainwindow", "工具"))
         self.actionsettings.setText(_translate("Mainwindow", "设置"))

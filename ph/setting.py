@@ -54,11 +54,12 @@ class Settings(QDialog, Ui_Settings):
         self.tjuCookie.setText(get_settings("tjuCookie"))
         self.agsvCookie.setText(get_settings("agsvCookie"))
         self.pterCookie.setText(get_settings("pterCookie"))
+        self.kylinCookie.setText(get_settings("kylinCookie"))
         self.qbPath.setText(get_settings("qbPath"))
         self.qbUser.setText(get_settings("qbUser"))
         self.qbPasswd.setText(get_settings("qbPasswd"))
         self.resourcePath.setText(get_settings("resourcePath"))
-        self.vedioInfo.setText(get_settings("vedioInfo"))
+        self.videoInfo.setText(get_settings("videoInfo"))
 
     def updateSettings(self):
         update_settings("screenshotPath", self.screenshotPath.text())
@@ -72,11 +73,12 @@ class Settings(QDialog, Ui_Settings):
         update_settings("tjuCookie", str(self.tjuCookie.text()))
         update_settings("agsvCookie", str(self.agsvCookie.text()))
         update_settings("pterCookie", str(self.pterCookie.text()))
+        update_settings("kylinCookie", str(self.kylinCookie.text()))
         update_settings("qbPath", str(self.qbPath.text()))
         update_settings("qbUser", str(self.qbUser.text()))
         update_settings("qbPasswd", str(self.qbPasswd.text()))
         update_settings("resourcePath", str(self.resourcePath.text()))
-        update_settings("vedioInfo", str(self.vedioInfo.text()))
+        update_settings("videoInfo", str(self.videoInfo.text()))
         if self.getThumbnails.isChecked():
             update_settings("getThumbnails", "True")
         else:

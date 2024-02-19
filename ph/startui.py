@@ -12,11 +12,12 @@ from .common import title_tem, medio_tem
 from .mediainfo import get_media_info
 from .rename import get_video_info
 from .screenshot import upload_screenshot
+from .seed import qb_download
 from .setting import Settings
 from .tool import get_settings, get_file_path, get_folder_path, check_path_and_find_video, create_torrent, load_names, \
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files
-from .upload import upload_tjupt, upload_agsv
+from .upload import upload_tjupt, upload_agsv, upload_pter, upload_kylin
 
 
 def starui():
@@ -46,6 +47,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.tjuTorrentLink = None
         self.agsvTorrentLink = None
         self.peterTorrentLink = None
+        self.kylinTorrentLink = None
         # 初始化
         self.videoPath.setDragEnabled(True)
         self.introBrowser.setText("")
@@ -67,7 +69,9 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.sendTjuButton.clicked.connect(self.sendTjuClicked)
         self.sendAgsvButton.clicked.connect(self.sendAgsvClicked)
         self.sendPeterButton.clicked.connect(self.sendPeterClicked)
+        self.sendKylinButton.clicked.connect(self.sendKylinClicked)
         self.seedMak.clicked.connect(self.seedMakClicked)
+        self.clear.clicked.connect(self.clear_all_text_inputs)
         self.makeTorrentButton.clicked.connect(self.makeTorrentButtonClicked)
         self.writeButton.clicked.connect(self.writeButtonClicked)
 
@@ -162,9 +166,13 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         upload_handler = UploadHandler(self)
         upload_handler.sendPeterClicked()
 
+    def sendKylinClicked(self):
+        upload_handler = UploadHandler(self)
+        upload_handler.sendAgsvClicked()
+
     def seedMakClicked(self):
         seed_mak = SeedMak(self)
-        seed_mak.seedMak()
+        seed_mak.seed()
 
 
 class UploadImages(QObject):
@@ -405,7 +413,7 @@ class WriteFile:
         # 简介
         introBrowser = self.parent.introBrowser.toPlainText()
         # 获取保存目录
-        video_info = get_settings("vedioInfo")
+        video_info = get_settings("videoInfo")
         # 拼接文件路径
         file_path = os.path.join(video_info, chinese_name)
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -492,12 +500,13 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload_success,tju_link = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name)
+        upload_success, tju_link = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
+                                                chinese_name)
         if upload_success:
             self.parent.tjuTorrentLink = tju_link
-            self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为："+tju_link)
+            self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + tju_link)
         else:
-            self.parent.debugBrowser.append("上传种子到TJUPT失败，失败原因为："+tju_link)
+            self.parent.debugBrowser.append("上传种子到TJUPT失败，失败原因为：" + tju_link)
 
     def sendAgsvClicked(self):
         self.parent.debugBrowser.append("开始上传种子到agsv")
@@ -506,7 +515,6 @@ class UploadHandler:
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         # 去除指定一段落的内容
-
         modified_content = re.sub(
             r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
             '', introBrowser, flags=re.DOTALL)
@@ -527,8 +535,57 @@ class UploadHandler:
 
     def sendPeterClicked(self):
         self.parent.debugBrowser.append("开始上传种子到Pter")
-        self.parent.peterTorrentLink = "Pter"
-        self.parent.debugBrowser.append("上传种子到Pter成功")
+        cookie_str = get_settings("pterCookie")
+        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        mainTitle = mainTitle.replace('AVC', 'H.264')
+        secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        introBrowser = self.parent.introBrowser.toPlainText()
+        # 正则匹配Writing library                          : 的后的内容，如果存在x264则改写主标题
+        # Writing library                          :(.*)
+        # 提取括号内的内容
+        writing_library = re.search(r'Writing library                          :(.*)',
+                                    self.parent.mediainfoBrowser.toPlainText())
+        if writing_library:
+            if 'x264' in writing_library.group(1):
+                mainTitle = mainTitle.replace('H.264', 'x264')
+        introBrowser = introBrowser.replace('[mediainfo]', '[hide=MediaInfo]')
+        introBrowser = introBrowser.replace('[/mediainfo]', '[/hide]')
+        torrent_path = self.parent.torrent_path
+        current_working_directory = os.getcwd()
+        if torrent_path:
+            if not os.path.isabs(torrent_path):
+                torrent_path = os.path.join(current_working_directory, torrent_path)
+                torrent_path = os.path.abspath(torrent_path)
+        upload_success, pter_link = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
+                                                )
+        if upload_success:
+            self.parent.peterTorrentLink = pter_link
+            self.parent.debugBrowser.append("上传种子到Pter成功,种子链接为：" + pter_link)
+        else:
+            self.parent.debugBrowser.append("上传种子到Pter失败，失败原因为：" + pter_link)
+
+    def sendKylinClicked(self):
+        self.parent.debugBrowser.append("开始上传种子到Kylin")
+        cookie_str = get_settings("kylinCookie")
+        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        mainTitle = mainTitle.replace('AVC', 'H264')
+        secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        introBrowser = self.parent.introBrowser.toPlainText()
+        introBrowser = introBrowser.replace('[mediainfo]', '[quote]')
+        introBrowser = introBrowser.replace('[/mediainfo]', '[/quote]')
+        torrent_path = self.parent.torrent_path
+        current_working_directory = os.getcwd()
+        if torrent_path:
+            if not os.path.isabs(torrent_path):
+                torrent_path = os.path.join(current_working_directory, torrent_path)
+                torrent_path = os.path.abspath(torrent_path)
+        upload_success, kylin_link = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
+                                                  )
+        if upload_success:
+            self.parent.kylinTorrentLink = kylin_link
+            self.parent.debugBrowser.append("上传种子到kylin成功,种子链接为：" + kylin_link)
+        else:
+            self.parent.debugBrowser.append("上传种子到kylin失败，失败原因为：" + kylin_link)
 
 
 class SeedMak:
@@ -536,10 +593,19 @@ class SeedMak:
         super().__init__()
         self.parent = parent
 
-    def seedMak(self):
-        self.parent.debugBrowser.append(f"开始做种Tju:{self.parent.tjuTorrentLink}")
-        self.parent.debugBrowser.append(f"开始做种Agsv:{self.parent.agsvTorrentLink}")
-        self.parent.debugBrowser.append(f"开始做种Pter:{self.parent.peterTorrentLink}")
+    def seed(self):
+        # 获取参数
+        qb_host = get_settings("qbPath")
+        qb_user = get_settings("qbUser")
+        qb_pass = get_settings("qbPasswd")
+        torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
+                        self.parent.kylinTorrentLink]
+        path = get_settings("resourcePath")
+        add_success, result_text = qb_download(qb_host, qb_user, qb_pass, torrent_urls, path)
+        if add_success:
+            self.parent.debugBrowser.append(result_text)
+        else:
+            self.parent.debugBrowser.append(result_text)
 
 
 class UploadPictureThread(QThread):
@@ -588,27 +654,3 @@ class MakeTorrentThread(QThread):
             logger.error("制作种子出现异常")
             print(f"异常发生: {e}")
             self.result_signal.emit(False, f"异常发生: {e}", str(e))
-
-# class UploadThread(QThread):
-#     finished_signal = pyqtSignal(str, str)  # 信号，用于在上传完成时发送消息
-#
-#     def __init__(self, cookie_str, torrent_path, mainTitle, secondTitle, introBrowser, chinese_name):
-#         super().__init__()
-#         self.cookie_str = cookie_str
-#         self.torrent_path = torrent_path
-#         self.mainTitle = mainTitle
-#         self.secondTitle = secondTitle
-#         self.introBrowser = introBrowser
-#         self.chinese_name = chinese_name
-#
-#     def run(self):
-#         # 在这里执行上传操作
-#         try:
-#             torrent_url = upload(self.cookie_str, self.torrent_path, self.mainTitle, self.secondTitle,
-#                                  self.introBrowser,
-#                                  self.chinese_name)
-#             self.finished_signal.emit(torrent_url, "")  # 发送上传完成的信号
-#         except Exception as e:
-#             print(f"异常发生: {e}")
-#             # 这里可以发射一个包含错误信息的信号
-#             self.finished_signal.emit("", str(e))
