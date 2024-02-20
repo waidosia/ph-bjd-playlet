@@ -60,7 +60,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_tjupt(cookies_str)
     if not get_success:
-        return False, 'cookie已过期,请更新cookie'
+        return False, get_str
     headers = {
         'Host': 'tjupt.org',
         'Cookie': cookies_str,
@@ -184,7 +184,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_agsv(cookies_str)
     if not get_success:
-        return False, 'cookie已过期,请更新cookie'
+        return False, get_str
 
     headers = {
         'Host': 'www.agsvpt.com',
@@ -334,7 +334,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr) -> (bool,
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_pter(cookies_str)
     if not get_success:
-        return False, 'cookie已过期,请更新cookie'
+        return False, get_str
 
     headers = {
         'Host': 'pterclub.com',
@@ -483,7 +483,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_kylin(cookies_str)
     if not get_success:
-        return False, 'cookie已过期,请更新cookie'
+        return False, get_str
 
     headers = {
         'Host': 'www.hdkyl.in',
