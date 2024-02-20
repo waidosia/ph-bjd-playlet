@@ -554,12 +554,16 @@ class UploadHandler:
         cookie_str = get_settings("tjuCookie")
 
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
+        logger.info("处理前的主标题为：" + mainTitle)
         mainTitle = mainTitle.replace('H264', 'H.264')
         mainTitle = mainTitle.replace('AVC', 'H.264')
         logger.info("处理后的主标题为：" + mainTitle)
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
+        logger.info("简介为：" + introBrowser)
         chinese_name = self.parent.chineseNameEdit.text()
+        logger.info("中文名为：" + chinese_name)
         torrent_path = self.parent.torrent_path
         current_working_directory = os.getcwd()
         if torrent_path:
@@ -581,8 +585,11 @@ class UploadHandler:
         logger.info("开始上传种子到agsv")
         cookie_str = get_settings("agsvCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        logger.info("处理前的主标题为：" + mainTitle)
         mainTitle = mainTitle.replace('H264', 'AVC')
+        logger.info("处理后的主标题为：" + mainTitle)
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
         # 去除指定一段落的内容
         modified_content = re.sub(
@@ -609,9 +616,11 @@ class UploadHandler:
         logger.info("开始上传种子到Pter")
         cookie_str = get_settings("pterCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        logger.info("处理前的主标题为：" + mainTitle)
         mainTitle = mainTitle.replace('AVC', 'H.264')
         mainTitle = mainTitle.replace('H264', 'H.264')
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
         # 正则匹配Writing library                          : 的后的内容，如果存在x264则改写主标题
         # Writing library                          :(.*)
@@ -648,9 +657,11 @@ class UploadHandler:
         logger.info("开始上传种子到Kylin")
         cookie_str = get_settings("kylinCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        logger.info("处理前的主标题为：" + mainTitle)
         mainTitle = mainTitle.replace('AVC', 'H264')
         logger.info("处理后的主标题为：" + mainTitle)
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
         introBrowser = introBrowser.replace('[mediainfo]', '[quote]')
         introBrowser = introBrowser.replace('[/mediainfo]', '[/quote]')
