@@ -40,14 +40,18 @@ def get_tjupt(cookies_str) -> (bool, str):
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
-        response = requests.get('https://tjupt.org/index.php', headers=headers, timeout=10)
+        response = requests.get('https://tjupt.org/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            # 判断是否有登录字样，如果有则说明cookie过期
-            if '一周之内自动登录' in response.text:
-                print('cookie过期')
-                return False, 'cookie过期'
             print('获取主页成功')
             return True, response.text
+        elif response.status_code == 302:
+            # 判断是否重定向到登录页面
+            if 'login.php' in response.headers['Location']:
+                print('cookie过期')
+                return False, 'cookie过期'
+            else:
+                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             print(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
@@ -164,14 +168,18 @@ def get_agsv(cookies_str) -> (bool, str):
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
-        response = requests.get('https://www.agsvpt.com/index.php', headers=headers, timeout=10)
+        response = requests.get('https://www.agsvpt.com/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            # 判断是否有登录字样，如果有则说明cookie过期
-            if '已有账户,点此登录' in response.text:
-                print('cookie过期')
-                return False, 'cookie过期'
             print('获取主页成功')
             return True, response.text
+        elif response.status_code == 302:
+            # 判断是否重定向到登录页面
+            if 'login.php' in response.headers['Location']:
+                print('cookie过期')
+                return False, 'cookie过期'
+            else:
+                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             print(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
@@ -229,7 +237,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
         # 音频编码 aac
         'audiocodec_sel[4]': '6',
         # 分辨率
-        'standard_sel[4]': agsv_resolution_map[resolution],
+        'standard_sel[4]':  agsv_resolution_map.get(resolution, '0'),
         # 制作组
         'team_sel[4]': '23',
         # 标签 紧转 国语 中字 完结 驻站 冰种
@@ -314,14 +322,18 @@ def get_pter(cookies_str) -> (bool, str):
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
-        response = requests.get('https://pterclub.com/index.php', headers=headers, timeout=10)
+        response = requests.get('https://pterclub.com/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            # 判断是否有登录字样，如果有则说明cookie过期
-            if '二步验证' in response.text:
-                print('cookie过期')
-                return False, 'cookie过期'
             print('获取主页成功')
             return True, response.text
+        elif response.status_code == 302:
+            # 判断是否重定向到登录页面
+            if 'login.php' in response.headers['Location']:
+                print('cookie过期')
+                return False, 'cookie过期'
+            else:
+                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             print(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
@@ -463,14 +475,18 @@ def get_kylin(cookies_str) -> (bool, str):
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
-        response = requests.get('https://www.hdkyl.in/index.php', headers=headers, timeout=10)
+        response = requests.get('https://www.hdkyl.in/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            # 判断是否有登录字样，如果有则说明cookie过期
-            if '二步验证' in response.text:
-                print('cookie过期')
-                return False, 'cookie过期'
             print('获取主页成功')
             return True, response.text
+        elif response.status_code == 302:
+            # 判断是否重定向到登录页面
+            if 'login.php' in response.headers['Location']:
+                print('cookie过期')
+                return False, 'cookie过期'
+            else:
+                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             print(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
@@ -521,7 +537,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool
         # 类型 短剧
         'type': '421',
         # 年代
-        'processing_sel[4]': kylin_year_map[year],
+        'processing_sel[4]': kylin_resolution_map.get(year, '0'),
         # 媒介 web_dl
         'medium_sel[4]': '31',
         # 视频编码 h.264
@@ -529,7 +545,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool
         # 音频编码 aac
         'audiocodec_sel[4]': '6',
         # 分辨率
-        'standard_sel[4]': kylin_resolution_map[resolution],
+        'standard_sel[4]': kylin_resolution_map.get(resolution, '0'),
         # 地区 中国
         'source_sel[4]': '15',
         # 制作组
