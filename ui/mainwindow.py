@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file 'ui/mainwindow.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Mainwindow(object):
     def setupUi(self, Mainwindow):
         Mainwindow.setObjectName("Mainwindow")
-        Mainwindow.resize(943, 998)
+        Mainwindow.resize(944, 998)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(9)
@@ -865,7 +865,7 @@ class Ui_Mainwindow(object):
         self.statusbar.setObjectName("statusbar")
         Mainwindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(parent=Mainwindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 943, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 944, 23))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(parent=self.menubar)
         self.menu.setObjectName("menu")
@@ -881,8 +881,8 @@ class Ui_Mainwindow(object):
     def retranslateUi(self, Mainwindow):
         _translate = QtCore.QCoreApplication.translate
         Mainwindow.setWindowTitle(_translate("Mainwindow", "ph-bjd"))
-        self.label_7.setText(_translate("Mainwindow", "Publish Helper for Playlet"))
-        self.label_16.setText(_translate("Mainwindow", "输入"))
+        self.label_7.setText(_translate("Mainwindow", "GodDramas发种工具"))
+        self.label_16.setText(_translate("Mainwindow", "短剧信息输入"))
         self.label_4.setText(_translate("Mainwindow", "debug窗口"))
         self.label.setText(_translate("Mainwindow", "中文名称："))
         self.label_9.setText(_translate("Mainwindow", "发布年份："))
@@ -910,23 +910,23 @@ class Ui_Mainwindow(object):
         self.checkBox_11.setText(_translate("Mainwindow", "武侠"))
         self.checkBox_12.setText(_translate("Mainwindow", "都市"))
         self.checkBox_13.setText(_translate("Mainwindow", "古装"))
-        self.label_11.setText(_translate("Mainwindow", "正文"))
-        self.label_12.setText(_translate("Mainwindow", "命名"))
+        self.label_11.setText(_translate("Mainwindow", "发种排版信息"))
+        self.label_12.setText(_translate("Mainwindow", "命名信息"))
         self.label_13.setText(_translate("Mainwindow", "主标题："))
         self.label_14.setText(_translate("Mainwindow", "副标题："))
         self.label_15.setText(_translate("Mainwindow", "文件名："))
-        self.getNameButton.setText(_translate("Mainwindow", "2、获取标准命名"))
+        self.getNameButton.setText(_translate("Mainwindow", "2、重命名文件文件夹"))
         self.makeTorrentButton.setText(_translate("Mainwindow", "3、制作种子"))
-        self.label_10.setText(_translate("Mainwindow", "MediaInfo"))
+        self.label_10.setText(_translate("Mainwindow", "MediaInfo信息"))
         self.mediainfoBrowser.setHtml(_translate("Mainwindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'微软雅黑\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.getMediaInfoButton.setText(_translate("Mainwindow", "4、获取"))
-        self.getPictureButton.setText(_translate("Mainwindow", "5、一键生成简介"))
-        self.label_5.setText(_translate("Mainwindow", "截图"))
-        self.writeButton.setText(_translate("Mainwindow", "写入txt文件中"))
+        self.getMediaInfoButton.setText(_translate("Mainwindow", "4、获取Mediainfo信息"))
+        self.getPictureButton.setText(_translate("Mainwindow", "5、视频截图上传"))
+        self.label_5.setText(_translate("Mainwindow", "视频截图图床链接"))
+        self.writeButton.setText(_translate("Mainwindow", "保存信息至txt"))
         self.sendTjuButton.setText(_translate("Mainwindow", "发北洋"))
         self.sendPeterButton.setText(_translate("Mainwindow", "发猫站"))
         self.sendAgsvButton.setText(_translate("Mainwindow", "发末日"))

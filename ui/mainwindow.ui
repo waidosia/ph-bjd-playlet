@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>943</width>
+    <width>944</width>
     <height>998</height>
    </rect>
   </property>
@@ -33,7 +33,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Publish Helper for Playlet</string>
+       <string>GodDramas发种工具</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -49,7 +49,7 @@
        </font>
       </property>
       <property name="text">
-       <string>输入</string>
+       <string>短剧信息输入</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -551,7 +551,7 @@ QPushButton:pressed {
          </font>
         </property>
         <property name="text">
-         <string>正文</string>
+         <string>发种排版信息</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -574,7 +574,7 @@ QPushButton:pressed {
          </font>
         </property>
         <property name="text">
-         <string>命名</string>
+         <string>命名信息</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -691,7 +691,7 @@ QPushButton:pressed {
 </string>
           </property>
           <property name="text">
-           <string>2、获取标准命名</string>
+           <string>2、重命名文件文件夹</string>
           </property>
          </widget>
         </item>
@@ -767,7 +767,7 @@ QPushButton:pressed {
          </font>
         </property>
         <property name="text">
-         <string>MediaInfo</string>
+         <string>MediaInfo信息</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -825,7 +825,7 @@ QPushButton:pressed {
 </string>
         </property>
         <property name="text">
-         <string>4、获取</string>
+         <string>4、获取Mediainfo信息</string>
         </property>
        </widget>
       </item>
@@ -870,7 +870,7 @@ QPushButton:pressed {
 </string>
         </property>
         <property name="text">
-         <string>5、一键生成简介</string>
+         <string>5、视频截图上传</string>
         </property>
        </widget>
       </item>
@@ -886,7 +886,7 @@ QPushButton:pressed {
          </font>
         </property>
         <property name="text">
-         <string>截图</string>
+         <string>视频截图图床链接</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -950,7 +950,7 @@ QPushButton:pressed {
 </string>
         </property>
         <property name="text">
-         <string>写入txt文件中</string>
+         <string>保存信息至txt</string>
         </property>
        </widget>
       </item>
@@ -1306,7 +1306,7 @@ QPushButton:pressed {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>943</width>
+     <width>944</width>
      <height>23</height>
     </rect>
    </property>

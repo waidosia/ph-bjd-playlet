@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'settings.ui'
+# Form implementation generated from reading ui file 'ui/settings.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -274,6 +274,15 @@ class Ui_Settings(object):
         self.resourcePath.setObjectName("resourcePath")
         self.horizontalLayout_13.addWidget(self.resourcePath)
         self.gridLayout.addLayout(self.horizontalLayout_13, 11, 0, 1, 1)
+        self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
+        self.label_21 = QtWidgets.QLabel(parent=Settings)
+        self.label_21.setObjectName("label_21")
+        self.horizontalLayout_18.addWidget(self.label_21)
+        self.proxyUrl = QtWidgets.QLineEdit(parent=Settings)
+        self.proxyUrl.setObjectName("proxyUrl")
+        self.horizontalLayout_18.addWidget(self.proxyUrl)
+        self.gridLayout.addLayout(self.horizontalLayout_18, 12, 0, 1, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
@@ -312,7 +321,7 @@ class Ui_Settings(object):
         self.kylinCookie.setObjectName("kylinCookie")
         self.horizontalLayout_17.addWidget(self.kylinCookie)
         self.verticalLayout.addLayout(self.horizontalLayout_17)
-        self.gridLayout.addLayout(self.verticalLayout, 12, 0, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout, 13, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(30, -1, 30, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -386,7 +395,7 @@ class Ui_Settings(object):
 "")
         self.cancelButton.setObjectName("cancelButton")
         self.horizontalLayout.addWidget(self.cancelButton)
-        self.gridLayout.addLayout(self.horizontalLayout, 13, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 14, 0, 1, 1)
 
         self.retranslateUi(Settings)
         QtCore.QMetaObject.connectSlotsByName(Settings)
@@ -1016,6 +1025,8 @@ class Ui_Settings(object):
         self.label_15.setText(_translate("Settings", "QB用户名："))
         self.label_16.setText(_translate("Settings", "QB密码"))
         self.label_18.setText(_translate("Settings", "做种路径："))
+        self.label_21.setText(_translate("Settings", "代理地址:"))
+        self.proxyUrl.setPlaceholderText(_translate("Settings", "格式为:http://xxx:7890"))
         self.label_17.setText(_translate("Settings", "tju_cookie："))
         self.label_9.setText(_translate("Settings", "agsv_cookie:"))
         self.label_11.setText(_translate("Settings", "Pter_cookie:"))

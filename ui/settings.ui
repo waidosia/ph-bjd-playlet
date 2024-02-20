@@ -1202,6 +1202,24 @@ QPushButton:pressed {
     </layout>
    </item>
    <item row="12" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>代理地址:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="proxyUrl">
+       <property name="placeholderText">
+        <string>格式为:http://xxx:7890</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="13" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -1261,7 +1279,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="13" column="0">
+   <item row="14" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="leftMargin">
       <number>30</number>

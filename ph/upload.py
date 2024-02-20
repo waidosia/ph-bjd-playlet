@@ -24,10 +24,13 @@ kylin_resolution_map = {
     '4K': '6',
 }
 
+proxies = {}
+
 
 ###############TJUPT################
 
 def get_tjupt(cookies_str) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'tjupt.org',
         'Cookie': cookies_str,
@@ -60,11 +63,17 @@ def get_tjupt(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_name) -> (bool, str):
+def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_name,proxy) -> (bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_tjupt(cookies_str)
     if not get_success:
         return False, get_str
+    global proxies
+    if proxy != '' or proxy is not None:
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
     headers = {
         'Host': 'tjupt.org',
         'Cookie': cookies_str,
@@ -127,6 +136,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
 
 
 def get_tjupt_torrent(cookies_str, torrent_id) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'tjupt.org',
         'Cookie': cookies_str,
@@ -156,6 +166,7 @@ def get_tjupt_torrent(cookies_str, torrent_id) -> (bool, str):
 
 
 def get_agsv(cookies_str) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'www.agsvpt.com',
         'Cookie': cookies_str,
@@ -188,11 +199,17 @@ def get_agsv(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info) -> (bool, str):
+def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy) -> (bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_agsv(cookies_str)
     if not get_success:
         return False, get_str
+    global proxies
+    if proxy != '' or proxy is not None:
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
 
     headers = {
         'Host': 'www.agsvpt.com',
@@ -237,7 +254,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
         # 音频编码 aac
         'audiocodec_sel[4]': '6',
         # 分辨率
-        'standard_sel[4]':  agsv_resolution_map.get(resolution, '0'),
+        'standard_sel[4]': agsv_resolution_map.get(resolution, '0'),
         # 制作组
         'team_sel[4]': '23',
         # 标签 紧转 国语 中字 完结 驻站 冰种
@@ -273,6 +290,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
 
 
 def get_agsv_torrent(cookies_str, torrent_link) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'www.agsvpt.com',
         'Cookie': cookies_str,
@@ -310,6 +328,7 @@ def get_agsv_torrent(cookies_str, torrent_link) -> (bool, str):
 ###############Pter################
 
 def get_pter(cookies_str) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'pterclub.com',
         'Cookie': cookies_str,
@@ -342,11 +361,17 @@ def get_pter(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_pter(cookies_str, torrent_file, main_title, compose, descr) -> (bool, str):
+def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) -> (bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_pter(cookies_str)
     if not get_success:
         return False, get_str
+    global proxies
+    if proxy != '' or proxy is not None:
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
 
     headers = {
         'Host': 'pterclub.com',
@@ -425,6 +450,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr) -> (bool,
 
 
 def get_pter_torrent(cookies_str, torrent_id) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'pterclub.com',
         'Cookie': cookies_str,
@@ -463,6 +489,7 @@ def get_pter_torrent(cookies_str, torrent_id) -> (bool, str):
 
 ###############Kylin################
 def get_kylin(cookies_str) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'www.hdkyl.in',
         'Cookie': cookies_str,
@@ -475,7 +502,8 @@ def get_kylin(cookies_str) -> (bool, str):
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
-        response = requests.get('https://www.hdkyl.in/index.php', headers=headers, timeout=10, allow_redirects=False)
+        response = requests.get('https://www.hdkyl.in/index.php', headers=headers, timeout=10, allow_redirects=False,
+                                proxies=proxies)
         if response.status_code == 200:
             print('获取主页成功')
             return True, response.text
@@ -495,12 +523,17 @@ def get_kylin(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool, str):
+def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy) -> (bool, str):
+    global proxies
+    if proxy != '' or proxy is not None:
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_kylin(cookies_str)
     if not get_success:
         return False, get_str
-
     headers = {
         'Host': 'www.hdkyl.in',
         'Cookie': cookies_str,
@@ -562,7 +595,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool
     try:
         response = requests.request("POST", 'https://www.hdkyl.in/takeupload.php', headers=headers,
                                     data=data, files=files, allow_redirects=False,
-                                    timeout=10)
+                                    timeout=10, proxies=proxies)
         if response.status_code == 302:
             # 正常的重定向
             # 提取重定向后的地址
@@ -582,6 +615,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr) -> (bool
 
 
 def get_kylin_torrent(cookies_str, torrent_link) -> (bool, str):
+    global proxies
     headers = {
         'Host': 'www.hdkyl.in',
         'Cookie': cookies_str,
