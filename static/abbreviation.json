@@ -1,8 +1,9 @@
 {
-    "2 160 pixels": "2160P",
-    "1 080 pixels": "1080P",
-    "720 pixels": "720P",
-    "480 pixels": "480P",
+    "2 160 pixels": "2160p",
+    "1 080 pixels": "1080p",
+    "720 pixels": "720p",
+    "540 pixels": "540p",
+    "480 pixels": "480p",
 
     "HEVC": "HEVC",
     "AVC": "AVC",

@@ -3,6 +3,7 @@ from lxml import etree
 
 import requests
 from bs4 import BeautifulSoup
+from util.log import logger
 
 agsv_resolution_map = {
     '480P': '4',
@@ -43,23 +44,24 @@ def get_tjupt(cookies_str) -> (bool, str):
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
+        logger.info('开始获取北洋主页')
         response = requests.get('https://tjupt.org/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            print('获取主页成功')
+            logger.info('获取主页成功')
             return True, response.text
         elif response.status_code == 302:
             # 判断是否重定向到登录页面
             if 'login.php' in response.headers['Location']:
-                print('cookie过期')
+                logger.info('cookie过期')
                 return False, 'cookie过期'
             else:
-                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                logger.info(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
-            print(f'获取主页失败,状态码为:{response.status_code}')
+            logger.info(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        print('获取主页失败', e)
+        logger.error('获取主页失败', e)
         return False, '获取主页失败'
 
 
@@ -70,6 +72,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
         return False, get_str
     global proxies
     if proxy != '' or proxy is not None:
+        logger.info(f'使用代理:{proxy}')
         proxies = {
             'http': proxy,
             'https': proxy
@@ -89,7 +92,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        print('打开种子文件失败', e)
+        logger.info('打开种子文件失败', e)
         return False, '打开种子文件失败，请检查是否制作种子'
 
     data = {
@@ -114,24 +117,24 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
                                     timeout=10)
         if response.status_code == 302:
             # 正常的重定向
+            logger.info('发布成功,尝试获取种子id')
             # 提取重定向后的地址
             redirect_url = response.headers['Location']
             # details.php?id=399109&uploaded=1
             if 'details.php' in redirect_url:
-                print('发布成功,尝试获取种子id')
                 torrent_id = redirect_url.split('id=')[1].split('&')[0]
-                print('获取种子id成功', torrent_id)
+                logger.info('获取种子id成功', torrent_id)
                 get_success, torrent_link = get_tjupt_torrent(cookies_str, torrent_id)
                 if get_success:
                     return True, torrent_link
                 else:
                     return False, torrent_link
         else:
-            print(f'发布失败,状态码为:{response.status_code}')
+            logger.info(f'发布失败,状态码为:{response.status_code}')
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        print('发布失败', e)
+        logger.info('发布失败', e)
         return False, '发布失败'
 
 
@@ -152,13 +155,13 @@ def get_tjupt_torrent(cookies_str, torrent_id) -> (bool, str):
             # 获取种子下载链接
             soup = BeautifulSoup(response.text, 'html.parser')
             torrent_url = soup.find('a', {'id': 'direct_link'}).get('href')
-            print('获取种子下载地址成功', torrent_url)
+            logger.info('获取种子下载地址成功', torrent_url)
             return True, torrent_url
         else:
-            print('获取种子下载地址失败,状态码为:', response.status_code)
+            logger.info(f'获取种子下载地址失败,状态码为:{response.status_code}')
             return False, '获取种子下载地址失败,状态码为:', response.status_code
     except Exception as e:
-        print('获取种子下载地址失败', e)
+        logger.error(f'获取种子下载地址失败:{e}')
         return False, '获取种子下载地址失败'
 
 
@@ -181,21 +184,21 @@ def get_agsv(cookies_str) -> (bool, str):
     try:
         response = requests.get('https://www.agsvpt.com/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            print('获取主页成功')
+            logger.info('获取主页成功')
             return True, response.text
         elif response.status_code == 302:
             # 判断是否重定向到登录页面
             if 'login.php' in response.headers['Location']:
-                print('cookie过期')
+                logger.info('cookie过期')
                 return False, 'cookie过期'
             else:
-                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                logger.info(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
-            print(f'获取主页失败,状态码为:{response.status_code}')
+            logger.error(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        print('获取主页失败', e)
+        logger.exception('获取主页失败，错误为:', e)
         return False, '获取主页失败'
 
 
@@ -206,6 +209,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
         return False, get_str
     global proxies
     if proxy != '' or proxy is not None:
+        logger.info(f'使用代理:{proxy}')
         proxies = {
             'http': proxy,
             'https': proxy
@@ -227,7 +231,8 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        print('打开种子文件失败', e)
+        logger.info('打开种子文件失败', e)
+        logger.error('打开种子文件失败', e)
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
@@ -281,11 +286,11 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
             else:
                 return False, torrent_link
         else:
-            print(f'发布失败,状态码为:{response.status_code}')
+            logger.error(f'发布失败,状态码为:{response.status_code}')
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        print('发布失败', e)
+        logger.exception('发布失败,错误为:', e)
         return False, '发布失败'
 
 
@@ -311,17 +316,17 @@ def get_agsv_torrent(cookies_str, torrent_link) -> (bool, str):
             result = tree.xpath('//a[@title="可在BT客户端使用，当天有效。"]')
             if result:
                 result = result[0].get('href')
-                print('获取种子下载地址成功', result)
+                logger.info('获取种子下载地址成功', result)
                 return True, result
             else:
-                print('获取种子下载地址失败')
+                logger.info('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            print('获取种子下载地址失败,状态码为:', response.status_code)
+            logger.error('获取种子下载地址失败,状态码为: %s', response.status_code)
             return False, '获取种子下载地址失败,状态码为:', response.status_code
     except Exception as e:
-        print('获取种子下载地址失败', e)
+        logger.exception('获取种子下载地址失败，错误为:', e)
         return False, '获取种子下载地址失败'
 
 
@@ -343,21 +348,21 @@ def get_pter(cookies_str) -> (bool, str):
     try:
         response = requests.get('https://pterclub.com/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
-            print('获取主页成功')
+            logger.info('获取主页成功')
             return True, response.text
         elif response.status_code == 302:
             # 判断是否重定向到登录页面
             if 'login.php' in response.headers['Location']:
-                print('cookie过期')
+                logger.error('cookie过期')
                 return False, 'cookie过期'
             else:
-                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                logger.error(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
-            print(f'获取主页失败,状态码为:{response.status_code}')
+            logger.error(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        print('获取主页失败', e)
+        logger.error('获取主页失败', e)
         return False, '获取主页失败'
 
 
@@ -368,6 +373,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) ->
         return False, get_str
     global proxies
     if proxy != '' or proxy is not None:
+        logger.info(f'使用代理:{proxy}')
         proxies = {
             'http': proxy,
             'https': proxy
@@ -389,7 +395,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) ->
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        print('打开种子文件失败', e)
+        logger.error('打开种子文件失败', e)
         return False, '打开种子文件失败，请检查是否制作种子'
 
     data = {
@@ -429,25 +435,24 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) ->
             # /details.php?id=450830&uploaded=1
 
             if 'details.php' in redirect_url:
-                print('发布成功,尝试获取种子id')
+                logger.info('发布成功,尝试获取种子id')
                 torrent_id = redirect_url.split('id=')[1].split('&')[0]
-                print('获取种子id成功', torrent_id)
+                logger.info('获取种子id成功', torrent_id)
                 get_success, torrent_link = get_pter_torrent(cookies_str, torrent_id)
                 if get_success:
                     return True, torrent_link
                 else:
                     return False, torrent_link
             else:
-                print(f'发布失败,重定向地址为:{redirect_url}')
+                logger.error(f'发布失败,重定向地址为:{redirect_url}')
                 return False, f'发布失败,重定向地址为:{redirect_url}'
         else:
-            print(f'发布失败,状态码为:{response.status_code}')
+            logger.error(f'发布失败,状态码为:{response.status_code}')
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        print('发布失败', e)
+        logger.error('发布失败', e)
         return False, '发布失败'
-
 
 def get_pter_torrent(cookies_str, torrent_id) -> (bool, str):
     global proxies
@@ -473,17 +478,17 @@ def get_pter_torrent(cookies_str, torrent_id) -> (bool, str):
                 result = result[0].get('href')
                 # 地址需要拼接
                 result = 'https://pterclub.com/' + result
-                print('获取种子下载地址成功', result)
+                logger.info('获取种子下载地址成功', result)
                 return True, result
             else:
-                print('获取种子下载地址失败')
+                logger.error('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            print('获取种子下载地址失败,状态码为:', response.status_code)
+            logger.error('获取种子下载地址失败,状态码为:', response.status_code)
             return False, '获取种子下载地址失败,状态码为:', response.status_code
     except Exception as e:
-        print('获取种子下载地址失败', e)
+        logger.error('获取种子下载地址失败', e)
         return False, '获取种子下载地址失败'
 
 
@@ -505,27 +510,28 @@ def get_kylin(cookies_str) -> (bool, str):
         response = requests.get('https://www.hdkyl.in/index.php', headers=headers, timeout=10, allow_redirects=False,
                                 proxies=proxies)
         if response.status_code == 200:
-            print('获取主页成功')
+            logger.info('获取主页成功')
             return True, response.text
         elif response.status_code == 302:
             # 判断是否重定向到登录页面
             if 'login.php' in response.headers['Location']:
-                print('cookie过期')
+                logger.error('cookie过期')
                 return False, 'cookie过期'
             else:
-                print(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
+                logger.error(f'获取主页失败,重定向地址为:{response.headers["Location"]}')
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
-            print(f'获取主页失败,状态码为:{response.status_code}')
+            logger.error(f'获取主页失败,状态码为:{response.status_code}')
             return False, '获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        print('获取主页失败', e)
+        logger.error('获取主页失败', e)
         return False, '获取主页失败'
 
 
 def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy) -> (bool, str):
     global proxies
     if proxy != '' or proxy is not None:
+        logger.info(f'使用代理:{proxy}')
         proxies = {
             'http': proxy,
             'https': proxy
@@ -550,7 +556,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy) -
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        print('打开种子文件失败', e)
+        logger.error('打开种子文件失败', e)
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
@@ -606,11 +612,11 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy) -
             else:
                 return False, torrent_link
         else:
-            print(f'发布失败,状态码为:{response.status_code}')
+            logger.error(f'发布失败,状态码为:{response.status_code}')
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        print('发布失败', e)
+        logger.error('发布失败', e)
         return False, '发布失败'
 
 
@@ -636,15 +642,15 @@ def get_kylin_torrent(cookies_str, torrent_link) -> (bool, str):
             result = tree.xpath('//a[@title="可在BT客户端使用，当天有效。"]')
             if result:
                 result = result[0].get('href')
-                print('获取种子下载地址成功', result)
+                logger.info('获取种子下载地址成功', result)
                 return True, result
             else:
-                print('获取种子下载地址失败')
+                logger.error('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            print('获取种子下载地址失败,状态码为:', response.status_code)
+            logger.error('获取种子下载地址失败,状态码为:', response.status_code)
             return False, '获取种子下载地址失败,状态码为:', response.status_code
     except Exception as e:
-        print('获取种子下载地址失败', e)
+        logger.exception('获取种子下载地址失败', e)
         return False, '获取种子下载地址失败'

@@ -7,7 +7,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication
 
 from ui.mainwindow import Ui_Mainwindow
-from . import logger
+from util.log import logger
 from .common import title_tem, medio_tem
 from .mediainfo import get_media_info
 from .rename import get_video_info
@@ -16,14 +16,16 @@ from .seed import qb_download
 from .setting import Settings
 from .tool import get_settings, get_file_path, get_folder_path, check_path_and_find_video, create_torrent, load_names, \
     chinese_name_to_pinyin, \
-    get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files
+    get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files, \
+    replace_fullwidth_symbols
 from .upload import upload_tjupt, upload_agsv, upload_pter, upload_kylin
 
 
 def starui():
+    logger.info("程序启动")
     app = QApplication(sys.argv)
     myMainwindow = MainWindow()
-    myico = QIcon("static/apr-bjd.ico")
+    myico = QIcon("static/playlet.ico")
     myMainwindow.setWindowIcon(myico)
     myMainwindow.show()
     try:
@@ -76,28 +78,34 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.writeButton.clicked.connect(self.writeButtonClicked)
 
         self.debugBrowser.append("程序初始化成功，使用前请查看设置中的说明")
+        logger.info("程序初始化成功")
 
     def initialize_team_combobox(self):
         team_names = load_names('static/team.json', 'team')
         for name in team_names:
             self.team.addItem(name)
+        logger.info(f"加载团队名称")
 
     def initialize_source_combobox(self):
         source_names = load_names('static/source.json', 'source')
         for name in source_names:
             self.source.addItem(name)
+        logger.info(f"加载资源来源")
 
     def initialize_type_combobox(self):
         type_names = load_names('static/type.json', 'type')
         for name in type_names:
             self.type.addItem(name)
+        logger.info(f"加载资源类型")
 
     def selectCoverFolderButtonClicked(self):
         path = get_file_path()
+        logger.info(f"选择封面文件夹：{path}")
         self.coverPath.setText(path)
 
     def selectVideoFolderButtonClicked(self):
         path = get_folder_path()
+        logger.info(f"选择视频文件夹：{path}")
         self.videoPath.setText(path)
 
     def clear_all_text_inputs(self):
@@ -113,6 +121,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.yearEdit.setText("")
         self.info.setText("")
         self.debugBrowser.append("所有输入框已清空")
+        logger.info("所有输入框已清空")
 
     def get_selected_categories(self):
         categories = [
@@ -121,57 +130,71 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
 
         selected_categories = [categories[i] for i in range(len(categories)) if
                                getattr(self, f"checkBox_{i}").isChecked()]
+
+        logger.info(f"选择的类型为：{selected_categories}")
+
         return ' '.join(selected_categories)
 
     def settingsClicked(self):  # click对应的槽函数
         self.mySettings = Settings()
         self.mySettings.getSettings()
-        myico = QIcon("static/apr-bjd.ico")
+        myico = QIcon("static/playlet.ico")
         self.mySettings.setWindowIcon(myico)
         self.mySettings.show()
 
     def getPictureButtonClicked(self):
         getPicture = UploadImages(self)
+        logger.info("点击获取截图按钮")
         getPicture.getPictureButtonClicked()
 
     def uploadCoverButtonClicked(self):
         uploadCover = UploadImages(self)
+        logger.info("点击上传封面按钮")
         uploadCover.uploadCoverButtonClicked()
 
     def getNameButtonClicked(self):
         get_name = GetName(self)
+        logger.info("点击获取名称按钮")
         get_name.getNameButtonClicked()
 
     def makeTorrentButtonClicked(self):
         make_torrent = MakeTorrent(self)
+        logger.info("点击制作种子按钮")
         make_torrent.makeTorrentButtonClicked()
 
     def getMediaInfoButtonClicked(self):
         get_media_info = GetMediaInfo(self)
+        logger.info("点击获取MediaInfo按钮")
         get_media_info.getMediaInfoButtonClicked()
 
     def writeButtonClicked(self):
         write_file = WriteFile(self)
+        logger.info("点击写入文件按钮")
         write_file.writeButtonClicked()
 
     def sendTjuClicked(self):
         upload_handler = UploadHandler(self)
+        logger.info("点击上传TJUPT按钮")
         upload_handler.sendTjuClicked()
 
     def sendAgsvClicked(self):
         upload_handler = UploadHandler(self)
+        logger.info("点击上传agsv按钮")
         upload_handler.sendAgsvClicked()
 
     def sendPeterClicked(self):
         upload_handler = UploadHandler(self)
+        logger.info("点击上传Pter按钮")
         upload_handler.sendPeterClicked()
 
     def sendKylinClicked(self):
         upload_handler = UploadHandler(self)
+        logger.info("点击上传Kylin按钮")
         upload_handler.sendKylinClicked()
 
     def seedMakClicked(self):
         seed_mak = SeedMak(self)
+        logger.info("点击做种按钮")
         seed_mak.seed()
 
 
@@ -191,6 +214,7 @@ class UploadImages(QObject):
 
     def uploadCoverButtonClicked(self):
         if self.parent.coverPath.text():
+            logger.info(f"上传封面{self.parent.coverPath.text()}")
             self.parent.debugBrowser.append("上传封面" + self.parent.coverPath.text())
             figureBedPath = get_settings("figureBedPath")  # 图床地址
             figureBedToken = get_settings("figureBedToken")  # 图床Token
@@ -198,7 +222,7 @@ class UploadImages(QObject):
                                                            True)
             self.upload_cover_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
             self.upload_cover_thread.start()  # 启动线程
-            print("上传图床线程启动")
+            logger.info("上传图床线程启动")
             self.parent.debugBrowser.append("上传图床线程启动")
 
     def getPictureButtonClicked(self):
@@ -208,6 +232,7 @@ class UploadImages(QObject):
         if isVideoPath == 1 or isVideoPath == 2:
             self.parent.debugBrowser.append(f"获取视频 {videoPath} 的截图")
             self.parent.debugBrowser.append("参数获取成功，开始执行截图函数")
+            logger.info(f"获取视频 {videoPath} 的截图")
 
             screenshotPath = get_settings("screenshotPath")
             figureBedPath = get_settings("figureBedPath")
@@ -230,22 +255,29 @@ class UploadImages(QObject):
 
             if screenshot_success:
                 self.handle_screenshot_result(res, figureBedPath, figureBedToken, autoUploadScreenshot)
+                logger.info(f"截图成功")
             else:
                 self.parent.debugBrowser.append("截图失败: " + str(res))
+                logger.error(f"截图失败: {res}")
+
         else:
             self.parent.debugBrowser.append("您的视频文件路径有误")
+            logger.error(f"您的视频文件路径有误")
 
     def handle_screenshot_result(self, res, figureBedPath, figureBedToken, autoUploadScreenshot):
         self.parent.debugBrowser.append("成功获取截图：" + str(res))
+        logger.info(f"成功获取截图：{res}")
 
         if autoUploadScreenshot:
             self.parent.debugBrowser.append(f"开始自动上传截图到图床 {figureBedPath}")
+            logger.info(f"开始自动上传截图到图床 {figureBedPath}")
             self.parent.pictureUrlBrowser.setText("")
             for i, screenshot in enumerate(res[:6]):  # 限制上传至多6张截图
                 self.upload_screenshot(figureBedPath, figureBedToken, screenshot, False, index=i)
             self.parent.debugBrowser.append("上传图床线程启动")
         else:
             self.parent.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
+            logger.info("未选择自动上传图床功能，图片已储存在本地")
             output = "\n".join(res)
             self.parent.pictureUrlBrowser.setText(output)
 
@@ -259,6 +291,7 @@ class UploadImages(QObject):
 
     def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback):
         print("接受到线程请求的结果")
+        logger.info("接受到线程请求的结果")
         self.parent.debugBrowser.append("接受到线程请求的结果")
         pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
         deleteScreenshot = bool(get_settings("deleteScreenshot"))
@@ -267,9 +300,11 @@ class UploadImages(QObject):
                 bbsurl = str(api_response.get("bbsurl", ""))
                 self.parent.pictureUrlBrowser.append(bbsurl)
                 api_response = bbsurl
+                logger.info(f"成功上传截图到图床 {bbsurl}")
             else:
                 if api_response.get("statusCode", "") == "":
                     self.parent.debugBrowser.append("未接受到图床的任何响应" + '\n')
+                    logger.error("未接受到图床的任何响应")
                 else:
                     self.parent.debugBrowser.append(str(api_response) + '\n')
             if pasteScreenshotUrl:
@@ -281,14 +316,17 @@ class UploadImages(QObject):
                                             self.parent.info.text())
                     self.parent.introBrowser.append(text)
                     self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
+                    logger.info("成功将封面链接粘贴到简介前")
                 else:
                     paste_url_callback(api_response)
                     self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
+                    logger.info("成功将封面链接粘贴到简介后")
                 if deleteScreenshot:
                     self.delete_screenshot(screenshot_path)
 
         else:
             self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
+            logger.error("图床响应不是有效的JSON格式")
 
     def paste_url_cover(self, api_response):
         self.parent.introBrowser.append(api_response)
@@ -322,12 +360,20 @@ class GetName:
         first_chinese_name = self.parent.chineseNameEdit.text()
         if not first_chinese_name:
             self.parent.debugBrowser.append('获取中文名失败')
+            logger.info("获取中文名失败")
             return
 
         print('获取中文名成功：' + first_chinese_name)
+        logger.info('获取中文名成功：' + first_chinese_name)
         self.parent.debugBrowser.append('获取中文名成功：' + first_chinese_name)
 
         first_english_name = chinese_name_to_pinyin(first_chinese_name)
+        # 对英文名中的全角符号进行替换
+        first_english_name = replace_fullwidth_symbols(first_english_name)
+        first_english_name = first_english_name.replace('.', ' ')
+        self.parent.debugBrowser.append('获取英文名成功：' + first_english_name)
+        logger.info('获取英文名成功：' + first_english_name)
+
         year = self.parent.yearEdit.text()
         season = self.parent.seasonBox.text().zfill(2)
 
@@ -343,11 +389,11 @@ class GetName:
 
         if isVideoPath != 2:
             self.parent.debugBrowser.append("您的视频文件路径有误")
+            logger.error("您的视频文件路径有误")
             return
 
         video_files = get_video_files(self.parent.videoPath.text())
         print(video_files)
-        print("获取到关键参数：" + str(output))
         self.parent.debugBrowser.append("获取到关键参数：" + str(output))
 
         if videoPath is not None:
@@ -374,8 +420,8 @@ class GetName:
         self.parent.fileNameBrowser.setText(file_name)
 
         if rename_file:
-            print("对文件重新命名")
             self.parent.debugBrowser.append("开始对文件重新命名")
+            logger.info("开始对文件重新命名")
 
             renamed_files = rename_video_files(video_files, file_name)
             for renamed_file in renamed_files:
@@ -383,10 +429,12 @@ class GetName:
                     self.parent.videoPath.setText(renamed_file)
                     videoPath = renamed_file
                     self.parent.debugBrowser.append("视频成功重新命名为：" + videoPath)
+                    logger.info("视频成功重新命名为：" + videoPath)
                 else:
-                    self.parent.debugBrowser.append("重命名失败：" + output)
+                    self.parent.debugBrowser.append("重命名失败")
+                    logger.error("重命名失败")
 
-            print("对文件夹重新命名")
+            logger.info("对文件夹重新命名")
             self.parent.debugBrowser.append("开始对文件夹重新命名")
 
             renamed_directory = rename_directory_if_needed(videoPath, file_name)
@@ -394,8 +442,10 @@ class GetName:
                 self.parent.videoPath.setText(renamed_directory)
                 videoPath = renamed_directory
                 self.parent.debugBrowser.append("视频地址成功重新命名为：" + videoPath)
+                logger.info("视频地址成功重新命名为：" + videoPath)
             else:
-                self.parent.debugBrowser.append("重命名失败：" + output)
+                self.parent.debugBrowser.append("重命名失败：")
+                logger.error("重命名失败")
 
 
 class WriteFile:
@@ -423,9 +473,11 @@ class WriteFile:
                 file.write(f'副标题为： {secondTitle}\n')
                 file.write(f'简介为： \n{introBrowser}\n')
             self.parent.clear_all_text_inputs()
+            self.parent.debugBrowser.append("写入文件成功")
         except Exception as e:
             self.parent.debugBrowser.append(f"发生异常: {e}")
             self.parent.clear_all_text_inputs()
+            logger.error(f"发生异常: {e}")
 
 
 class GetMediaInfo:
@@ -443,10 +495,13 @@ class GetMediaInfo:
                 mediainfo_text = medio_tem.format(mediainfo)
                 self.parent.introBrowser.append(mediainfo_text)
                 self.parent.debugBrowser.append("成功获取到MediaInfo")
+                logger.info("成功获取到MediaInfo")
             else:
                 self.parent.debugBrowser.append("获取MediaInfo失败,请重试")
+                logger.error("获取MediaInfo失败,请重试")
         else:
             self.parent.debugBrowser.append("您的视频文件路径有误")
+            logger.error("您的视频文件路径有误")
 
 
 class MakeTorrent(QObject):
@@ -463,21 +518,26 @@ class MakeTorrent(QObject):
             torrent_path = str(get_settings("torrentPath"))
             folder_path = os.path.dirname(videoPath)
             self.parent.debugBrowser.append("开始将" + folder_path + "制作种子，储存在" + torrent_path)
+            logger.info("开始将" + folder_path + "制作种子，储存在" + torrent_path)
             self.make_torrent_thread = MakeTorrentThread(folder_path, torrent_path)
             self.make_torrent_thread.result_signal.connect(self.handleMakeTorrentResult)  # 连接信号
             self.make_torrent_thread.start()
             self.parent.debugBrowser.append("制作种子线程启动成功")
+            logger.info("制作种子线程启动成功")
         else:
             self.parent.debugBrowser.append("制作种子失败：" + videoPath)
+            logger.error("制作种子失败：" + videoPath)
 
     def handleMakeTorrentResult(self, get_success, response, error):
         print("开始处理制作后的逻辑")
         if error == "":
             if get_success:
                 self.parent.debugBrowser.append("成功制作种子：" + response)
+                logger.info("成功制作种子：" + response)
                 self.parent.torrent_path = response
             else:
                 self.parent.debugBrowser.append("制作种子失败：" + response)
+                logger.error("制作种子失败：" + response)
         else:
             logger.error(f"发生异常: {error}")
 
@@ -486,11 +546,17 @@ class UploadHandler:
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self.proxy_url = get_settings("proxyUrl")
 
     def sendTjuClicked(self):
         self.parent.debugBrowser.append("开始上传种子到TJUPT")
+        logger.info("开始上传种子到TJUPT")
         cookie_str = get_settings("tjuCookie")
+
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
+        mainTitle = mainTitle.replace('H264', 'H.264')
+        mainTitle = mainTitle.replace('AVC', 'H.264')
+        logger.info("处理后的主标题为：" + mainTitle)
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         chinese_name = self.parent.chineseNameEdit.text()
@@ -501,23 +567,28 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, tju_link = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
-                                                chinese_name)
+                                                chinese_name, self.proxy_url)
         if upload_success:
             self.parent.tjuTorrentLink = tju_link
             self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + tju_link)
+            logger.info("上传种子到TJUPT成功,种子链接为：" + tju_link)
         else:
             self.parent.debugBrowser.append("上传种子到TJUPT失败，失败原因为：" + tju_link)
+            logger.error("上传种子到TJUPT失败，失败原因为：" + tju_link)
 
     def sendAgsvClicked(self):
         self.parent.debugBrowser.append("开始上传种子到agsv")
+        logger.info("开始上传种子到agsv")
         cookie_str = get_settings("agsvCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        mainTitle = mainTitle.replace('H264', 'AVC')
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         # 去除指定一段落的内容
         modified_content = re.sub(
             r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
             '', introBrowser, flags=re.DOTALL)
+        logger.info("处理后的简介为：" + modified_content)
         media_info = self.parent.mediainfoBrowser.toPlainText()
         torrent_path = self.parent.torrent_path
         current_working_directory = os.getcwd()
@@ -526,7 +597,7 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, agsv_link = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle, modified_content,
-                                                media_info)
+                                                media_info, self.proxy_url)
         if upload_success:
             self.parent.agsvTorrentLink = agsv_link
             self.parent.debugBrowser.append("上传种子到agsv成功,种子链接为：" + agsv_link)
@@ -535,9 +606,11 @@ class UploadHandler:
 
     def sendPeterClicked(self):
         self.parent.debugBrowser.append("开始上传种子到Pter")
+        logger.info("开始上传种子到Pter")
         cookie_str = get_settings("pterCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
         mainTitle = mainTitle.replace('AVC', 'H.264')
+        mainTitle = mainTitle.replace('H264', 'H.264')
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         # 正则匹配Writing library                          : 的后的内容，如果存在x264则改写主标题
@@ -547,9 +620,12 @@ class UploadHandler:
                                     self.parent.mediainfoBrowser.toPlainText())
         if writing_library:
             if 'x264' in writing_library.group(1):
+                logger.info("Writing library中存在x264，主标题将被替换")
                 mainTitle = mainTitle.replace('H.264', 'x264')
+        logger.info("处理后的主标题为：" + mainTitle)
         introBrowser = introBrowser.replace('[mediainfo]', '[hide=MediaInfo]')
         introBrowser = introBrowser.replace('[/mediainfo]', '[/hide]')
+        logger.info("处理后的简介为：" + introBrowser)
         torrent_path = self.parent.torrent_path
         current_working_directory = os.getcwd()
         if torrent_path:
@@ -557,22 +633,28 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, pter_link = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
+                                                self.proxy_url,
                                                 )
         if upload_success:
             self.parent.peterTorrentLink = pter_link
             self.parent.debugBrowser.append("上传种子到Pter成功,种子链接为：" + pter_link)
+            logger.info("上传种子到Pter成功,种子链接为：" + pter_link)
         else:
             self.parent.debugBrowser.append("上传种子到Pter失败，失败原因为：" + pter_link)
+            logger.error("上传种子到Pter失败，失败原因为：" + pter_link)
 
     def sendKylinClicked(self):
         self.parent.debugBrowser.append("开始上传种子到Kylin")
+        logger.info("开始上传种子到Kylin")
         cookie_str = get_settings("kylinCookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
         mainTitle = mainTitle.replace('AVC', 'H264')
+        logger.info("处理后的主标题为：" + mainTitle)
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         introBrowser = introBrowser.replace('[mediainfo]', '[quote]')
         introBrowser = introBrowser.replace('[/mediainfo]', '[/quote]')
+        logger.info("处理后的简介为：" + introBrowser)
         torrent_path = self.parent.torrent_path
         current_working_directory = os.getcwd()
         if torrent_path:
@@ -580,12 +662,15 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, kylin_link = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
+                                                  self.proxy_url,
                                                   )
         if upload_success:
             self.parent.kylinTorrentLink = kylin_link
             self.parent.debugBrowser.append("上传种子到kylin成功,种子链接为：" + kylin_link)
+            logger.info("上传种子到kylin成功,种子链接为：" + kylin_link)
         else:
             self.parent.debugBrowser.append("上传种子到kylin失败，失败原因为：" + kylin_link)
+            logger.error("上传种子到kylin失败，失败原因为：" + kylin_link)
 
 
 class SeedMak:

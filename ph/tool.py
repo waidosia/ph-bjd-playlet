@@ -5,13 +5,12 @@ import random
 import re
 import uuid
 from tkinter import filedialog, Tk
-from typing import Tuple, LiteralString
+from typing import Tuple
 
 import cv2
 import numpy as np
-from torf import Torrent
-
 from pypinyin import pinyin, Style
+from torf import Torrent
 
 
 def update_settings(parameter_name, value) -> None:
@@ -478,3 +477,25 @@ def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
 
     print(f"拼接后的图像已保存到{sv_path}")
     return True, sv_path
+
+
+def replace_fullwidth_symbols(text):
+    replacements = {
+        '，': ',',  # 中文逗号替换为英文逗号
+        '。': '.',  # 中文句号替换为英文句号
+        '！': '!',  # 中文感叹号替换为英文感叹号
+        '？': '?',  # 中文问号替换为英文问号
+        '；': ';',  # 中文分号替换为英文分号
+        '：': ':',  # 中文冒号替换为英文冒号
+        '“': '"',  # 中文左双引号替换为英文双引号
+        '”': '"',  # 中文右双引号替换为英文双引号
+        '‘': "'",  # 中文左单引号替换为英文单引号
+        '’': "'",  # 中文右单引号替换为英文单引号
+        # 添加其他需要替换的符号对
+    }
+    result = ""
+    for char in text:
+        if char in replacements:
+            char = replacements[char]
+        result += char
+    return result

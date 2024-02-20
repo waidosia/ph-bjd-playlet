@@ -3,7 +3,7 @@ import json
 import requests
 from requests import RequestException
 
-from . import logger
+from util.log import logger
 
 
 def upload_screenshot(api_url, api_token, frame_path):

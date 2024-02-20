@@ -10,6 +10,9 @@ def build_executable():
                        '--onefile  '
                        '--strip '
                        '--noconsole '
+                       '--upx-dir=. '
+                       '--icon=static/playlet_64.ico '
+                       '--name=playlet '
                        'main.py')
     subprocess.run(pyinstaller_cmd, shell=True)
     # 将static目录复制到dist目录

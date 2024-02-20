@@ -3,7 +3,7 @@ import os
 
 from pymediainfo import MediaInfo
 
-from ph import logger
+from util.log import logger
 
 
 def get_media_info(file_path):

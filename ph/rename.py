@@ -3,7 +3,7 @@ import os
 
 from pymediainfo import MediaInfo
 
-from ph import logger
+from util.log import logger
 
 
 def get_video_info(file_path):
@@ -65,7 +65,7 @@ def load_abbreviation_map(json_file_path="static/abbreviation.json"):
     try:
         with open(json_file_path, 'r') as file:
             abbreviation_map = json.load(file)
-            logger.info(f"加载缩写映射成功: {abbreviation_map}")
+            logger.debug(f"加载缩写映射成功: {abbreviation_map}")
         return abbreviation_map
     except FileNotFoundError:
         logger.error(f"文件不存在: {json_file_path}")

@@ -13,13 +13,16 @@
     "cols": "4",
     "autoUploadScreenshot": "True",
     "pasteScreenshotUrl": "True",
-    "deleteScreenshot": "True",
+    "deleteScreenshot": "",
     "makeDir": "True",
     "renameFile": "True",
-    "cookie": "\n\naccess_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUSlVQVCIsImF1ZCI6MTQwOTc5LCJpYXQiOjE3MDQ3Njc3MTQsImp0aSI6IjAxYzlmNjM3LWMxNzItNDRlYy1iMTBhLTM4YTlmODYwMzcxYSIsImV4cCI6MTcwNTM3MjUxNH0.hCDNLphxmL183tCxbLY07PhoilqOVa0GCpUzfjf3bBw; _ga=GA1.1.1037603336.1704767716; _ga_FBLK8KC677=GS1.1.1704956737.3.0.1704956737.0.0.0\n",
-    "qbPath": "http://192.168.1.106:8080",
+    "qbPath": "http://xxx:8080",
     "qbUser": "admin",
     "qbPasswd": "adminadmin",
     "resourcePath": "D:\\\\__easyHelper__\\\\10.1\\\\8.2",
-    "vedioInfo": "temp/info"
+    "tjuCookie": "None",
+    "agsvCookie": "None",
+    "pterCookie": "None",
+    "kylinCookie": "None",
+    "videoInfo": "temp/info"
 }
