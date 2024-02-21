@@ -205,12 +205,7 @@ class UploadImages(QObject):
         super().__init__(parent)
         self.parent = parent
         self.upload_cover_thread = None
-        self.upload_picture_thread0 = None
-        self.upload_picture_thread1 = None
-        self.upload_picture_thread2 = None
-        self.upload_picture_thread3 = None
-        self.upload_picture_thread4 = None
-        self.upload_picture_thread5 = None
+        self.upload_picture_threads = []
 
     def uploadCoverButtonClicked(self):
         if self.parent.coverPath.text():
@@ -272,22 +267,18 @@ class UploadImages(QObject):
             self.parent.debugBrowser.append(f"开始自动上传截图到图床 {figureBedPath}")
             logger.info(f"开始自动上传截图到图床 {figureBedPath}")
             self.parent.pictureUrlBrowser.setText("")
+            self.upload_picture_threads = []  # 清空之前的上传线程列表
             for i, screenshot in enumerate(res[:6]):  # 限制上传至多6张截图
-                self.upload_screenshot(figureBedPath, figureBedToken, screenshot, False, index=i)
+                upload_thread = UploadPictureThread(figureBedPath, figureBedToken, screenshot, False)
+                upload_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
+                self.upload_picture_threads.append(upload_thread)
+                upload_thread.start()
             self.parent.debugBrowser.append("上传图床线程启动")
         else:
             self.parent.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
             logger.info("未选择自动上传图床功能，图片已储存在本地")
             output = "\n".join(res)
             self.parent.pictureUrlBrowser.setText(output)
-
-    def upload_screenshot(self, figureBedPath, figureBedToken, screenshot, is_cover, index):
-        thread_class = UploadPictureThread
-        upload_thread = thread_class(figureBedPath, figureBedToken, screenshot, is_cover)
-        upload_thread.result_signal.connect(lambda success, api_response, path=screenshot: self.handle_upload_result(
-            success, api_response, path, is_cover, self.paste_url_cover if is_cover else self.paste_url_image))
-        setattr(self, f"upload_picture_thread{index}", upload_thread)
-        upload_thread.start()
 
     def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback):
         print("接受到线程请求的结果")

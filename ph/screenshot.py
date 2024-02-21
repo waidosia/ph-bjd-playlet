@@ -65,7 +65,7 @@ def upload_screenshot(api_url, api_token, frame_path):
                 print("进行第", retry_count, "次重试")
             else:
                 logger.error("重试次数已用完")
-                return False, {"请求过程中出现错误:" + str(e)}
+                return False, {}
 
     # 将响应文本转换为字典
     try:
