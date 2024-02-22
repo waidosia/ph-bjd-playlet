@@ -518,6 +518,8 @@ class WriteFile:
         mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
         # 副标题
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        # 种子路径
+        torrentPath = self.parent.torrentPathBrowser.toPlainText()
         # 简介
         introBrowser = self.parent.introBrowser.toPlainText()
         # 获取保存目录
@@ -529,7 +531,8 @@ class WriteFile:
             with open(file_path, 'w', encoding='utf-8') as file:
                 file.write(f'主标题为： {mainTitle}\n')
                 file.write(f'副标题为： {secondTitle}\n')
-                file.write(f'简介为： \n{introBrowser}\n')
+                file.write(f'种子路径为： {torrentPath}\n')
+                file.write(f'发种排版信息为： \n{introBrowser}\n')
             self.parent.debugBrowser.append("写入文件成功")
         except Exception as e:
             self.parent.debugBrowser.append(f"发生异常: {e}")
@@ -597,7 +600,14 @@ class MakeTorrent(QObject):
                 self.parent.debugBrowser.append("成功制作种子：" + response)
                 logger.info("成功制作种子：" + response)
                 # self.parent.torrent_path = response
-                self.parent.torrentPathBrowser.setText(response)
+                torrent_path = response
+                current_working_directory = os.getcwd()
+
+                if torrent_path:
+                    if not os.path.isabs(torrent_path):
+                        torrent_path = os.path.join(current_working_directory, torrent_path)
+                        torrent_path = os.path.abspath(torrent_path)
+                self.parent.torrentPathBrowser.setText(torrent_path)
             else:
                 self.parent.debugBrowser.append("制作种子失败：" + response)
                 logger.error("制作种子失败：" + response)
