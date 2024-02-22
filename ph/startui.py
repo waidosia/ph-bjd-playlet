@@ -4,7 +4,7 @@ import sys
 
 from PyQt6.QtCore import *
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtWidgets import QMainWindow, QApplication, QMessageBox
 
 from ui.mainwindow import Ui_Mainwindow
 from util.log import logger
@@ -109,6 +109,10 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.videoPath.setText(path)
 
     def clear_all_text_inputs(self):
+        # 加入问询框，是否确认清空
+        reply = QMessageBox.question(self, "确认", "是否确认清空所有输入框？", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if reply == QMessageBox.StandardButton.No:
+            return
         self.videoPath.setText("")
         self.coverPath.setText("")
         self.mainTitleBrowser.setText("")
@@ -221,6 +225,16 @@ class UploadImages(QObject):
         self.upload_picture_threads = []
 
     def uploadCoverButtonClicked(self):
+        # 点击上传封面按钮，需要同时判断中文名称，年份，简介与类型是否填写
+        if not self.parent.chineseNameEdit.text() or not self.parent.yearEdit.text() or not self.parent.info.text():
+            # 弹出警告框
+            QMessageBox.warning(self.parent, "警告", "请先填写中文名，年份，简介", QMessageBox.StandardButton.Ok)
+            return
+        # 判断是否选择了类型
+        if not self.parent.get_selected_categories():
+            QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
+            return
+
         if self.parent.coverPath.text():
             logger.info(f"上传封面{self.parent.coverPath.text()}")
             self.parent.debugBrowser.append("上传封面" + self.parent.coverPath.text())
@@ -232,8 +246,14 @@ class UploadImages(QObject):
             self.upload_cover_thread.start()  # 启动线程
             logger.info("上传图床线程启动")
             self.parent.debugBrowser.append("上传图床线程启动")
+        else:
+            # 弹出警告框
+            QMessageBox.warning(self.parent, "警告", "请先选择封面文件夹", QMessageBox.StandardButton.Ok)
 
     def getPictureButtonClicked(self):
+        if not self.parent.videoPath.text():
+            QMessageBox.warning(self.parent, "警告", "请先选择视频文件夹", QMessageBox.StandardButton.Ok)
+            return
         self.parent.pictureUrlBrowser.setText("")
         isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())
 
@@ -361,6 +381,16 @@ class GetName:
         self.parent = parent
 
     def getNameButtonClicked(self):
+        # 如果没有中文名，年份，类型，资源路径 点击获取名称按钮会弹出警告框
+        if not self.parent.chineseNameEdit.text() or not self.parent.yearEdit.text():
+            QMessageBox.warning(self.parent, "警告", "请先填写中文名，年份", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.videoPath.text():
+            QMessageBox.warning(self.parent, "警告", "请先选择视频文件夹", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.get_selected_categories():
+            QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
+            return
         first_chinese_name = self.parent.chineseNameEdit.text()
         if not first_chinese_name:
             self.parent.debugBrowser.append('获取中文名失败')
@@ -458,6 +488,16 @@ class WriteFile:
         self.parent = parent
 
     def writeButtonClicked(self):
+        # 判断主标题，副标题，发种排版信息，种子路径是否正常生成
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.torrent_path:
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.introBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return
         # 中文标题
         chinese_name = self.parent.chineseNameEdit.text() + ".txt"
         # 主标题
@@ -488,6 +528,9 @@ class GetMediaInfo:
         self.parent = parent
 
     def getMediaInfoButtonClicked(self):
+        if not self.parent.videoPath.text():
+            QMessageBox.warning(self.parent, "警告", "请先选择视频文件夹", QMessageBox.StandardButton.Ok)
+            return
         self.parent.mediainfoBrowser.setText("")
         isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())  # 视频资源的路径
         if isVideoPath == 1 or isVideoPath == 2:
@@ -515,6 +558,9 @@ class MakeTorrent(QObject):
         self.make_torrent_thread = None
 
     def makeTorrentButtonClicked(self):
+        if not self.parent.videoPath.text():
+            QMessageBox.warning(self.parent, "警告", "请先选择视频文件夹", QMessageBox.StandardButton.Ok)
+            return
         isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())  # 视频资源的路径
         if isVideoPath == 1 or isVideoPath == 2:
             torrent_path = str(get_settings("torrentPath"))
@@ -551,6 +597,15 @@ class UploadHandler:
         self.proxy_url = get_settings("proxyUrl")
 
     def sendTjuClicked(self):
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.torrent_path:
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.introBrowser.text():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return
         self.parent.debugBrowser.append("开始上传种子到TJUPT")
         logger.info("开始上传种子到TJUPT")
         cookie_str = get_settings("tjuCookie")
@@ -583,6 +638,18 @@ class UploadHandler:
             logger.error("上传种子到TJUPT失败，失败原因为：" + tju_link)
 
     def sendAgsvClicked(self):
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.mediainfoBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先获取MediaInfo", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.torrent_path:
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.introBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return
         self.parent.debugBrowser.append("开始上传种子到agsv")
         logger.info("开始上传种子到agsv")
         cookie_str = get_settings("agsvCookie")
@@ -614,6 +681,15 @@ class UploadHandler:
             self.parent.debugBrowser.append("上传种子到agsv失败，失败原因为：" + agsv_link)
 
     def sendPeterClicked(self):
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.torrent_path:
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.introBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return
         self.parent.debugBrowser.append("开始上传种子到Pter")
         logger.info("开始上传种子到Pter")
         cookie_str = get_settings("pterCookie")
@@ -655,6 +731,15 @@ class UploadHandler:
             logger.error("上传种子到Pter失败，失败原因为：" + pter_link)
 
     def sendKylinClicked(self):
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.torrent_path:
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.introBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return
         self.parent.debugBrowser.append("开始上传种子到Kylin")
         logger.info("开始上传种子到Kylin")
         cookie_str = get_settings("kylinCookie")
