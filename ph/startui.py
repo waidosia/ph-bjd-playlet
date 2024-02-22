@@ -476,11 +476,9 @@ class WriteFile:
                 file.write(f'主标题为： {mainTitle}\n')
                 file.write(f'副标题为： {secondTitle}\n')
                 file.write(f'简介为： \n{introBrowser}\n')
-            self.parent.clear_all_text_inputs()
             self.parent.debugBrowser.append("写入文件成功")
         except Exception as e:
             self.parent.debugBrowser.append(f"发生异常: {e}")
-            self.parent.clear_all_text_inputs()
             logger.error(f"发生异常: {e}")
 
 
