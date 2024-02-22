@@ -37,7 +37,7 @@ class Settings(QDialog, Ui_Settings):
     def selectInfoPathButtonClicked(self):
         path = get_folder_path()
         if path != '':
-            self.resourcePath.setText(path)
+            self.videoInfo.setText(path)
 
     def getSettings(self):
         self.screenshotPath.setText(str(get_settings("screenshotPath")))
