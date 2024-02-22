@@ -12,7 +12,7 @@ from .common import title_tem, medio_tem
 from .mediainfo import get_media_info
 from .rename import get_video_info
 from .screenshot import upload_screenshot
-from .seed import qb_download
+from .seed import qb_download, tr_download
 from .setting import Settings
 from .tool import get_settings, get_file_path, get_folder_path, check_path_and_find_video, create_torrent, load_names, \
     chinese_name_to_pinyin, \
@@ -195,7 +195,20 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
     def seedMakClicked(self):
         seed_mak = SeedMak(self)
         logger.info("点击做种按钮")
-        seed_mak.seed()
+        # 判断选择的是qb还是tr
+        seed_type = get_settings("buttonGroup")
+        if seed_type == "-2":
+            self.debugBrowser.append("选择的是qb")
+            logger.info("选择的是qb")
+            seed_mak.seed_qb()
+        elif seed_type == "-3":
+            self.debugBrowser.append("选择的是tr")
+            logger.error("选择的是tr")
+            seed_mak.seed_tr()
+        else:
+            print("未选择做种类型")
+            self.debugBrowser.append("未选择做种类型")
+            logger.error("未选择做种类型")
 
 
 class UploadImages(QObject):
@@ -679,16 +692,26 @@ class SeedMak:
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self.downloaderHost = get_settings("downloaderHost")
+        self.downloaderUser = get_settings("downloaderUser")
+        self.downloaderPass = get_settings("downloaderPass")
+        self.path = get_settings("resourcePath")
 
-    def seed(self):
-        # 获取参数
-        qb_host = get_settings("qbPath")
-        qb_user = get_settings("qbUser")
-        qb_pass = get_settings("qbPasswd")
+    def seed_qb(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
                         self.parent.kylinTorrentLink]
-        path = get_settings("resourcePath")
-        add_success, result_text = qb_download(qb_host, qb_user, qb_pass, torrent_urls, path)
+        add_success, result_text = qb_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
+                                               torrent_urls, self.path)
+        if add_success:
+            self.parent.debugBrowser.append(result_text)
+        else:
+            self.parent.debugBrowser.append(result_text)
+
+    def seed_tr(self):
+        torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
+                        self.parent.kylinTorrentLink]
+        add_success, result_text = tr_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
+                                               torrent_urls, self.path)
         if add_success:
             self.parent.debugBrowser.append(result_text)
         else:

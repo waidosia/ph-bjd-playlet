@@ -1,4 +1,3 @@
-
 """
 处理设置页面的逻辑，包括设置页面的初始化、保存、取消
 """
@@ -50,15 +49,18 @@ class Settings(QDialog, Ui_Settings):
         self.pasteScreenshotUrl.setChecked(bool(get_settings("pasteScreenshotUrl")))
         self.deleteScreenshot.setChecked(bool(get_settings("deleteScreenshot")))
         self.makeDir.setChecked(bool(get_settings("makeDir")))
+        button_group_value = get_settings("buttonGroup")
+        selected_id = int(button_group_value) if button_group_value != "None" else -2
+        self.buttonGroup.button(selected_id).setChecked(True)
         self.renameFile.setChecked(bool(get_settings("renameFile")))
         self.proxyUrl.setText(get_settings("proxyUrl"))
         self.tjuCookie.setText(get_settings("tjuCookie"))
         self.agsvCookie.setText(get_settings("agsvCookie"))
         self.pterCookie.setText(get_settings("pterCookie"))
         self.kylinCookie.setText(get_settings("kylinCookie"))
-        self.qbPath.setText(get_settings("qbPath"))
-        self.qbUser.setText(get_settings("qbUser"))
-        self.qbPasswd.setText(get_settings("qbPasswd"))
+        self.downloaderHost.setText(get_settings("downloaderHost"))
+        self.downloaderUser.setText(get_settings("downloaderUser"))
+        self.downloaderPass.setText(get_settings("downloaderPass"))
         self.resourcePath.setText(get_settings("resourcePath"))
         self.videoInfo.setText(get_settings("videoInfo"))
 
@@ -76,10 +78,11 @@ class Settings(QDialog, Ui_Settings):
         update_settings("agsvCookie", str(self.agsvCookie.text()))
         update_settings("pterCookie", str(self.pterCookie.text()))
         update_settings("kylinCookie", str(self.kylinCookie.text()))
-        update_settings("qbPath", str(self.qbPath.text()))
-        update_settings("qbUser", str(self.qbUser.text()))
-        update_settings("qbPasswd", str(self.qbPasswd.text()))
+        update_settings("downloaderHost", str(self.downloaderHost.text()))
+        update_settings("downloaderUser", str(self.downloaderUser.text()))
+        update_settings("downloaderPass", str(self.downloaderPass.text()))
         update_settings("resourcePath", str(self.resourcePath.text()))
+        update_settings("buttonGroup", int(self.buttonGroup.checkedId()))
         update_settings("videoInfo", str(self.videoInfo.text()))
         if self.getThumbnails.isChecked():
             update_settings("getThumbnails", "True")
