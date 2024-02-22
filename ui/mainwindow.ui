@@ -643,12 +643,12 @@ QPushButton:pressed {
            </font>
           </property>
           <property name="text">
-           <string>文件名：</string>
+           <string>种子路径：</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QTextEdit" name="fileNameBrowser"/>
+         <widget class="QTextEdit" name="torrentPathBrowser"/>
         </item>
        </layout>
       </item>

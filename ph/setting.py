@@ -15,6 +15,7 @@ class Settings(QDialog, Ui_Settings):
         self.cancelButton.clicked.connect(self.cancelButtonClicked)
         self.selectScreenshotPathButton.clicked.connect(self.selectScreenshotPathButtonClicked)
         self.selectTorrentPathButton.clicked.connect(self.selectTorrentPathButtonClicked)
+        self.selectInfoPathButton.clicked.connect(self.selectInfoPathButtonClicked)
 
     def saveButtonClicked(self):
         self.updateSettings()
@@ -32,6 +33,11 @@ class Settings(QDialog, Ui_Settings):
         path = get_folder_path()
         if path != '':
             self.torrentPath.setText(path)
+
+    def selectInfoPathButtonClicked(self):
+        path = get_folder_path()
+        if path != '':
+            self.resourcePath.setText(path)
 
     def getSettings(self):
         self.screenshotPath.setText(str(get_settings("screenshotPath")))

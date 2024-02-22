@@ -167,20 +167,6 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="3" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_14">
-     <item>
-      <widget class="QLabel" name="label_19">
-       <property name="text">
-        <string>短剧信息：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="videoInfo"/>
-     </item>
-    </layout>
-   </item>
    <item row="4" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <property name="leftMargin">
@@ -983,190 +969,6 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="11" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_13">
-     <item>
-      <widget class="QLabel" name="label_18">
-       <property name="text">
-        <string>做种路径：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="resourcePath"/>
-     </item>
-    </layout>
-   </item>
-   <item row="12" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_18">
-     <item>
-      <widget class="QLabel" name="label_21">
-       <property name="text">
-        <string>代理地址:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="proxyUrl">
-       <property name="placeholderText">
-        <string>格式为:http://xxx:7890</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="13" column="0" colspan="2">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_12">
-       <item>
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>tju_cookie：</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="tjuCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_15">
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>agsv_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="agsvCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_16">
-       <item>
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>Pter_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="pterCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_17">
-       <item>
-        <widget class="QLabel" name="label_20">
-         <property name="text">
-          <string>kylin_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="kylinCookie"/>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item row="14" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="leftMargin">
-      <number>30</number>
-     </property>
-     <property name="rightMargin">
-      <number>30</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="saveButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>保存</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>取消</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="1" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
@@ -1410,6 +1212,245 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>浏览</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_14">
+     <item>
+      <widget class="QLabel" name="label_19">
+       <property name="text">
+        <string>短剧信息储存地址：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="videoInfo"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectInfoPathButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    display: inline-block;
+    padding: 3px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #16bf9d,
+                                      stop:1 #10a266);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #11b998,
+                                      stop:1 #08965e);
+}
+
+QPushButton:pressed {
+    background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #0e9278,
+                                      stop:1 #0e925c);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>浏览</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="12" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>代理地址:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="proxyUrl">
+       <property name="placeholderText">
+        <string>格式为:http://xxx:7890</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="11" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_13">
+     <item>
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string>做种路径：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="resourcePath"/>
+     </item>
+    </layout>
+   </item>
+   <item row="13" column="0" colspan="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_12">
+       <item>
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>tju_cookie：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="tjuCookie"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_15">
+       <item>
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>agsv_cookie:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="agsvCookie"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_16">
+       <item>
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Pter_cookie:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="pterCookie"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <item>
+        <widget class="QLabel" name="label_20">
+         <property name="text">
+          <string>kylin_cookie:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="kylinCookie"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="14" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="leftMargin">
+      <number>30</number>
+     </property>
+     <property name="rightMargin">
+      <number>30</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="saveButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    display: inline-block;
+    padding: 6px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #16bf9d,
+                                      stop:1 #10a266);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #11b998,
+                                      stop:1 #08965e);
+}
+
+QPushButton:pressed {
+    background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #0e9278,
+                                      stop:1 #0e925c);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>保存</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    display: inline-block;
+    padding: 6px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #16bf9d,
+                                      stop:1 #10a266);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #11b998,
+                                      stop:1 #08965e);
+}
+
+QPushButton:pressed {
+    background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #0e9278,
+                                      stop:1 #0e925c);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>取消</string>
        </property>
       </widget>
      </item>

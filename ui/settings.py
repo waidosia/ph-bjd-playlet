@@ -36,15 +36,6 @@ class Ui_Settings(object):
         self.figureBedToken.setObjectName("figureBedToken")
         self.horizontalLayout_4.addWidget(self.figureBedToken)
         self.gridLayout.addLayout(self.horizontalLayout_4, 0, 0, 1, 2)
-        self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.label_19 = QtWidgets.QLabel(parent=Settings)
-        self.label_19.setObjectName("label_19")
-        self.horizontalLayout_14.addWidget(self.label_19)
-        self.videoInfo = QtWidgets.QLineEdit(parent=Settings)
-        self.videoInfo.setObjectName("videoInfo")
-        self.horizontalLayout_14.addWidget(self.videoInfo)
-        self.gridLayout.addLayout(self.horizontalLayout_14, 3, 0, 1, 2)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
@@ -193,15 +184,144 @@ class Ui_Settings(object):
         self.downloaderPass.setObjectName("downloaderPass")
         self.horizontalLayout_5.addWidget(self.downloaderPass)
         self.gridLayout.addLayout(self.horizontalLayout_5, 10, 0, 1, 2)
-        self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        self.label_18 = QtWidgets.QLabel(parent=Settings)
-        self.label_18.setObjectName("label_18")
-        self.horizontalLayout_13.addWidget(self.label_18)
-        self.resourcePath = QtWidgets.QLineEdit(parent=Settings)
-        self.resourcePath.setObjectName("resourcePath")
-        self.horizontalLayout_13.addWidget(self.resourcePath)
-        self.gridLayout.addLayout(self.horizontalLayout_13, 11, 0, 1, 2)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label_3 = QtWidgets.QLabel(parent=Settings)
+        self.label_3.setObjectName("label_3")
+        self.horizontalLayout_2.addWidget(self.label_3)
+        self.screenshotPath = QtWidgets.QLineEdit(parent=Settings)
+        self.screenshotPath.setText("")
+        self.screenshotPath.setClearButtonEnabled(True)
+        self.screenshotPath.setObjectName("screenshotPath")
+        self.horizontalLayout_2.addWidget(self.screenshotPath)
+        self.selectScreenshotPathButton = QtWidgets.QPushButton(parent=Settings)
+        self.selectScreenshotPathButton.setStyleSheet("QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 3px 6px;\n"
+"    font-size: 14px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #16bf9d,\n"
+"                                      stop:1 #10a266);\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #11b998,\n"
+"                                      stop:1 #08965e);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #0e9278,\n"
+"                                      stop:1 #0e925c);\n"
+"}\n"
+"")
+        self.selectScreenshotPathButton.setObjectName("selectScreenshotPathButton")
+        self.horizontalLayout_2.addWidget(self.selectScreenshotPathButton)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 2)
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.label_12 = QtWidgets.QLabel(parent=Settings)
+        self.label_12.setObjectName("label_12")
+        self.horizontalLayout_3.addWidget(self.label_12)
+        self.torrentPath = QtWidgets.QLineEdit(parent=Settings)
+        self.torrentPath.setText("")
+        self.torrentPath.setClearButtonEnabled(True)
+        self.torrentPath.setObjectName("torrentPath")
+        self.horizontalLayout_3.addWidget(self.torrentPath)
+        self.selectTorrentPathButton = QtWidgets.QPushButton(parent=Settings)
+        self.selectTorrentPathButton.setStyleSheet("QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 3px 6px;\n"
+"    font-size: 14px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #16bf9d,\n"
+"                                      stop:1 #10a266);\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #11b998,\n"
+"                                      stop:1 #08965e);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #0e9278,\n"
+"                                      stop:1 #0e925c);\n"
+"}\n"
+"")
+        self.selectTorrentPathButton.setObjectName("selectTorrentPathButton")
+        self.horizontalLayout_3.addWidget(self.selectTorrentPathButton)
+        self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 2)
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.label_19 = QtWidgets.QLabel(parent=Settings)
+        self.label_19.setObjectName("label_19")
+        self.horizontalLayout_14.addWidget(self.label_19)
+        self.videoInfo = QtWidgets.QLineEdit(parent=Settings)
+        self.videoInfo.setObjectName("videoInfo")
+        self.horizontalLayout_14.addWidget(self.videoInfo)
+        self.selectInfoPathButton = QtWidgets.QPushButton(parent=Settings)
+        self.selectInfoPathButton.setStyleSheet("QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 3px 6px;\n"
+"    font-size: 14px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #16bf9d,\n"
+"                                      stop:1 #10a266);\n"
+"    border: none;\n"
+"    border-radius: 8px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #11b998,\n"
+"                                      stop:1 #08965e);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #0e9278,\n"
+"                                      stop:1 #0e925c);\n"
+"}\n"
+"")
+        self.selectInfoPathButton.setObjectName("selectInfoPathButton")
+        self.horizontalLayout_14.addWidget(self.selectInfoPathButton)
+        self.gridLayout.addLayout(self.horizontalLayout_14, 3, 0, 1, 2)
         self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_18.setObjectName("horizontalLayout_18")
         self.label_21 = QtWidgets.QLabel(parent=Settings)
@@ -211,6 +331,15 @@ class Ui_Settings(object):
         self.proxyUrl.setObjectName("proxyUrl")
         self.horizontalLayout_18.addWidget(self.proxyUrl)
         self.gridLayout.addLayout(self.horizontalLayout_18, 12, 0, 1, 2)
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        self.label_18 = QtWidgets.QLabel(parent=Settings)
+        self.label_18.setObjectName("label_18")
+        self.horizontalLayout_13.addWidget(self.label_18)
+        self.resourcePath = QtWidgets.QLineEdit(parent=Settings)
+        self.resourcePath.setObjectName("resourcePath")
+        self.horizontalLayout_13.addWidget(self.resourcePath)
+        self.gridLayout.addLayout(self.horizontalLayout_13, 11, 0, 1, 2)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
@@ -324,100 +453,6 @@ class Ui_Settings(object):
         self.cancelButton.setObjectName("cancelButton")
         self.horizontalLayout.addWidget(self.cancelButton)
         self.gridLayout.addLayout(self.horizontalLayout, 14, 0, 1, 2)
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label_3 = QtWidgets.QLabel(parent=Settings)
-        self.label_3.setObjectName("label_3")
-        self.horizontalLayout_2.addWidget(self.label_3)
-        self.screenshotPath = QtWidgets.QLineEdit(parent=Settings)
-        self.screenshotPath.setText("")
-        self.screenshotPath.setClearButtonEnabled(True)
-        self.screenshotPath.setObjectName("screenshotPath")
-        self.horizontalLayout_2.addWidget(self.screenshotPath)
-        self.selectScreenshotPathButton = QtWidgets.QPushButton(parent=Settings)
-        self.selectScreenshotPathButton.setStyleSheet("QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 3px 6px;\n"
-"    font-size: 14px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"background-color: \n"
-"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                      stop:0 #16bf9d,\n"
-"                                      stop:1 #10a266);\n"
-"    border: none;\n"
-"    border-radius: 8px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: \n"
-"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                      stop:0 #11b998,\n"
-"                                      stop:1 #08965e);\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: \n"
-"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                      stop:0 #0e9278,\n"
-"                                      stop:1 #0e925c);\n"
-"}\n"
-"")
-        self.selectScreenshotPathButton.setObjectName("selectScreenshotPathButton")
-        self.horizontalLayout_2.addWidget(self.selectScreenshotPathButton)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 2)
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_12 = QtWidgets.QLabel(parent=Settings)
-        self.label_12.setObjectName("label_12")
-        self.horizontalLayout_3.addWidget(self.label_12)
-        self.torrentPath = QtWidgets.QLineEdit(parent=Settings)
-        self.torrentPath.setText("")
-        self.torrentPath.setClearButtonEnabled(True)
-        self.torrentPath.setObjectName("torrentPath")
-        self.horizontalLayout_3.addWidget(self.torrentPath)
-        self.selectTorrentPathButton = QtWidgets.QPushButton(parent=Settings)
-        self.selectTorrentPathButton.setStyleSheet("QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 3px 6px;\n"
-"    font-size: 14px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"background-color: \n"
-"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                      stop:0 #16bf9d,\n"
-"                                      stop:1 #10a266);\n"
-"    border: none;\n"
-"    border-radius: 8px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: \n"
-"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                      stop:0 #11b998,\n"
-"                                      stop:1 #08965e);\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: \n"
-"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                      stop:0 #0e9278,\n"
-"                                      stop:1 #0e925c);\n"
-"}\n"
-"")
-        self.selectTorrentPathButton.setObjectName("selectTorrentPathButton")
-        self.horizontalLayout_3.addWidget(self.selectTorrentPathButton)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 2)
 
         self.retranslateUi(Settings)
         QtCore.QMetaObject.connectSlotsByName(Settings)
@@ -519,7 +554,6 @@ class Ui_Settings(object):
 "    background-color: #3c6f1b;\n"
 "}\n"
 ""))
-        self.label_19.setText(_translate("Settings", "短剧信息："))
         self.label.setStyleSheet(_translate("Settings", "QPushButton {\n"
 "    display: inline-block;\n"
 "    padding: 5px 5px;\n"
@@ -953,15 +987,6 @@ class Ui_Settings(object):
         self.label_14.setText(_translate("Settings", "下载器地址："))
         self.label_15.setText(_translate("Settings", "下载器用户名："))
         self.label_16.setText(_translate("Settings", "下载器密码"))
-        self.label_18.setText(_translate("Settings", "做种路径："))
-        self.label_21.setText(_translate("Settings", "代理地址:"))
-        self.proxyUrl.setPlaceholderText(_translate("Settings", "格式为:http://xxx:7890"))
-        self.label_17.setText(_translate("Settings", "tju_cookie："))
-        self.label_9.setText(_translate("Settings", "agsv_cookie:"))
-        self.label_11.setText(_translate("Settings", "Pter_cookie:"))
-        self.label_20.setText(_translate("Settings", "kylin_cookie:"))
-        self.saveButton.setText(_translate("Settings", "保存"))
-        self.cancelButton.setText(_translate("Settings", "取消"))
         self.label_3.setStyleSheet(_translate("Settings", "QPushButton {\n"
 "    display: inline-block;\n"
 "    padding: 5px 5px;\n"
@@ -1058,3 +1083,14 @@ class Ui_Settings(object):
 "}\n"
 ""))
         self.selectTorrentPathButton.setText(_translate("Settings", "浏览"))
+        self.label_19.setText(_translate("Settings", "短剧信息储存地址："))
+        self.selectInfoPathButton.setText(_translate("Settings", "浏览"))
+        self.label_21.setText(_translate("Settings", "代理地址:"))
+        self.proxyUrl.setPlaceholderText(_translate("Settings", "格式为:http://xxx:7890"))
+        self.label_18.setText(_translate("Settings", "做种路径："))
+        self.label_17.setText(_translate("Settings", "tju_cookie："))
+        self.label_9.setText(_translate("Settings", "agsv_cookie:"))
+        self.label_11.setText(_translate("Settings", "Pter_cookie:"))
+        self.label_20.setText(_translate("Settings", "kylin_cookie:"))
+        self.saveButton.setText(_translate("Settings", "保存"))
+        self.cancelButton.setText(_translate("Settings", "取消"))

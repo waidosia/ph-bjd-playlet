@@ -44,7 +44,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.get_pt_gen_thread = None
         self.get_pt_gen_for_name_thread = None
         self.upload_thread = None
-        self.torrent_path = None
+        # self.torrent_path = None
 
         self.tjuTorrentLink = None
         self.agsvTorrentLink = None
@@ -110,7 +110,8 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
 
     def clear_all_text_inputs(self):
         # 加入问询框，是否确认清空
-        reply = QMessageBox.question(self, "确认", "是否确认清空所有输入框？", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        reply = QMessageBox.question(self, "确认", "是否确认清空所有输入框？",
+                                     QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if reply == QMessageBox.StandardButton.No:
             return
         self.videoPath.setText("")
@@ -120,10 +121,14 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.introBrowser.setText("")
         self.pictureUrlBrowser.setText("")
         self.mediainfoBrowser.setText("")
-        self.fileNameBrowser.setText("")
+        self.torrentPathBrowser.setText("")
         self.chineseNameEdit.setText("")
         self.yearEdit.setText("")
         self.info.setText("")
+        self.tjuTorrentLink = None
+        self.agsvTorrentLink = None
+        self.peterTorrentLink = None
+        self.kylinTorrentLink = None
         self.debugBrowser.append("所有输入框已清空")
         logger.info("所有输入框已清空")
 
@@ -223,6 +228,7 @@ class UploadImages(QObject):
         self.parent = parent
         self.upload_cover_thread = None
         self.upload_picture_threads = []
+        self.finished_threads = 0
 
     def uploadCoverButtonClicked(self):
         # 点击上传封面按钮，需要同时判断中文名称，年份，简介与类型是否填写
@@ -306,7 +312,7 @@ class UploadImages(QObject):
                 upload_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
                 self.upload_picture_threads.append(upload_thread)
                 upload_thread.start()
-            self.parent.debugBrowser.append("上传图床线程启动")
+                self.parent.debugBrowser.append("上传图床线程启动")
         else:
             self.parent.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
             logger.info("未选择自动上传图床功能，图片已储存在本地")
@@ -354,11 +360,9 @@ class UploadImages(QObject):
 
     def paste_url_cover(self, api_response):
         self.parent.introBrowser.append(api_response)
-        self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
 
     def paste_url_image(self, api_response):
         self.parent.introBrowser.append(api_response)
-        self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
 
     def delete_screenshot(self, screenshot_path):
         if os.path.exists(screenshot_path):
@@ -372,7 +376,17 @@ class UploadImages(QObject):
     def handleUploadPictureResult(self, upload_success, api_response, screenshot_path, is_cover, error):
         if error != "":
             self.parent.debugBrowser.append("上传失败：" + error)
+        if not is_cover:
+            self.finished_threads += 1
+            if self.finished_threads == len(self.upload_picture_threads):
+                # 所有线程都已完成
+                self.allThreadsFinished()
         self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_cover)
+
+    def allThreadsFinished(self):
+        # 所有线程都已完成，进行页面提示
+        self.finished_threads = 0
+        self.parent.debugBrowser.append("所有图片上传完成")
 
 
 class GetName:
@@ -451,7 +465,6 @@ class GetName:
 
         self.parent.mainTitleBrowser.setText(main_title)
         self.parent.secondTitleBrowser.setText(second_title)
-        self.parent.fileNameBrowser.setText(file_name)
 
         if rename_file:
             self.parent.debugBrowser.append("开始对文件重新命名")
@@ -490,9 +503,10 @@ class WriteFile:
     def writeButtonClicked(self):
         # 判断主标题，副标题，发种排版信息，种子路径是否正常生成
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.torrent_path:
+        if not self.parent.torrentPathBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
             return
         if not self.parent.introBrowser.toPlainText():
@@ -582,7 +596,8 @@ class MakeTorrent(QObject):
             if get_success:
                 self.parent.debugBrowser.append("成功制作种子：" + response)
                 logger.info("成功制作种子：" + response)
-                self.parent.torrent_path = response
+                # self.parent.torrent_path = response
+                self.parent.torrentPathBrowser.setText(response)
             else:
                 self.parent.debugBrowser.append("制作种子失败：" + response)
                 logger.error("制作种子失败：" + response)
@@ -598,12 +613,13 @@ class UploadHandler:
 
     def sendTjuClicked(self):
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.torrent_path:
+        if not self.parent.torrentPathBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.introBrowser.text():
+        if not self.parent.introBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
             return
         self.parent.debugBrowser.append("开始上传种子到TJUPT")
@@ -621,7 +637,7 @@ class UploadHandler:
         logger.info("简介为：" + introBrowser)
         chinese_name = self.parent.chineseNameEdit.text()
         logger.info("中文名为：" + chinese_name)
-        torrent_path = self.parent.torrent_path
+        torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
@@ -639,12 +655,13 @@ class UploadHandler:
 
     def sendAgsvClicked(self):
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
             return
         if not self.parent.mediainfoBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先获取MediaInfo", QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.torrent_path:
+        if not self.parent.torrentPathBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
             return
         if not self.parent.introBrowser.toPlainText():
@@ -666,7 +683,7 @@ class UploadHandler:
             '', introBrowser, flags=re.DOTALL)
         logger.info("处理后的简介为：" + modified_content)
         media_info = self.parent.mediainfoBrowser.toPlainText()
-        torrent_path = self.parent.torrent_path
+        torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
@@ -682,9 +699,10 @@ class UploadHandler:
 
     def sendPeterClicked(self):
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.torrent_path:
+        if not self.parent.torrentPathBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
             return
         if not self.parent.introBrowser.toPlainText():
@@ -713,7 +731,7 @@ class UploadHandler:
         introBrowser = introBrowser.replace('[mediainfo]', '[hide=MediaInfo]')
         introBrowser = introBrowser.replace('[/mediainfo]', '[/hide]')
         logger.info("处理后的简介为：" + introBrowser)
-        torrent_path = self.parent.torrent_path
+        torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
@@ -732,9 +750,10 @@ class UploadHandler:
 
     def sendKylinClicked(self):
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称", QMessageBox.StandardButton.Ok)
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.torrent_path:
+        if not self.parent.torrentPathBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
             return
         if not self.parent.introBrowser.toPlainText():
@@ -753,7 +772,7 @@ class UploadHandler:
         introBrowser = introBrowser.replace('[mediainfo]', '[quote]')
         introBrowser = introBrowser.replace('[/mediainfo]', '[/quote]')
         logger.info("处理后的简介为：" + introBrowser)
-        torrent_path = self.parent.torrent_path
+        torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
