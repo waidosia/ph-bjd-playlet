@@ -326,19 +326,23 @@ def rename_directory_if_needed(video_path, file_name) -> str | None:
 
 def extract_and_get_thumbnails(videoPath, screenshotPath, screenshotNumber, screenshotThreshold,
                                screenshotStart, screenshotEnd, getThumbnails, rows, cols):
+    images = {}
+
     # 执行截图函数
     screenshot_success, res = extract_complex_keyframes(videoPath, screenshotPath, screenshotNumber,
                                                         screenshotThreshold, screenshotStart,
                                                         screenshotEnd, min_interval_pct=0.01)
+    images['screenshot'] = res
 
     # 获取缩略图
     if getThumbnails:
         get_thumbnails_success, sv_path = get_thumbnails(videoPath, screenshotPath, rows, cols, screenshotStart,
                                                          screenshotEnd)
         if get_thumbnails_success:
-            res.append(sv_path)
+            # res.append(sv_path)
+            images['thumbnails'] = sv_path
 
-    return screenshot_success, res
+    return screenshot_success, images
 
 
 def create_directory(output_path):

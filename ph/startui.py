@@ -1,10 +1,11 @@
 import os
 import re
 import sys
+import time
 
 from PyQt6.QtCore import *
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QMainWindow, QApplication, QMessageBox
+from PyQt6.QtWidgets import QMainWindow, QApplication, QMessageBox, QInputDialog
 
 from ui.mainwindow import Ui_Mainwindow
 from util.log import logger
@@ -282,41 +283,49 @@ class UploadImages(QObject):
 
             # 截图函数执行
 
-            screenshot_success, res = extract_and_get_thumbnails(videoPath, screenshotPath, screenshotNumber,
+            screenshot_success, images = extract_and_get_thumbnails(videoPath, screenshotPath, screenshotNumber,
                                                                  screenshotThreshold, screenshotStart,
                                                                  screenshotEnd,
                                                                  getThumbnails, rows, cols)
 
             if screenshot_success:
-                self.handle_screenshot_result(res, figureBedPath, figureBedToken, autoUploadScreenshot)
+                self.handle_screenshot_result(images, figureBedPath, figureBedToken, autoUploadScreenshot)
                 logger.info(f"截图成功")
             else:
-                self.parent.debugBrowser.append("截图失败: " + str(res))
-                logger.error(f"截图失败: {res}")
+                self.parent.debugBrowser.append("截图失败: ")
+                logger.error(f"截图失败")
 
         else:
             self.parent.debugBrowser.append("您的视频文件路径有误")
             logger.error(f"您的视频文件路径有误")
 
-    def handle_screenshot_result(self, res, figureBedPath, figureBedToken, autoUploadScreenshot):
-        self.parent.debugBrowser.append("成功获取截图：" + str(res))
-        logger.info(f"成功获取截图：{res}")
+    def handle_screenshot_result(self, images, figureBedPath, figureBedToken, autoUploadScreenshot):
+        self.parent.debugBrowser.append("成功获取截图：" + str(images['screenshot']))
+        logger.info(f"成功获取截图：{images['screenshot']}")
 
         if autoUploadScreenshot:
             self.parent.debugBrowser.append(f"开始自动上传截图到图床 {figureBedPath}")
             logger.info(f"开始自动上传截图到图床 {figureBedPath}")
             self.parent.pictureUrlBrowser.setText("")
             self.upload_picture_threads = []  # 清空之前的上传线程列表
-            for i, screenshot in enumerate(res[:6]):  # 限制上传至多6张截图
+            for i, screenshot in enumerate(images['screenshot'][:6]):  # 限制上传至多6张截图
                 upload_thread = UploadPictureThread(figureBedPath, figureBedToken, screenshot, False)
                 upload_thread.result_signal.connect(self.handleUploadPictureResult)  # 连接信号
                 self.upload_picture_threads.append(upload_thread)
                 upload_thread.start()
-                self.parent.debugBrowser.append("上传图床线程启动")
+                time.sleep(0.5)
+            # 单独上传最后的缩略图
+            self.parent.debugBrowser.append(f"开始上传缩略图 {images['thumbnails']}")
+            if images['thumbnails'] != "":
+                upload_thread = UploadPictureThread(figureBedPath, figureBedToken, images['thumbnails'], False)
+                upload_thread.result_signal.connect(self.handleUploadPictureResult)
+                self.upload_picture_threads.append(upload_thread)
+                upload_thread.start()
+            self.parent.debugBrowser.append("上传图床线程启动")
         else:
             self.parent.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
             logger.info("未选择自动上传图床功能，图片已储存在本地")
-            output = "\n".join(res)
+            output = "\n".join(images['screenshot'])
             self.parent.pictureUrlBrowser.setText(output)
 
     def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback):
@@ -405,17 +414,16 @@ class GetName:
         if not self.parent.get_selected_categories():
             QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
             return
+        # 弹窗判断英文名是否正确，不正确则允许修改，同时获取修改后的值
         first_chinese_name = self.parent.chineseNameEdit.text()
-        if not first_chinese_name:
-            self.parent.debugBrowser.append('获取中文名失败')
-            logger.info("获取中文名失败")
-            return
-
-        print('获取中文名成功：' + first_chinese_name)
-        logger.info('获取中文名成功：' + first_chinese_name)
         self.parent.debugBrowser.append('获取中文名成功：' + first_chinese_name)
-
         first_english_name = chinese_name_to_pinyin(first_chinese_name)
+        # 弹窗显示英文名，并允许修改
+        name, ok = QInputDialog.getText(self.parent, "验证英文名", "英文名:", text=first_english_name)
+        if not ok:
+            return
+        logger.info('获取英文名成功：' + first_english_name)
+
         # 对英文名中的全角符号进行替换
         first_english_name = replace_fullwidth_symbols(first_english_name)
         first_english_name = first_english_name.replace('.', ' ')
