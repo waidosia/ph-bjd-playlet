@@ -12,9 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Settings(object):
     def setupUi(self, Settings):
         Settings.setObjectName("Settings")
-        Settings.resize(628, 695)
-        self.gridLayout = QtWidgets.QGridLayout(Settings)
-        self.gridLayout.setObjectName("gridLayout")
+        Settings.resize(631, 586)
+        self.formLayout = QtWidgets.QFormLayout(Settings)
+        self.formLayout.setObjectName("formLayout")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
@@ -35,155 +35,7 @@ class Ui_Settings(object):
         self.figureBedToken.setClearButtonEnabled(True)
         self.figureBedToken.setObjectName("figureBedToken")
         self.horizontalLayout_4.addWidget(self.figureBedToken)
-        self.gridLayout.addLayout(self.horizontalLayout_4, 0, 0, 1, 2)
-        self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_7.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.label = QtWidgets.QLabel(parent=Settings)
-        self.label.setObjectName("label")
-        self.horizontalLayout_7.addWidget(self.label)
-        self.screenshotNumber = QtWidgets.QSpinBox(parent=Settings)
-        self.screenshotNumber.setMaximum(5)
-        self.screenshotNumber.setProperty("value", 1)
-        self.screenshotNumber.setObjectName("screenshotNumber")
-        self.horizontalLayout_7.addWidget(self.screenshotNumber)
-        self.label_2 = QtWidgets.QLabel(parent=Settings)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout_7.addWidget(self.label_2)
-        self.screenshotThreshold = QtWidgets.QDoubleSpinBox(parent=Settings)
-        self.screenshotThreshold.setDecimals(2)
-        self.screenshotThreshold.setMaximum(5.0)
-        self.screenshotThreshold.setSingleStep(0.01)
-        self.screenshotThreshold.setProperty("value", 0.1)
-        self.screenshotThreshold.setObjectName("screenshotThreshold")
-        self.horizontalLayout_7.addWidget(self.screenshotThreshold)
-        self.gridLayout.addLayout(self.horizontalLayout_7, 4, 0, 1, 1)
-        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_8.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.label_4 = QtWidgets.QLabel(parent=Settings)
-        self.label_4.setObjectName("label_4")
-        self.horizontalLayout_8.addWidget(self.label_4)
-        self.screenshotStart = QtWidgets.QDoubleSpinBox(parent=Settings)
-        self.screenshotStart.setDecimals(2)
-        self.screenshotStart.setMaximum(1.0)
-        self.screenshotStart.setSingleStep(0.01)
-        self.screenshotStart.setProperty("value", 0.1)
-        self.screenshotStart.setObjectName("screenshotStart")
-        self.horizontalLayout_8.addWidget(self.screenshotStart)
-        self.label_5 = QtWidgets.QLabel(parent=Settings)
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayout_8.addWidget(self.label_5)
-        self.screenshotEnd = QtWidgets.QDoubleSpinBox(parent=Settings)
-        self.screenshotEnd.setDecimals(2)
-        self.screenshotEnd.setMaximum(1.0)
-        self.screenshotEnd.setSingleStep(0.01)
-        self.screenshotEnd.setProperty("value", 0.9)
-        self.screenshotEnd.setObjectName("screenshotEnd")
-        self.horizontalLayout_8.addWidget(self.screenshotEnd)
-        self.gridLayout.addLayout(self.horizontalLayout_8, 5, 0, 1, 2)
-        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_9.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.autoUploadScreenshot = QtWidgets.QCheckBox(parent=Settings)
-        self.autoUploadScreenshot.setChecked(True)
-        self.autoUploadScreenshot.setObjectName("autoUploadScreenshot")
-        self.horizontalLayout_9.addWidget(self.autoUploadScreenshot)
-        self.pasteScreenshotUrl = QtWidgets.QCheckBox(parent=Settings)
-        self.pasteScreenshotUrl.setChecked(True)
-        self.pasteScreenshotUrl.setObjectName("pasteScreenshotUrl")
-        self.horizontalLayout_9.addWidget(self.pasteScreenshotUrl)
-        self.deleteScreenshot = QtWidgets.QCheckBox(parent=Settings)
-        self.deleteScreenshot.setChecked(True)
-        self.deleteScreenshot.setObjectName("deleteScreenshot")
-        self.horizontalLayout_9.addWidget(self.deleteScreenshot)
-        self.gridLayout.addLayout(self.horizontalLayout_9, 6, 0, 1, 2)
-        self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_11.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.getThumbnails = QtWidgets.QCheckBox(parent=Settings)
-        self.getThumbnails.setObjectName("getThumbnails")
-        self.horizontalLayout_11.addWidget(self.getThumbnails)
-        self.label_13 = QtWidgets.QLabel(parent=Settings)
-        self.label_13.setObjectName("label_13")
-        self.horizontalLayout_11.addWidget(self.label_13)
-        self.rows = QtWidgets.QSpinBox(parent=Settings)
-        self.rows.setMinimum(1)
-        self.rows.setMaximum(9)
-        self.rows.setProperty("value", 4)
-        self.rows.setObjectName("rows")
-        self.horizontalLayout_11.addWidget(self.rows)
-        self.label_8 = QtWidgets.QLabel(parent=Settings)
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout_11.addWidget(self.label_8)
-        self.cols = QtWidgets.QSpinBox(parent=Settings)
-        self.cols.setMinimum(1)
-        self.cols.setMaximum(9)
-        self.cols.setProperty("value", 4)
-        self.cols.setObjectName("cols")
-        self.horizontalLayout_11.addWidget(self.cols)
-        self.gridLayout.addLayout(self.horizontalLayout_11, 7, 0, 1, 1)
-        self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_10.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        self.label_10 = QtWidgets.QLabel(parent=Settings)
-        self.label_10.setObjectName("label_10")
-        self.horizontalLayout_10.addWidget(self.label_10)
-        self.renameFile = QtWidgets.QCheckBox(parent=Settings)
-        self.renameFile.setChecked(False)
-        self.renameFile.setObjectName("renameFile")
-        self.horizontalLayout_10.addWidget(self.renameFile)
-        self.makeDir = QtWidgets.QCheckBox(parent=Settings)
-        self.makeDir.setChecked(False)
-        self.makeDir.setObjectName("makeDir")
-        self.horizontalLayout_10.addWidget(self.makeDir)
-        self.gridLayout.addLayout(self.horizontalLayout_10, 8, 0, 1, 2)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
-        self.label_22 = QtWidgets.QLabel(parent=Settings)
-        self.label_22.setObjectName("label_22")
-        self.horizontalLayout_19.addWidget(self.label_22)
-        self.qb = QtWidgets.QRadioButton(parent=Settings)
-        self.qb.setToolTipDuration(1)
-        self.qb.setChecked(False)
-        self.qb.setObjectName("qb")
-        self.buttonGroup = QtWidgets.QButtonGroup(Settings)
-        self.buttonGroup.setObjectName("buttonGroup")
-        self.buttonGroup.addButton(self.qb)
-        self.horizontalLayout_19.addWidget(self.qb)
-        self.tr = QtWidgets.QRadioButton(parent=Settings)
-        self.tr.setChecked(True)
-        self.tr.setObjectName("tr")
-        self.buttonGroup.addButton(self.tr)
-        self.horizontalLayout_19.addWidget(self.tr)
-        self.verticalLayout_2.addLayout(self.horizontalLayout_19)
-        self.gridLayout.addLayout(self.verticalLayout_2, 9, 0, 1, 1)
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.label_14 = QtWidgets.QLabel(parent=Settings)
-        self.label_14.setObjectName("label_14")
-        self.horizontalLayout_6.addWidget(self.label_14)
-        self.downloaderHost = QtWidgets.QLineEdit(parent=Settings)
-        self.downloaderHost.setObjectName("downloaderHost")
-        self.horizontalLayout_6.addWidget(self.downloaderHost)
-        self.gridLayout.addLayout(self.horizontalLayout_6, 9, 1, 1, 1)
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.label_15 = QtWidgets.QLabel(parent=Settings)
-        self.label_15.setObjectName("label_15")
-        self.horizontalLayout_5.addWidget(self.label_15)
-        self.downloaderUser = QtWidgets.QLineEdit(parent=Settings)
-        self.downloaderUser.setObjectName("downloaderUser")
-        self.horizontalLayout_5.addWidget(self.downloaderUser)
-        self.label_16 = QtWidgets.QLabel(parent=Settings)
-        self.label_16.setObjectName("label_16")
-        self.horizontalLayout_5.addWidget(self.label_16)
-        self.downloaderPass = QtWidgets.QLineEdit(parent=Settings)
-        self.downloaderPass.setObjectName("downloaderPass")
-        self.horizontalLayout_5.addWidget(self.downloaderPass)
-        self.gridLayout.addLayout(self.horizontalLayout_5, 10, 0, 1, 2)
+        self.formLayout.setLayout(0, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_4)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -230,7 +82,7 @@ class Ui_Settings(object):
 "")
         self.selectScreenshotPathButton.setObjectName("selectScreenshotPathButton")
         self.horizontalLayout_2.addWidget(self.selectScreenshotPathButton)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 2)
+        self.formLayout.setLayout(1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.horizontalLayout_2)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
@@ -277,7 +129,7 @@ class Ui_Settings(object):
 "")
         self.selectTorrentPathButton.setObjectName("selectTorrentPathButton")
         self.horizontalLayout_3.addWidget(self.selectTorrentPathButton)
-        self.gridLayout.addLayout(self.horizontalLayout_3, 2, 0, 1, 2)
+        self.formLayout.setLayout(1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.horizontalLayout_3)
         self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
         self.label_19 = QtWidgets.QLabel(parent=Settings)
@@ -321,16 +173,155 @@ class Ui_Settings(object):
 "")
         self.selectInfoPathButton.setObjectName("selectInfoPathButton")
         self.horizontalLayout_14.addWidget(self.selectInfoPathButton)
-        self.gridLayout.addLayout(self.horizontalLayout_14, 3, 0, 1, 2)
-        self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
-        self.label_21 = QtWidgets.QLabel(parent=Settings)
-        self.label_21.setObjectName("label_21")
-        self.horizontalLayout_18.addWidget(self.label_21)
-        self.proxyUrl = QtWidgets.QLineEdit(parent=Settings)
-        self.proxyUrl.setObjectName("proxyUrl")
-        self.horizontalLayout_18.addWidget(self.proxyUrl)
-        self.gridLayout.addLayout(self.horizontalLayout_18, 12, 0, 1, 2)
+        self.formLayout.setLayout(2, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_14)
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_7.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_7.setObjectName("horizontalLayout_7")
+        self.label = QtWidgets.QLabel(parent=Settings)
+        self.label.setObjectName("label")
+        self.horizontalLayout_7.addWidget(self.label)
+        self.screenshotNumber = QtWidgets.QSpinBox(parent=Settings)
+        self.screenshotNumber.setMaximum(5)
+        self.screenshotNumber.setProperty("value", 1)
+        self.screenshotNumber.setObjectName("screenshotNumber")
+        self.horizontalLayout_7.addWidget(self.screenshotNumber)
+        self.label_2 = QtWidgets.QLabel(parent=Settings)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout_7.addWidget(self.label_2)
+        self.screenshotThreshold = QtWidgets.QDoubleSpinBox(parent=Settings)
+        self.screenshotThreshold.setDecimals(2)
+        self.screenshotThreshold.setMaximum(5.0)
+        self.screenshotThreshold.setSingleStep(0.01)
+        self.screenshotThreshold.setProperty("value", 0.1)
+        self.screenshotThreshold.setObjectName("screenshotThreshold")
+        self.horizontalLayout_7.addWidget(self.screenshotThreshold)
+        self.formLayout.setLayout(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.horizontalLayout_7)
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_11.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.getThumbnails = QtWidgets.QCheckBox(parent=Settings)
+        self.getThumbnails.setObjectName("getThumbnails")
+        self.horizontalLayout_11.addWidget(self.getThumbnails)
+        self.label_13 = QtWidgets.QLabel(parent=Settings)
+        self.label_13.setObjectName("label_13")
+        self.horizontalLayout_11.addWidget(self.label_13)
+        self.rows = QtWidgets.QSpinBox(parent=Settings)
+        self.rows.setMinimum(1)
+        self.rows.setMaximum(9)
+        self.rows.setProperty("value", 4)
+        self.rows.setObjectName("rows")
+        self.horizontalLayout_11.addWidget(self.rows)
+        self.label_8 = QtWidgets.QLabel(parent=Settings)
+        self.label_8.setObjectName("label_8")
+        self.horizontalLayout_11.addWidget(self.label_8)
+        self.cols = QtWidgets.QSpinBox(parent=Settings)
+        self.cols.setMinimum(1)
+        self.cols.setMaximum(9)
+        self.cols.setProperty("value", 4)
+        self.cols.setObjectName("cols")
+        self.horizontalLayout_11.addWidget(self.cols)
+        self.formLayout.setLayout(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.horizontalLayout_11)
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_8.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        self.label_4 = QtWidgets.QLabel(parent=Settings)
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_8.addWidget(self.label_4)
+        self.screenshotStart = QtWidgets.QDoubleSpinBox(parent=Settings)
+        self.screenshotStart.setDecimals(2)
+        self.screenshotStart.setMaximum(1.0)
+        self.screenshotStart.setSingleStep(0.01)
+        self.screenshotStart.setProperty("value", 0.1)
+        self.screenshotStart.setObjectName("screenshotStart")
+        self.horizontalLayout_8.addWidget(self.screenshotStart)
+        self.label_5 = QtWidgets.QLabel(parent=Settings)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_8.addWidget(self.label_5)
+        self.screenshotEnd = QtWidgets.QDoubleSpinBox(parent=Settings)
+        self.screenshotEnd.setDecimals(2)
+        self.screenshotEnd.setMaximum(1.0)
+        self.screenshotEnd.setSingleStep(0.01)
+        self.screenshotEnd.setProperty("value", 0.9)
+        self.screenshotEnd.setObjectName("screenshotEnd")
+        self.horizontalLayout_8.addWidget(self.screenshotEnd)
+        self.formLayout.setLayout(4, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_8)
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.autoUploadScreenshot = QtWidgets.QCheckBox(parent=Settings)
+        self.autoUploadScreenshot.setChecked(True)
+        self.autoUploadScreenshot.setObjectName("autoUploadScreenshot")
+        self.horizontalLayout_9.addWidget(self.autoUploadScreenshot)
+        self.pasteScreenshotUrl = QtWidgets.QCheckBox(parent=Settings)
+        self.pasteScreenshotUrl.setChecked(True)
+        self.pasteScreenshotUrl.setObjectName("pasteScreenshotUrl")
+        self.horizontalLayout_9.addWidget(self.pasteScreenshotUrl)
+        self.deleteScreenshot = QtWidgets.QCheckBox(parent=Settings)
+        self.deleteScreenshot.setChecked(True)
+        self.deleteScreenshot.setObjectName("deleteScreenshot")
+        self.horizontalLayout_9.addWidget(self.deleteScreenshot)
+        self.formLayout.setLayout(5, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_9)
+        self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_10.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
+        self.label_10 = QtWidgets.QLabel(parent=Settings)
+        self.label_10.setObjectName("label_10")
+        self.horizontalLayout_10.addWidget(self.label_10)
+        self.renameFile = QtWidgets.QCheckBox(parent=Settings)
+        self.renameFile.setChecked(False)
+        self.renameFile.setObjectName("renameFile")
+        self.horizontalLayout_10.addWidget(self.renameFile)
+        self.makeDir = QtWidgets.QCheckBox(parent=Settings)
+        self.makeDir.setChecked(False)
+        self.makeDir.setObjectName("makeDir")
+        self.horizontalLayout_10.addWidget(self.makeDir)
+        self.formLayout.setLayout(6, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_10)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.horizontalLayout_19 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
+        self.label_22 = QtWidgets.QLabel(parent=Settings)
+        self.label_22.setObjectName("label_22")
+        self.horizontalLayout_19.addWidget(self.label_22)
+        self.qb = QtWidgets.QRadioButton(parent=Settings)
+        self.qb.setToolTipDuration(1)
+        self.qb.setChecked(False)
+        self.qb.setObjectName("qb")
+        self.buttonGroup = QtWidgets.QButtonGroup(Settings)
+        self.buttonGroup.setObjectName("buttonGroup")
+        self.buttonGroup.addButton(self.qb)
+        self.horizontalLayout_19.addWidget(self.qb)
+        self.tr = QtWidgets.QRadioButton(parent=Settings)
+        self.tr.setChecked(True)
+        self.tr.setObjectName("tr")
+        self.buttonGroup.addButton(self.tr)
+        self.horizontalLayout_19.addWidget(self.tr)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_19)
+        self.formLayout.setLayout(7, QtWidgets.QFormLayout.ItemRole.LabelRole, self.verticalLayout_2)
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.label_14 = QtWidgets.QLabel(parent=Settings)
+        self.label_14.setObjectName("label_14")
+        self.horizontalLayout_6.addWidget(self.label_14)
+        self.downloaderHost = QtWidgets.QLineEdit(parent=Settings)
+        self.downloaderHost.setObjectName("downloaderHost")
+        self.horizontalLayout_6.addWidget(self.downloaderHost)
+        self.formLayout.setLayout(7, QtWidgets.QFormLayout.ItemRole.FieldRole, self.horizontalLayout_6)
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.label_15 = QtWidgets.QLabel(parent=Settings)
+        self.label_15.setObjectName("label_15")
+        self.horizontalLayout_5.addWidget(self.label_15)
+        self.downloaderUser = QtWidgets.QLineEdit(parent=Settings)
+        self.downloaderUser.setObjectName("downloaderUser")
+        self.horizontalLayout_5.addWidget(self.downloaderUser)
+        self.label_16 = QtWidgets.QLabel(parent=Settings)
+        self.label_16.setObjectName("label_16")
+        self.horizontalLayout_5.addWidget(self.label_16)
+        self.downloaderPass = QtWidgets.QLineEdit(parent=Settings)
+        self.downloaderPass.setObjectName("downloaderPass")
+        self.horizontalLayout_5.addWidget(self.downloaderPass)
+        self.formLayout.setLayout(8, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_5)
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
         self.label_18 = QtWidgets.QLabel(parent=Settings)
@@ -339,7 +330,16 @@ class Ui_Settings(object):
         self.resourcePath = QtWidgets.QLineEdit(parent=Settings)
         self.resourcePath.setObjectName("resourcePath")
         self.horizontalLayout_13.addWidget(self.resourcePath)
-        self.gridLayout.addLayout(self.horizontalLayout_13, 11, 0, 1, 2)
+        self.formLayout.setLayout(9, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_13)
+        self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
+        self.label_21 = QtWidgets.QLabel(parent=Settings)
+        self.label_21.setObjectName("label_21")
+        self.horizontalLayout_18.addWidget(self.label_21)
+        self.proxyUrl = QtWidgets.QLineEdit(parent=Settings)
+        self.proxyUrl.setObjectName("proxyUrl")
+        self.horizontalLayout_18.addWidget(self.proxyUrl)
+        self.formLayout.setLayout(10, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_18)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
@@ -369,6 +369,15 @@ class Ui_Settings(object):
         self.pterCookie.setObjectName("pterCookie")
         self.horizontalLayout_16.addWidget(self.pterCookie)
         self.verticalLayout.addLayout(self.horizontalLayout_16)
+        self.horizontalLayout_20 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
+        self.label_23 = QtWidgets.QLabel(parent=Settings)
+        self.label_23.setObjectName("label_23")
+        self.horizontalLayout_20.addWidget(self.label_23)
+        self.redLeavesCookie = QtWidgets.QLineEdit(parent=Settings)
+        self.redLeavesCookie.setObjectName("redLeavesCookie")
+        self.horizontalLayout_20.addWidget(self.redLeavesCookie)
+        self.verticalLayout.addLayout(self.horizontalLayout_20)
         self.horizontalLayout_17 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_17.setObjectName("horizontalLayout_17")
         self.label_20 = QtWidgets.QLabel(parent=Settings)
@@ -378,7 +387,7 @@ class Ui_Settings(object):
         self.kylinCookie.setObjectName("kylinCookie")
         self.horizontalLayout_17.addWidget(self.kylinCookie)
         self.verticalLayout.addLayout(self.horizontalLayout_17)
-        self.gridLayout.addLayout(self.verticalLayout, 13, 0, 1, 2)
+        self.formLayout.setLayout(11, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.verticalLayout)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setContentsMargins(30, -1, 30, -1)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -452,7 +461,7 @@ class Ui_Settings(object):
 "")
         self.cancelButton.setObjectName("cancelButton")
         self.horizontalLayout.addWidget(self.cancelButton)
-        self.gridLayout.addLayout(self.horizontalLayout, 14, 0, 1, 2)
+        self.formLayout.setLayout(12, QtWidgets.QFormLayout.ItemRole.SpanningRole, self.horizontalLayout)
 
         self.retranslateUi(Settings)
         QtCore.QMetaObject.connectSlotsByName(Settings)
@@ -554,6 +563,104 @@ class Ui_Settings(object):
 "    background-color: #3c6f1b;\n"
 "}\n"
 ""))
+        self.label_3.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.label_3.setText(_translate("Settings", "截图储存地址："))
+        self.screenshotPath.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.selectScreenshotPathButton.setText(_translate("Settings", "浏览"))
+        self.label_12.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.label_12.setText(_translate("Settings", "种子储存地址："))
+        self.torrentPath.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.selectTorrentPathButton.setText(_translate("Settings", "浏览"))
+        self.label_19.setText(_translate("Settings", "短剧信息储存地址："))
+        self.selectInfoPathButton.setText(_translate("Settings", "浏览"))
         self.label.setStyleSheet(_translate("Settings", "QPushButton {\n"
 "    display: inline-block;\n"
 "    padding: 5px 5px;\n"
@@ -626,6 +733,101 @@ class Ui_Settings(object):
 ""))
         self.label_2.setText(_translate("Settings", "关键帧复杂度："))
         self.screenshotThreshold.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.getThumbnails.setText(_translate("Settings", "生成缩略图"))
+        self.label_13.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.label_13.setText(_translate("Settings", "横向数量："))
+        self.rows.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.label_8.setStyleSheet(_translate("Settings", "QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 5px 5px;\n"
+"    font-size: 16px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"    background-color: #559e24;\n"
+"    border: none;\n"
+"    border-radius: 15px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: #4a8821;\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: #3c6f1b;\n"
+"}\n"
+""))
+        self.label_8.setText(_translate("Settings", "纵向数量："))
+        self.cols.setStyleSheet(_translate("Settings", "QPushButton {\n"
 "    display: inline-block;\n"
 "    padding: 5px 5px;\n"
 "    font-size: 16px;\n"
@@ -814,101 +1016,6 @@ class Ui_Settings(object):
 "}\n"
 ""))
         self.deleteScreenshot.setText(_translate("Settings", "上传后删除本地图片"))
-        self.getThumbnails.setText(_translate("Settings", "生成缩略图"))
-        self.label_13.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.label_13.setText(_translate("Settings", "横向数量："))
-        self.rows.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.label_8.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.label_8.setText(_translate("Settings", "纵向数量："))
-        self.cols.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
         self.label_10.setStyleSheet(_translate("Settings", "QPushButton {\n"
 "    display: inline-block;\n"
 "    padding: 5px 5px;\n"
@@ -987,110 +1094,13 @@ class Ui_Settings(object):
         self.label_14.setText(_translate("Settings", "下载器地址："))
         self.label_15.setText(_translate("Settings", "下载器用户名："))
         self.label_16.setText(_translate("Settings", "下载器密码"))
-        self.label_3.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.label_3.setText(_translate("Settings", "截图储存地址："))
-        self.screenshotPath.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.selectScreenshotPathButton.setText(_translate("Settings", "浏览"))
-        self.label_12.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.label_12.setText(_translate("Settings", "种子储存地址："))
-        self.torrentPath.setStyleSheet(_translate("Settings", "QPushButton {\n"
-"    display: inline-block;\n"
-"    padding: 5px 5px;\n"
-"    font-size: 16px;\n"
-"    cursor: pointer;\n"
-"    text-align: center;\n"
-"    text-decoration: none;\n"
-"    outline: none;\n"
-"    color:#fff;\n"
-"    background-color: #559e24;\n"
-"    border: none;\n"
-"    border-radius: 15px;\n"
-"    box-shadow: 0 9px #999;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"background-color: #4a8821;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #3c6f1b;\n"
-"}\n"
-""))
-        self.selectTorrentPathButton.setText(_translate("Settings", "浏览"))
-        self.label_19.setText(_translate("Settings", "短剧信息储存地址："))
-        self.selectInfoPathButton.setText(_translate("Settings", "浏览"))
+        self.label_18.setText(_translate("Settings", "做种路径："))
         self.label_21.setText(_translate("Settings", "代理地址:"))
         self.proxyUrl.setPlaceholderText(_translate("Settings", "格式为:http://xxx:7890"))
-        self.label_18.setText(_translate("Settings", "做种路径："))
         self.label_17.setText(_translate("Settings", "tju_cookie："))
         self.label_9.setText(_translate("Settings", "agsv_cookie:"))
         self.label_11.setText(_translate("Settings", "Pter_cookie:"))
+        self.label_23.setText(_translate("Settings", "redLeaves_cookie:"))
         self.label_20.setText(_translate("Settings", "kylin_cookie:"))
         self.saveButton.setText(_translate("Settings", "保存"))
         self.cancelButton.setText(_translate("Settings", "取消"))

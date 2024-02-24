@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Mainwindow(object):
     def setupUi(self, Mainwindow):
         Mainwindow.setObjectName("Mainwindow")
-        Mainwindow.resize(944, 998)
+        Mainwindow.resize(1072, 1001)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(9)
@@ -727,6 +727,50 @@ class Ui_Mainwindow(object):
 "")
         self.sendAgsvButton.setObjectName("sendAgsvButton")
         self.horizontalLayout_9.addWidget(self.sendAgsvButton)
+        self.sendredLeavesButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.sendredLeavesButton.setMinimumSize(QtCore.QSize(0, 80))
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setUnderline(False)
+        font.setWeight(75)
+        font.setStrikeOut(False)
+        self.sendredLeavesButton.setFont(font)
+        self.sendredLeavesButton.setStyleSheet("QPushButton {\n"
+"    display: inline-block;\n"
+"    padding: 15px 25px;\n"
+"    font-size: 24px;\n"
+"    cursor: pointer;\n"
+"    text-align: center;\n"
+"    text-decoration: none;\n"
+"    outline: none;\n"
+"    color:#fff;\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #16bf9d,\n"
+"                                      stop:1 #10a266);\n"
+"    border: none;\n"
+"    border-radius: 20px;\n"
+"    box-shadow: 0 9px #999;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #11b998,\n"
+"                                      stop:1 #08965e);\n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    background-color: \n"
+"                qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                      stop:0 #0e9278,\n"
+"                                      stop:1 #0e925c);\n"
+"}\n"
+"")
+        self.sendredLeavesButton.setObjectName("sendredLeavesButton")
+        self.horizontalLayout_9.addWidget(self.sendredLeavesButton)
         self.sendKylinButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.sendKylinButton.setMinimumSize(QtCore.QSize(0, 80))
         font = QtGui.QFont()
@@ -865,7 +909,7 @@ class Ui_Mainwindow(object):
         self.statusbar.setObjectName("statusbar")
         Mainwindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(parent=Mainwindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 944, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1072, 23))
         self.menubar.setObjectName("menubar")
         self.menu = QtWidgets.QMenu(parent=self.menubar)
         self.menu.setObjectName("menu")
@@ -930,6 +974,7 @@ class Ui_Mainwindow(object):
         self.sendTjuButton.setText(_translate("Mainwindow", "发北洋"))
         self.sendPeterButton.setText(_translate("Mainwindow", "发猫站"))
         self.sendAgsvButton.setText(_translate("Mainwindow", "发末日"))
+        self.sendredLeavesButton.setText(_translate("Mainwindow", "发红叶"))
         self.sendKylinButton.setText(_translate("Mainwindow", "发麒麟"))
         self.seedMak.setText(_translate("Mainwindow", "做种"))
         self.clear.setText(_translate("Mainwindow", "清空"))
