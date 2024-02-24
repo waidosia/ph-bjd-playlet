@@ -528,7 +528,7 @@ def get_kylin(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_kylin(cookies_str, torrent_file, main_title, compose, descr,year, proxy) -> (bool, str):
+def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, proxy) -> (bool, str):
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -575,7 +575,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr,year, pro
         # 类型 短剧
         'type': '421',
         # 年代
-        'processing_sel[4]': kylin_resolution_map.get(year, '0'),
+        'processing_sel[4]': kylin_year_map.get(year, '0'),
         # 媒介 web_dl
         'medium_sel[4]': '31',
         # 视频编码 h.264
