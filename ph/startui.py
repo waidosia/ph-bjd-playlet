@@ -20,7 +20,7 @@ from .tool import get_settings, get_file_path, get_folder_path, check_path_and_f
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files, \
     replace_fullwidth_symbols
-from .upload import upload_tjupt, upload_agsv, upload_pter, upload_kylin
+from .upload import upload_tjupt, upload_agsv, upload_pter, upload_kylin, upload_red_leaves
 
 
 def starui():
@@ -52,6 +52,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.agsvTorrentLink = None
         self.peterTorrentLink = None
         self.kylinTorrentLink = None
+        self.redLeavesTorrentLink = None
         # 初始化
         self.videoPath.setDragEnabled(True)
         self.introBrowser.setText("")
@@ -73,6 +74,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.sendTjuButton.clicked.connect(self.sendTjuClicked)
         self.sendAgsvButton.clicked.connect(self.sendAgsvClicked)
         self.sendPeterButton.clicked.connect(self.sendPeterClicked)
+        self.sendredLeavesButton.clicked.connect(self.sendredLeavesClicked)
         self.sendKylinButton.clicked.connect(self.sendKylinClicked)
         self.seedMak.clicked.connect(self.seedMakClicked)
         self.clear.clicked.connect(self.clear_all_text_inputs)
@@ -202,6 +204,11 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         upload_handler = UploadHandler(self)
         logger.info("点击上传Kylin按钮")
         upload_handler.sendKylinClicked()
+
+    def sendredLeavesClicked(self):
+        upload_handler = UploadHandler(self)
+        logger.info("点击上传redLeaves按钮")
+        upload_handler.sendredLeavesClicked()
 
     def seedMakClicked(self):
         seed_mak = SeedMak(self)
@@ -811,6 +818,49 @@ class UploadHandler:
             self.parent.debugBrowser.append("上传种子到kylin失败，失败原因为：" + kylin_link)
             logger.error("上传种子到kylin失败，失败原因为：" + kylin_link)
 
+    def sendredLeavesClicked(self):
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.torrentPathBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return
+        if not self.parent.introBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return
+        self.parent.debugBrowser.append("开始上传种子到redLeaves")
+        logger.info("开始上传种子到redLeaves")
+        cookie_str = get_settings("redLeavesCookie")
+        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
+        logger.info("处理前的主标题为：" + mainTitle)
+        mainTitle = mainTitle.replace('AVC', 'H.264')
+        mainTitle = mainTitle.replace('H264', 'H.264')
+        logger.info("处理后的主标题为：" + mainTitle)
+        secondTitle = self.parent.secondTitleBrowser.toPlainText()
+        logger.info("副标题为：" + secondTitle)
+        introBrowser = self.parent.introBrowser.toPlainText()
+        # 去除指定一段落的内容
+        modified_content = re.sub(
+            r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
+            '', introBrowser, flags=re.DOTALL)
+        logger.info("处理后的简介为：" + modified_content)
+        media_info = self.parent.mediainfoBrowser.toPlainText()
+        torrent_path = self.parent.torrentPathBrowser.toPlainText()
+        current_working_directory = os.getcwd()
+        if torrent_path:
+            if not os.path.isabs(torrent_path):
+                torrent_path = os.path.join(current_working_directory, torrent_path)
+                torrent_path = os.path.abspath(torrent_path)
+        upload_success, redLeaves_link = upload_red_leaves(cookie_str, torrent_path, mainTitle, secondTitle,
+                                                           modified_content,
+                                                           media_info, self.proxy_url,
+                                                           )
+        if upload_success:
+            self.parent.redLeavesTorrentLink = redLeaves_link
+            self.parent.debugBrowser.append("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
+            logger.info("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
+
 
 class SeedMak:
     def __init__(self, parent):
@@ -823,7 +873,7 @@ class SeedMak:
 
     def seed_qb(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
-                        self.parent.kylinTorrentLink]
+                        self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
         add_success, result_text = qb_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
                                                torrent_urls, self.path)
         if add_success:
@@ -833,7 +883,7 @@ class SeedMak:
 
     def seed_tr(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
-                        self.parent.kylinTorrentLink]
+                        self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
         add_success, result_text = tr_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
                                                torrent_urls, self.path)
         if add_success:
