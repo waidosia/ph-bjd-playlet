@@ -25,3 +25,4 @@ selenium~=4.16.0
 beautifulsoup4~=4.12.2
 pypinyin~=0.50.0
 lxml~=5.1.0
+borax~=4.1.0

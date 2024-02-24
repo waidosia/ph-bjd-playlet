@@ -8,6 +8,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QApplication, QMessageBox, QInputDialog
 
 from ui.mainwindow import Ui_Mainwindow
+from util.festival import get_festival_blessing
 from util.log import logger
 from .common import title_tem, medio_tem
 from .mediainfo import get_media_info
@@ -284,9 +285,9 @@ class UploadImages(QObject):
             # 截图函数执行
 
             screenshot_success, images = extract_and_get_thumbnails(videoPath, screenshotPath, screenshotNumber,
-                                                                 screenshotThreshold, screenshotStart,
-                                                                 screenshotEnd,
-                                                                 getThumbnails, rows, cols)
+                                                                    screenshotThreshold, screenshotStart,
+                                                                    screenshotEnd,
+                                                                    getThumbnails, rows, cols)
 
             if screenshot_success:
                 self.handle_screenshot_result(images, figureBedPath, figureBedToken, autoUploadScreenshot)
@@ -462,9 +463,11 @@ class GetName:
 
         main_title = f"{first_english_name} {year} S{season} {width} {source} {format} {hdr_format} {commercial_name}{channel_layout}-{team}"
         main_title = ' '.join(main_title.split())
+
+        festival = get_festival_blessing()
         print(main_title)
 
-        second_title = f"{first_chinese_name} | 全{len(video_files)}集 | {year}年 | {type} | 类型：{category}"
+        second_title = f"{first_chinese_name} | 全{len(video_files)}集 | {year}年 | {type} | 类型：{category} {festival}"
         print("SecondTitle" + second_title)
 
         file_name = f"{first_chinese_name}.{first_english_name}.{year} S{season}E??.{width}.{source}.{format}.{hdr_format}.{commercial_name}{channel_layout}-{team}"
@@ -791,13 +794,14 @@ class UploadHandler:
         introBrowser = introBrowser.replace('[/mediainfo]', '[/quote]')
         logger.info("处理后的简介为：" + introBrowser)
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
+        year = self.parent.yearEdit.text()
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, kylin_link = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
-                                                  self.proxy_url,
+                                                  year, self.proxy_url,
                                                   )
         if upload_success:
             self.parent.kylinTorrentLink = kylin_link
