@@ -1,4 +1,6 @@
 import os
+import time
+
 from lxml import etree
 
 import requests
@@ -65,9 +67,9 @@ def get_tjupt(cookies_str) -> (bool, str):
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             logger.info(f'获取主页失败,状态码为:{response.status_code}')
-            return False, '获取主页失败,状态码为:{response.status_code}'
+            return False, f'获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.error('获取主页失败', e)
+        logger.error(f'获取主页失败{e}')
         return False, '获取主页失败'
 
 
@@ -98,7 +100,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        logger.info('打开种子文件失败', e)
+        logger.info(f'打开种子文件失败{e}')
         return False, '打开种子文件失败，请检查是否制作种子'
 
     data = {
@@ -129,7 +131,8 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
             # details.php?id=399109&uploaded=1
             if 'details.php' in redirect_url:
                 torrent_id = redirect_url.split('id=')[1].split('&')[0]
-                logger.info('获取种子id成功', torrent_id)
+                logger.info(f'获取种子id成功:{torrent_id}')
+                time.sleep(1)
                 get_success, torrent_link = get_tjupt_torrent(cookies_str, torrent_id)
                 if get_success:
                     return True, torrent_link
@@ -140,7 +143,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        logger.info('发布失败', e)
+        logger.info(f'发布失败,错误原因为{e}')
         return False, '发布失败'
 
 
@@ -161,11 +164,11 @@ def get_tjupt_torrent(cookies_str, torrent_id) -> (bool, str):
             # 获取种子下载链接
             soup = BeautifulSoup(response.text, 'html.parser')
             torrent_url = soup.find('a', {'id': 'direct_link'}).get('href')
-            logger.info('获取种子下载地址成功', torrent_url)
+            logger.info(f'获取种子下载地址成功{torrent_url}')
             return True, torrent_url
         else:
             logger.info(f'获取种子下载地址失败,状态码为:{response.status_code}')
-            return False, '获取种子下载地址失败,状态码为:', response.status_code
+            return False, f'获取种子下载地址失败,状态码为:', response.status_code
     except Exception as e:
         logger.error(f'获取种子下载地址失败:{e}')
         return False, '获取种子下载地址失败'
@@ -202,9 +205,9 @@ def get_agsv(cookies_str) -> (bool, str):
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             logger.error(f'获取主页失败,状态码为:{response.status_code}')
-            return False, '获取主页失败,状态码为:{response.status_code}'
+            return False, f'获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.exception('获取主页失败，错误为:', e)
+        logger.exception(f'获取主页失败，错误为:{e}')
         return False, '获取主页失败'
 
 
@@ -237,8 +240,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        logger.info('打开种子文件失败', e)
-        logger.error('打开种子文件失败', e)
+        logger.error(f'打开种子文件失败{e}')
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
@@ -286,6 +288,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
             # 正常的重定向
             # 提取重定向后的地址
             redirect_url = response.headers['Location']
+            time.sleep(1)
             get_success, torrent_link = get_agsv_torrent(cookies_str, redirect_url)
             if get_success:
                 return True, torrent_link
@@ -296,7 +299,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        logger.exception('发布失败,错误为:', e)
+        logger.exception(f'发布失败,错误为:{e}')
         return False, '发布失败'
 
 
@@ -322,17 +325,17 @@ def get_agsv_torrent(cookies_str, torrent_link) -> (bool, str):
             result = tree.xpath('//a[@title="可在BT客户端使用，当天有效。"]')
             if result:
                 result = result[0].get('href')
-                logger.info('获取种子下载地址成功', result)
+                logger.info(f'获取种子下载地址成功{result}')
                 return True, result
             else:
                 logger.info('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            logger.error('获取种子下载地址失败,状态码为: %s', response.status_code)
-            return False, '获取种子下载地址失败,状态码为:', response.status_code
+            logger.error(f'获取种子下载地址失败,状态码为: {response.status_code}')
+            return False, f'获取种子下载地址失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.exception('获取种子下载地址失败，错误为:', e)
+        logger.exception(f'获取种子下载地址失败，错误为:{e}')
         return False, '获取种子下载地址失败'
 
 
@@ -401,7 +404,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) ->
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        logger.error('打开种子文件失败', e)
+        logger.error(f'打开种子文件失败{e}')
         return False, '打开种子文件失败，请检查是否制作种子'
 
     data = {
@@ -443,7 +446,8 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) ->
             if 'details.php' in redirect_url:
                 logger.info('发布成功,尝试获取种子id')
                 torrent_id = redirect_url.split('id=')[1].split('&')[0]
-                logger.info('获取种子id成功', torrent_id)
+                logger.info(f'获取种子id成功{torrent_id}')
+                time.sleep(1)
                 get_success, torrent_link = get_pter_torrent(cookies_str, torrent_id)
                 if get_success:
                     return True, torrent_link
@@ -457,7 +461,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy) ->
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        logger.error('发布失败', e)
+        logger.error(f'发布失败,错误原因为:{e}')
         return False, '发布失败'
 
 
@@ -485,17 +489,17 @@ def get_pter_torrent(cookies_str, torrent_id) -> (bool, str):
                 result = result[0].get('href')
                 # 地址需要拼接
                 result = 'https://pterclub.com/' + result
-                logger.info('获取种子下载地址成功', result)
+                logger.info(f'获取种子下载地址成功{result}')
                 return True, result
             else:
                 logger.error('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            logger.error('获取种子下载地址失败,状态码为:', response.status_code)
-            return False, '获取种子下载地址失败,状态码为:', response.status_code
+            logger.error(f'获取种子下载地址失败,状态码为:{response.status_code}')
+            return False, f'获取种子下载地址失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.error('获取种子下载地址失败', e)
+        logger.error(f'获取种子下载地址失败{e}')
         return False, '获取种子下载地址失败'
 
 
@@ -529,9 +533,9 @@ def get_kylin(cookies_str) -> (bool, str):
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             logger.error(f'获取主页失败,状态码为:{response.status_code}')
-            return False, '获取主页失败,状态码为:{response.status_code}'
+            return False, f'获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.error('获取主页失败', e)
+        logger.error(f'获取主页失败{e}')
         return False, '获取主页失败'
 
 
@@ -563,7 +567,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        logger.error('打开种子文件失败', e)
+        logger.error(f'打开种子文件失败{e}')
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
@@ -612,6 +616,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
             # 正常的重定向
             # 提取重定向后的地址
             redirect_url = response.headers['Location']
+            time.sleep(1)
             get_success, torrent_link = get_kylin_torrent(cookies_str, redirect_url)
             if get_success:
                 return True, torrent_link
@@ -622,7 +627,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        logger.error('发布失败', e)
+        logger.error(f'发布失败{e}')
         return False, '发布失败'
 
 
@@ -648,17 +653,17 @@ def get_kylin_torrent(cookies_str, torrent_link) -> (bool, str):
             result = tree.xpath('//a[@title="可在BT客户端使用，当天有效。"]')
             if result:
                 result = result[0].get('href')
-                logger.info('获取种子下载地址成功', result)
+                logger.info(f'获取种子下载地址成功{result}')
                 return True, result
             else:
                 logger.error('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            logger.error('获取种子下载地址失败,状态码为:', response.status_code)
-            return False, '获取种子下载地址失败,状态码为:', response.status_code
+            logger.error(f'获取种子下载地址失败,状态码为:{response.status_code}')
+            return False, f'获取种子下载地址失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.exception('获取种子下载地址失败', e)
+        logger.exception(f'获取种子下载地址失败{e}')
         return False, '获取种子下载地址失败'
 
 
@@ -693,9 +698,9 @@ def get_red_leaves(cookies_str) -> (bool, str):
                 return False, f'获取主页失败,重定向地址为:{response.headers["Location"]}'
         else:
             logger.error(f'获取主页失败,状态码为:{response.status_code}')
-            return False, '获取主页失败,状态码为:{response.status_code}'
+            return False, f'获取主页失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.error('获取主页失败', e)
+        logger.error(f'获取主页失败{e}')
         return False, '获取主页失败'
 
 
@@ -727,7 +732,7 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
     try:
         file = open(torrent_file, 'rb').read()
     except Exception as e:
-        logger.error('打开种子文件失败', e)
+        logger.error(f'打开种子文件失败{e}')
         return False, '打开种子文件失败，请检查是否制作种子'
 
     # 从主标题中提取分辨率
@@ -773,6 +778,7 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
             # 正常的重定向
             # 提取重定向后的地址
             redirect_url = response.headers['Location']
+            time.sleep(1)
             get_success, torrent_link = get_red_leaves_torrent(cookies_str, redirect_url)
             if get_success:
                 return True, torrent_link
@@ -783,7 +789,7 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
             return False, f'发布失败,状态码为:{response.status_code}'
 
     except Exception as e:
-        logger.error('发布失败', e)
+        logger.error(f'发布失败{e}')
         return False, '发布失败'
 
 
@@ -809,15 +815,15 @@ def get_red_leaves_torrent(cookies_str, torrent_link) -> (bool, str):
             result = tree.xpath('//a[@title="可在BT客户端使用，当天有效。"]')
             if result:
                 result = result[0].get('href')
-                logger.info('获取种子下载地址成功', result)
+                logger.info(f'获取种子下载地址成功{result}')
                 return True, result
             else:
                 logger.error('获取种子下载地址失败')
                 return False, '获取种子下载地址失败'
 
         else:
-            logger.error('获取种子下载地址失败,状态码为:', response.status_code)
-            return False, '获取种子下载地址失败,状态码为:', response.status_code
+            logger.error(f'获取种子下载地址失败,状态码为:{response.status_code}' )
+            return False, f'获取种子下载地址失败,状态码为:{response.status_code}'
     except Exception as e:
-        logger.exception('获取种子下载地址失败', e)
+        logger.exception(f'获取种子下载地址失败{e}')
         return False, '获取种子下载地址失败'
