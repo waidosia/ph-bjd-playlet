@@ -12,6 +12,8 @@ def build_executable():
                        '--noconsole '
                        '--upx-dir=. '
                        '--icon=static/playlet_64.ico '
+                       '--add-data=./FestivalData.csv:borax/calendars/dataset '
+                       '--add-data=./festivals_ext1.csv:borax/calendars/dataset '
                        '--name=playlet '
                        'main.py')
     subprocess.run(pyinstaller_cmd, shell=True)
