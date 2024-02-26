@@ -45,7 +45,7 @@ def qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_ur
     logger.info(f"qbittorrent版本号：{qb.app.version}")
     for torrent_url in torrent_urls:
         if torrent_url is not None:
-            is_add = qb.torrents_add(urls=torrent_url, is_paused=True, savepath=path)
+            is_add = qb.torrents_add(urls=torrent_url, is_paused=True, savepath=path, is_skip_checking=True)
             if is_add != 'Ok.':
                 print(f'{torrent_url}添加失败')
                 result_text += f'{torrent_url}添加失败\n'
