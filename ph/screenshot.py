@@ -13,10 +13,10 @@ global token
 def upload_screenshot(api_url, api_token, frame_path):
     if "agsvpt" in api_url:
         logger.info("使用AGSV图床")
-        return True, upload_agsv_screenshot(api_url, api_token, frame_path)
+        return upload_agsv_screenshot(api_url, api_token, frame_path)
     elif "pterclub" in api_url:
         logger.info("使用猫图床")
-        return True, chevereto_cookie_upload(api_url, api_token, frame_path)
+        return chevereto_cookie_upload(api_url, api_token, frame_path)
     else:
         logger.error("未知图床")
         return False, {}
@@ -41,7 +41,7 @@ def upload_agsv_screenshot(api_url, api_token, frame_path):
             print("请求过程中出现错误:", e)
             print("请求过程中出现错误:", e)
             return False, {}
-        files = {'file': (frame_path, result.content, file_type)}
+        files = {'uploadedFile': (frame_path, result.content, file_type)}
     else:
         # Determine the MIME type based on file extension
         file_type = 'image/jpeg'  # default
@@ -59,7 +59,7 @@ def upload_agsv_screenshot(api_url, api_token, frame_path):
         file_stream = file_sterm.read()
         file_sterm.close()
 
-        files = {'file': (frame_path, file_stream, file_type)}
+        files = {'uploadedFile': (frame_path, file_stream, file_type)}
 
     data = {'api_token': api_token, 'image_compress': 0, 'image_compress_level': 80}
     res = None
@@ -123,7 +123,7 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
     auth_token = get_token(api_url, api_token)
     if auth_token == '':
         logger.error('未找到auth_token')
-        return {}
+        return False, {}
 
     logger.info("开始上传图床")
     print("开始上传图床")
@@ -157,7 +157,7 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
         req = requests.post(f'{api_url}/json', data=data, files=files, headers=headers)
     except Exception as r:
         logger.error(f'requests 获取失败，原因: {r}')
-        return {}
+        return False, {}
     try:
         res = req.json()
         logger.info(res)
@@ -167,15 +167,15 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
         logger.error(
             f"上传图片失败: HTTP {req.status_code}, reason: {req.reason} "
             f"{res['error'].get('message') if 'error' in res else ''}")
-        return {}
+        return False, {}
     if 'error' in res:
         logger.error(
             f"上传图片失败: [{res['error'].get('code')}] {res['error'].get('context')} {res['error'].get('message')}")
         return {}
     if 'status_code' in res and res.get('status_code') != 200:
         logger.error(f"上传图片失败: [{res['status_code']}] {res.get('status_txt')}")
-        return {}
+        return False, {}
     if 'image' not in res or 'url' not in res['image']:
         logger.error(f"图片直链获取失败")
-        return {}
-    return {"statusCode": str(res['status_code']), "bbsurl": "[img]" + res['image']['url'] + "[/img]"}
+        return False, {}
+    return True, {"statusCode": str(res['status_code']), "bbsurl": "[img]" + res['image']['url'] + "[/img]"}
