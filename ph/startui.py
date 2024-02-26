@@ -336,17 +336,17 @@ class UploadImages(QObject):
             output = "\n".join(images['screenshot'])
             self.parent.pictureUrlBrowser.setText(output)
 
-    def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover, paste_url_callback):
+    def handle_upload_result(self, upload_success, api_response, screenshot_path, is_cover):
         print("接受到线程请求的结果")
         logger.info("接受到线程请求的结果")
         self.parent.debugBrowser.append("接受到线程请求的结果")
         pasteScreenshotUrl = bool(get_settings("pasteScreenshotUrl"))
         deleteScreenshot = bool(get_settings("deleteScreenshot"))
+        bbsurl = ""
         if upload_success:
             if api_response.get("statusCode", "") == "200":
                 bbsurl = str(api_response.get("bbsurl", ""))
                 self.parent.pictureUrlBrowser.append(bbsurl)
-                api_response = bbsurl
                 logger.info(f"成功上传截图到图床 {bbsurl}")
             else:
                 if api_response.get("statusCode", "") == "":
@@ -358,28 +358,23 @@ class UploadImages(QObject):
                 if is_cover:
                     category = self.parent.get_selected_categories()
                     print('类型为：' + category)
-                    text = title_tem.format(api_response, self.parent.chineseNameEdit.text(),
+                    text = title_tem.format(bbsurl, self.parent.chineseNameEdit.text(),
                                             self.parent.yearEdit.text(), category,
                                             self.parent.info.text())
                     self.parent.introBrowser.append(text)
                     self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
                     logger.info("成功将封面链接粘贴到简介前")
                 else:
-                    paste_url_callback(api_response)
-                    self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
-                    logger.info("成功将封面链接粘贴到简介后")
+                    if bbsurl!= "":
+                        self.parent.introBrowser.append(bbsurl)
+                        self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
+                        logger.info("成功将封面链接粘贴到简介后")
                 if deleteScreenshot:
                     self.delete_screenshot(screenshot_path)
 
         else:
             self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
             logger.error("图床响应不是有效的JSON格式")
-
-    def paste_url_cover(self, api_response):
-        self.parent.introBrowser.append(api_response)
-
-    def paste_url_image(self, api_response):
-        self.parent.introBrowser.append(api_response)
 
     def delete_screenshot(self, screenshot_path):
         if os.path.exists(screenshot_path):
@@ -398,7 +393,7 @@ class UploadImages(QObject):
             if self.finished_threads == len(self.upload_picture_threads):
                 # 所有线程都已完成
                 self.allThreadsFinished()
-        self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover, self.paste_url_cover)
+        self.handle_upload_result(upload_success, api_response, screenshot_path, is_cover)
 
     def allThreadsFinished(self):
         # 所有线程都已完成，进行页面提示
