@@ -20,11 +20,11 @@ from .tool import get_settings, get_file_path, get_folder_path, check_path_and_f
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files, \
     replace_fullwidth_symbols
-from upload.tjupt import upload_tjupt
-from upload.agsv import upload_agsv
-from upload.kylin import upload_kylin
-from upload.pter import upload_pter
-from upload.red_leaves import upload_red_leaves
+from .upload.tjupt import upload_tjupt
+from .upload.agsv import upload_agsv
+from .upload.kylin import upload_kylin
+from .upload.pter import upload_pter
+from .upload.red_leaves import upload_red_leaves
 
 
 def starui():
