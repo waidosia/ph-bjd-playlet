@@ -59,6 +59,7 @@ class Settings(QDialog, Ui_Settings):
         selected_id = int(button_group_value) if button_group_value != "None" else -2
         self.buttonGroup.button(selected_id).setChecked(True)
         self.renameFile.setChecked(bool(get_settings("renameFile")))
+        self.torrentSavePath.setText(get_settings("torrentSavePath"))
         self.proxyUrl.setText(get_settings("proxyUrl"))
         self.tjuCookie.setText(get_settings("tjuCookie"))
         self.agsvCookie.setText(get_settings("agsvCookie"))
@@ -81,6 +82,7 @@ class Settings(QDialog, Ui_Settings):
         update_settings("screenshotStart", str(self.screenshotStart.text()))
         update_settings("screenshotEnd", str(self.screenshotEnd.text()))
         update_settings("proxyUrl", str(self.proxyUrl.text()))
+        update_settings("torrentSavePath", str(self.torrentSavePath.text()))
         update_settings("tjuCookie", str(self.tjuCookie.text()))
         update_settings("agsvCookie", str(self.agsvCookie.text()))
         update_settings("pterCookie", str(self.pterCookie.text()))

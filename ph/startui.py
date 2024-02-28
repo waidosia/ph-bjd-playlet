@@ -20,7 +20,11 @@ from .tool import get_settings, get_file_path, get_folder_path, check_path_and_f
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files, \
     replace_fullwidth_symbols
-from .upload import upload_tjupt, upload_agsv, upload_pter, upload_kylin, upload_red_leaves
+from upload.tjupt import upload_tjupt
+from upload.agsv import upload_agsv
+from upload.kylin import upload_kylin
+from upload.pter import upload_pter
+from upload.red_leaves import upload_red_leaves
 
 
 def starui():
@@ -53,6 +57,11 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.peterTorrentLink = None
         self.kylinTorrentLink = None
         self.redLeavesTorrentLink = None
+        self.tjuTorrentPath = None
+        self.agsvTorrentPath = None
+        self.peterTorrentPath = None
+        self.kylinTorrentPath = None
+        self.redLeavesTorrentPath = None
         # 初始化
         self.videoPath.setDragEnabled(True)
         self.introBrowser.setText("")
@@ -365,7 +374,7 @@ class UploadImages(QObject):
                     self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
                     logger.info("成功将封面链接粘贴到简介前")
                 else:
-                    if bbsurl!= "":
+                    if bbsurl != "":
                         self.parent.introBrowser.append(bbsurl)
                         self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
                         logger.info("成功将封面链接粘贴到简介后")
@@ -633,6 +642,7 @@ class UploadHandler:
         super().__init__()
         self.parent = parent
         self.proxy_url = get_settings("proxyUrl")
+        self.torrent_path = get_settings("torrentSavePath")
 
     def sendTjuClicked(self):
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
@@ -666,10 +676,12 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload_success, tju_link = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
-                                                chinese_name, self.proxy_url)
+        upload_success, tju_link, tju_path = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle,
+                                                          introBrowser,
+                                                          chinese_name, self.proxy_url, self.torrent_path)
         if upload_success:
             self.parent.tjuTorrentLink = tju_link
+            self.parent.tjuTorrentPath = tju_path
             self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + tju_link)
             logger.info("上传种子到TJUPT成功,种子链接为：" + tju_link)
         else:
@@ -712,10 +724,12 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload_success, agsv_link = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle, modified_content,
-                                                media_info, self.proxy_url)
+        upload_success, agsv_link, agsv_path = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle,
+                                                           modified_content,
+                                                           media_info, self.proxy_url, self.torrent_path)
         if upload_success:
             self.parent.agsvTorrentLink = agsv_link
+            self.parent.agsvTorrentPath = agsv_path
             self.parent.debugBrowser.append("上传种子到agsv成功,种子链接为：" + agsv_link)
         else:
             self.parent.debugBrowser.append("上传种子到agsv失败，失败原因为：" + agsv_link)
@@ -760,11 +774,13 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload_success, pter_link = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
-                                                self.proxy_url,
-                                                )
+        upload_success, pter_link, pter_path = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle,
+                                                           introBrowser,
+                                                           self.proxy_url, self.torrent_path,
+                                                           )
         if upload_success:
             self.parent.peterTorrentLink = pter_link
+            self.parent.peterTorrentPath = pter_path
             self.parent.debugBrowser.append("上传种子到Pter成功,种子链接为：" + pter_link)
             logger.info("上传种子到Pter成功,种子链接为：" + pter_link)
         else:
@@ -802,11 +818,13 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload_success, kylin_link = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle, introBrowser,
-                                                  year, self.proxy_url,
-                                                  )
+        upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
+                                                              introBrowser,
+                                                              year, self.proxy_url, self.torrent_path
+                                                              )
         if upload_success:
             self.parent.kylinTorrentLink = kylin_link
+            self.parent.kylinTorrentPath = kylin_path
             self.parent.debugBrowser.append("上传种子到kylin成功,种子链接为：" + kylin_link)
             logger.info("上传种子到kylin成功,种子链接为：" + kylin_link)
         else:
@@ -847,12 +865,15 @@ class UploadHandler:
             if not os.path.isabs(torrent_path):
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
-        upload_success, redLeaves_link = upload_red_leaves(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                           modified_content,
-                                                           media_info, self.proxy_url,
-                                                           )
+        upload_success, redLeaves_link, redLeaves_torrent = upload_red_leaves(cookie_str, torrent_path, mainTitle,
+                                                                              secondTitle,
+                                                                              modified_content,
+                                                                              media_info, self.proxy_url,
+                                                                              self.torrent_path,
+                                                                              )
         if upload_success:
             self.parent.redLeavesTorrentLink = redLeaves_link
+            self.parent.redLeavesTorrentPath = redLeaves_torrent
             self.parent.debugBrowser.append("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
             logger.info("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
 
@@ -869,8 +890,10 @@ class SeedMak:
     def seed_qb(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
                         self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
+        torrent_paths = [self.parent.tjuTorrentPath, self.parent.agsvTorrentPath, self.parent.peterTorrentPath,
+                         self.parent.kylinTorrentPath, self.parent.redLeavesTorrentPath]
         add_success, result_text = qb_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
-                                               torrent_urls, self.path)
+                                               torrent_urls, torrent_paths, self.path)
         if add_success:
             self.parent.debugBrowser.append(result_text)
         else:
@@ -879,8 +902,10 @@ class SeedMak:
     def seed_tr(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
                         self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
+        torrent_paths = [self.parent.tjuTorrentPath, self.parent.agsvTorrentPath, self.parent.peterTorrentPath,
+                         self.parent.kylinTorrentPath, self.parent.redLeavesTorrentPath]
         add_success, result_text = tr_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
-                                               torrent_urls, self.path)
+                                               torrent_urls, torrent_paths, self.path)
         if add_success:
             self.parent.debugBrowser.append(result_text)
         else:

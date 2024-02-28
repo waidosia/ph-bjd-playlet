@@ -8,7 +8,7 @@ from util.log import logger
 
 
 # 调用qbittorrent的API下载种子进行做种
-def qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_urls, path) -> (bool, str):
+def qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_urls, torrent_paths, path) -> (bool, str):
     # 测试ip与端口是否能连接
     # 使用tcp连接进行测试
     # 正则匹配出host和port
@@ -49,13 +49,19 @@ def qb_download(qbittorrent_host, qbittorrent_user, qbittorrent_pass, torrent_ur
             if is_add != 'Ok.':
                 print(f'{torrent_url}添加失败')
                 result_text += f'{torrent_url}添加失败\n'
+    for torrent_path in torrent_paths:
+        if torrent_path is not None:
+            is_add = qb.torrents_add(torrent_files=torrent_path, is_paused=True, savepath=path, is_skip_checking=True)
+            if is_add != 'Ok.':
+                print(f'{torrent_path}添加失败')
+                result_text += f'{torrent_path}添加失败\n'
     qb.auth_log_out()
     if result_text != "":
         return False, result_text
     return True, "添加成功"
 
 
-def tr_download(tr_host, tr_user, tr_pass, torrent_urls, path) -> (bool, str):
+def tr_download(tr_host, tr_user, tr_pass, torrent_urls, torrent_paths, path) -> (bool, str):
     match = re.match(r"(?:http[s]?://)?([^:/]+)(?::(\d+))", tr_host)
     if match:
         host = match.group(1)
@@ -90,6 +96,13 @@ def tr_download(tr_host, tr_user, tr_pass, torrent_urls, path) -> (bool, str):
             except Exception as e:
                 print(f'{torrent_url}添加失败,error: {e}')
                 result_text += f'{torrent_url}添加失败\n'
+    for torrent_path in torrent_paths:
+        if torrent_path is not None:
+            try:
+                tr.add_torrent(torrent_path, download_dir=path)
+            except Exception as e:
+                print(f'{torrent_path}添加失败,error: {e}')
+                result_text += f'{torrent_path}添加失败\n'
     if result_text != "":
         return False, result_text
     return True, "添加成功"
