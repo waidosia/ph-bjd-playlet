@@ -934,7 +934,7 @@ class UploadPictureThread(QThread):
             print("返回结果成功")
         except Exception as e:
             print(f"异常发生: {e}")
-            self.result_signal.emit(False, f"错误消息为：{e}", self.screenshot_path, self.is_cover, str(e))
+            self.result_signal.emit(False, {}, self.screenshot_path, self.is_cover, str(e))
 
 
 class MakeTorrentThread(QThread):
