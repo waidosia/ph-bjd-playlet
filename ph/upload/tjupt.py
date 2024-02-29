@@ -49,7 +49,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_tjupt(cookies_str)
     if not get_success:
-        return False, get_str
+        return False, get_str, ""
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -73,7 +73,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
         file = open(torrent_file, 'rb').read()
     except Exception as e:
         logger.info(f'打开种子文件失败{e}')
-        return False, '打开种子文件失败，请检查是否制作种子'
+        return False, '打开种子文件失败，请检查是否制作种子', ""
 
     data = {
         'referid': '',
@@ -109,11 +109,11 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
                 return get_success, torrent_link, torrent_save_path
         else:
             logger.info(f'发布失败,状态码为:{response.status_code}')
-            return False, f'发布失败,状态码为:{response.status_code}'
+            return False, f'发布失败,状态码为:{response.status_code}', ""
 
     except Exception as e:
         logger.info(f'发布失败,错误原因为{e}')
-        return False, '发布失败'
+        return False, '发布失败', ""
 
 
 def get_tjupt_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):

@@ -67,7 +67,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_kylin(cookies_str)
     if not get_success:
-        return False, get_str
+        return False, get_str, ""
     headers = {
         'Host': 'www.hdkyl.in',
         'Cookie': cookies_str,
@@ -85,13 +85,13 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
         file = open(torrent_file, 'rb').read()
     except Exception as e:
         logger.error(f'打开种子文件失败{e}')
-        return False, '打开种子文件失败，请检查是否制作种子'
+        return False, '打开种子文件失败，请检查是否制作种子', ""
 
     # 从主标题中提取分辨率
     if len(main_title.split(' ')) > 6:
         resolution = main_title.split(' ')[-4].upper()
     else:
-        return False, '主标题格式错误,无法正确获取分辨率或年'
+        return False, '主标题格式错误,无法正确获取分辨率或年', ""
 
     data = {
         'name': main_title,
@@ -139,11 +139,11 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
             return get_success, torrent_link, torrent_save_path
         else:
             logger.error(f'发布失败,状态码为:{response.status_code}')
-            return False, f'发布失败,状态码为:{response.status_code}'
+            return False, f'发布失败,状态码为:{response.status_code}', ""
 
     except Exception as e:
         logger.error(f'发布失败{e}')
-        return False, '发布失败'
+        return False, '发布失败', ""
 
 
 def get_kylin_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str, str):

@@ -4,6 +4,7 @@ from lxml import etree
 import requests
 from util.log import logger
 from urllib.parse import unquote
+
 proxies = {}
 
 
@@ -45,7 +46,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, to
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_pter(cookies_str)
     if not get_success:
-        return False, get_str
+        return False, get_str, ""
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -71,7 +72,7 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, to
         file = open(torrent_file, 'rb').read()
     except Exception as e:
         logger.error(f'打开种子文件失败{e}')
-        return False, '打开种子文件失败，请检查是否制作种子'
+        return False, '打开种子文件失败，请检查是否制作种子', ""
 
     data = {
         'name': main_title,
@@ -114,18 +115,18 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, to
                 torrent_id = redirect_url.split('id=')[1].split('&')[0]
                 logger.info(f'获取种子id成功{torrent_id}')
                 time.sleep(1)
-                get_success, torrent_link,torrent_save_path = get_pter_torrent(cookies_str, torrent_id, torrent_path)
-                return get_success, torrent_link,torrent_save_path
+                get_success, torrent_link, torrent_save_path = get_pter_torrent(cookies_str, torrent_id, torrent_path)
+                return get_success, torrent_link, torrent_save_path
             else:
                 logger.error(f'发布失败,重定向地址为:{redirect_url}')
-                return False, f'发布失败,重定向地址为:{redirect_url}'
+                return False, f'发布失败,重定向地址为:{redirect_url}', ""
         else:
             logger.error(f'发布失败,状态码为:{response.status_code}')
-            return False, f'发布失败,状态码为:{response.status_code}'
+            return False, f'发布失败,状态码为:{response.status_code}', ""
 
     except Exception as e:
         logger.error(f'发布失败,错误原因为:{e}')
-        return False, '发布失败'
+        return False, '发布失败', ""
 
 
 def get_pter_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):
@@ -176,14 +177,14 @@ def get_pter_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):
                 # 地址需要拼接
                 result = 'https://pterclub.com/' + result
                 logger.info(f'获取种子下载地址成功{result}')
-                return True, result,save_path
+                return True, result, save_path
             else:
                 logger.error('获取种子下载地址失败')
-                return False, '获取种子下载地址失败',""
+                return False, '获取种子下载地址失败', ""
 
         else:
             logger.error(f'获取种子下载地址失败,状态码为:{response.status_code}')
             return False, f'获取种子下载地址失败,状态码为:{response.status_code}'
     except Exception as e:
         logger.error(f'获取种子下载地址失败{e}')
-        return False, '获取种子下载地址失败',""
+        return False, '获取种子下载地址失败', ""

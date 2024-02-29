@@ -52,7 +52,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_agsv(cookies_str)
     if not get_success:
-        return False, get_str
+        return False, get_str, ""
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -78,13 +78,13 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
         file = open(torrent_file, 'rb').read()
     except Exception as e:
         logger.error(f'打开种子文件失败{e}')
-        return False, '打开种子文件失败，请检查是否制作种子'
+        return False, '打开种子文件失败，请检查是否制作种子', ""
 
     # 从主标题中提取分辨率
     if len(main_title.split(' ')) > 4:
         resolution = main_title.split(' ')[-4].upper()
     else:
-        return False, '主标题格式错误,无法正确获取分辨率'
+        return False, '主标题格式错误,无法正确获取分辨率', ""
     data = {
         'name': main_title,
         'small_descr': compose,
@@ -131,11 +131,11 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
             return get_success, torrent_link, torrent_save_path
         else:
             logger.error(f'发布失败,状态码为:{response.status_code}')
-            return False, f'发布失败,状态码为:{response.status_code}'
+            return False, f'发布失败,状态码为:{response.status_code}', ""
 
     except Exception as e:
         logger.exception(f'发布失败,错误为:{e}')
-        return False, '发布失败'
+        return False, '发布失败', ""
 
 
 def get_agsv_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):
