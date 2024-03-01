@@ -1,7 +1,9 @@
 import os
 import re
+import shutil
 import sys
 import time
+from pathlib import Path
 
 from PyQt6.QtCore import *
 from PyQt6.QtGui import QIcon
@@ -410,10 +412,12 @@ class UploadImages(QObject):
         self.parent.debugBrowser.append("所有图片上传完成")
 
 
-class GetName:
+class GetName(QObject):
+
     def __init__(self, parent):
         super().__init__()
         self.parent = parent
+        self.move_file_thread = None
 
     def getNameButtonClicked(self):
         # 如果没有中文名，年份，类型，资源路径 点击获取名称按钮会弹出警告框
@@ -451,6 +455,7 @@ class GetName:
         commercial_name = ""
         channel_layout = ""
         rename_file = get_settings("renameFile")
+        move_file = get_settings("moveFile")
         isVideoPath, videoPath = check_path_and_find_video(self.parent.videoPath.text())
         get_video_info_success, output = get_video_info(videoPath)
         print(get_video_info_success, output)
@@ -502,6 +507,7 @@ class GetName:
                 else:
                     self.parent.debugBrowser.append("重命名失败")
                     logger.error("重命名失败")
+                    return
 
             logger.info("对文件夹重新命名")
             self.parent.debugBrowser.append("开始对文件夹重新命名")
@@ -515,6 +521,40 @@ class GetName:
             else:
                 self.parent.debugBrowser.append("重命名失败：")
                 logger.error("重命名失败")
+                return
+
+        if move_file:
+            # 将文件夹移动到做种的路径
+            resource_path = get_settings("resourcePath")
+            if resource_path == "" or resource_path is None or resource_path == "None":
+                self.parent.debugBrowser.append("未设置做种路径，自动跳过文件转移")
+                logger.warning("未设置做种路径，自动跳过文件转移")
+                return
+            else:
+                # 判断原文件夹与做种文件是否相同
+                if resource_path == os.path.dirname(videoPath):
+                    self.parent.debugBrowser.append("原文件夹与做种文件夹相同，无需转移")
+                    logger.warning("原文件夹与做种文件夹相同，无需转移")
+                    return
+                # 转移文件需要异步执行，防止界面卡死
+                self.parent.debugBrowser.append("开始移动文件到做种路径")
+                logger.info("开始移动文件到做种路径")
+
+                self.move_file_thread = MoveFileThread(videoPath, resource_path)
+                self.move_file_thread.result_signal.connect(self.handleMoveFileResult)  # 连接信号
+                self.move_file_thread.start()
+                self.parent.debugBrowser.append("移动文件线程启动成功")
+
+    def handleMoveFileResult(self, get_success, response, error):
+        if get_success:
+            if response != '100':
+                self.parent.debugBrowser.append(f"文件移动中，当前进度：{response}%")
+            else:
+                self.parent.debugBrowser.append("文件移动成功")
+                logger.info("文件移动成功")
+        else:
+            self.parent.debugBrowser.append("文件移动失败：" + response)
+            logger.error("文件移动失败：" + response)
 
 
 class WriteFile:
@@ -629,6 +669,7 @@ class MakeTorrent(QObject):
                     if not os.path.isabs(torrent_path):
                         torrent_path = os.path.join(current_working_directory, torrent_path)
                         torrent_path = os.path.abspath(torrent_path)
+                        torrent_path = Path(torrent_path)
                 self.parent.torrentPathBrowser.setText(torrent_path)
             else:
                 self.parent.debugBrowser.append("制作种子失败：" + response)
@@ -958,3 +999,43 @@ class MakeTorrentThread(QThread):
             logger.error("制作种子出现异常")
             print(f"异常发生: {e}")
             self.result_signal.emit(False, f"异常发生: {e}", str(e))
+
+
+class MoveFileThread(QThread):
+    result_signal = pyqtSignal(bool, str, str)
+
+    def __init__(self, folder_path, target_path, parent=None):
+        super().__init__(parent)
+        self.folder_path = folder_path
+        self.target_path = target_path
+
+    def run(self):
+        try:
+            self.folder_path = Path(self.folder_path)
+            self.target_path = Path(self.target_path)
+            # 需在target_path目录下创建一个与folder_path最后一级目录同名的文件夹
+            self.target_path = os.path.join(self.target_path, self.folder_path.name)
+            # 创建目标文件夹
+            os.makedirs(self.target_path, exist_ok=True)
+            progress = 0
+            file_count = sum(len(files) for _, _, files in os.walk(self.folder_path))
+            for root, dirs, files in os.walk(self.folder_path):
+                for file in files:
+                    src_path = os.path.join(root, file)
+                    dst_path = os.path.join(self.target_path, file)
+                    shutil.copy(str(src_path), str(dst_path))
+                    progress += 1
+                    self.result_signal.emit(True, str(int(progress / file_count * 100)), "")
+                    logger.info(f"文件移动中，当前进度：{int(progress / file_count * 100)}%")
+                    print(f"文件移动中，当前进度：{int(progress / file_count * 100)}%")
+            # 删除原路径下的文件夹
+            shutil.rmtree(self.folder_path)
+        except FileNotFoundError as e:
+            logger.error(f"文件夹不存在：{e}")
+            self.result_signal.emit(False, f"文件夹不存在：{e}", "")
+        except shutil.Error as e:
+            logger.error(f"文件拷贝失败：{e}")
+            self.result_signal.emit(False, f"文件拷贝失败：{e}", "")
+        except OSError as e:
+            logger.error(f"创建目标文件夹失败：{e}")
+            self.result_signal.emit(False, f"创建目标文件夹失败：{e}", "")

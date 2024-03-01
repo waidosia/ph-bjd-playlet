@@ -14,7 +14,7 @@
    <string>设置</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="3">
+   <item row="0" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="leftMargin">
       <number>5</number>
@@ -167,7 +167,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="leftMargin">
       <number>5</number>
@@ -291,7 +291,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="1" column="2">
+   <item row="1" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <property name="leftMargin">
       <number>5</number>
@@ -415,62 +415,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="2" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout_14">
-     <item>
-      <widget class="QLabel" name="label_19">
-       <property name="text">
-        <string>短剧信息储存地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="videoInfo"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="selectInfoPathButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>浏览</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="0" colspan="2">
+   <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <property name="leftMargin">
       <number>5</number>
@@ -626,7 +571,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="3" column="2">
+   <item row="3" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_11">
      <property name="leftMargin">
       <number>5</number>
@@ -789,7 +734,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="4" column="0" colspan="3">
+   <item row="4" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_8">
      <property name="leftMargin">
       <number>5</number>
@@ -951,7 +896,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="5" column="0" colspan="3">
+   <item row="5" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_9">
      <property name="leftMargin">
       <number>5</number>
@@ -1072,7 +1017,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="6" column="0" colspan="3">
+   <item row="6" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_10">
      <property name="leftMargin">
       <number>5</number>
@@ -1188,6 +1133,41 @@ QPushButton:pressed {
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="moveFile">
+       <property name="styleSheet">
+        <string>QPushButton {
+    display: inline-block;
+    padding: 5px 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+    background-color: #559e24;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: #4a8821;
+}
+
+QPushButton:pressed {
+    background-color: #3c6f1b;
+}
+</string>
+       </property>
+       <property name="text">
+        <string>将文件移动到做种文件夹</string>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="7" column="0">
@@ -1234,7 +1214,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="7" column="2">
+   <item row="7" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
       <widget class="QLabel" name="label_14">
@@ -1248,7 +1228,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="8" column="0" colspan="3">
+   <item row="8" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QLabel" name="label_15">
@@ -1270,6 +1250,47 @@ QPushButton:pressed {
      <item>
       <widget class="QLineEdit" name="downloaderPass"/>
      </item>
+     <item>
+      <widget class="QPushButton" name="testDownloader">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    display: inline-block;
+    padding: 6px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #16bf9d,
+                                      stop:1 #10a266);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #11b998,
+                                      stop:1 #08965e);
+}
+
+QPushButton:pressed {
+    background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #0e9278,
+                                      stop:1 #0e925c);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>测试</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item row="9" column="0">
@@ -1286,7 +1307,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="9" column="1" colspan="2">
+   <item row="9" column="1">
     <layout class="QHBoxLayout" name="horizontalLayout_21">
      <item>
       <widget class="QLabel" name="label_24">
@@ -1300,7 +1321,25 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="11" column="0" colspan="3">
+   <item row="10" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>代理地址:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="proxyUrl">
+       <property name="placeholderText">
+        <string>格式为:http://xxx:7890</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="11" column="0" colspan="2">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -1374,25 +1413,7 @@ QPushButton:pressed {
      </item>
     </layout>
    </item>
-   <item row="10" column="0" colspan="3">
-    <layout class="QHBoxLayout" name="horizontalLayout_18">
-     <item>
-      <widget class="QLabel" name="label_21">
-       <property name="text">
-        <string>代理地址:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="proxyUrl">
-       <property name="placeholderText">
-        <string>格式为:http://xxx:7890</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="12" column="0" colspan="3">
+   <item row="12" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="leftMargin">
       <number>30</number>
@@ -1479,6 +1500,61 @@ QPushButton:pressed {
        </property>
        <property name="text">
         <string>取消</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_14">
+     <item>
+      <widget class="QLabel" name="label_19">
+       <property name="text">
+        <string>短剧信息储存地址：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="videoInfo"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectInfoPathButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    display: inline-block;
+    padding: 3px 6px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color:#fff;
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #16bf9d,
+                                      stop:1 #10a266);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 9px #999;
+}
+
+QPushButton:hover {
+background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #11b998,
+                                      stop:1 #08965e);
+}
+
+QPushButton:pressed {
+    background-color: 
+				qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 #0e9278,
+                                      stop:1 #0e925c);
+}
+</string>
+       </property>
+       <property name="text">
+        <string>浏览</string>
        </property>
       </widget>
      </item>

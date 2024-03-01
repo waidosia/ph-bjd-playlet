@@ -1,7 +1,9 @@
 """
 处理设置页面的逻辑，包括设置页面的初始化、保存、取消
 """
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QMessageBox
+
+from ph.seed import qb_download, tr_download
 from ph.tool import get_folder_path, get_settings, update_settings
 from ui.settings import Ui_Settings
 
@@ -16,6 +18,7 @@ class Settings(QDialog, Ui_Settings):
         self.selectScreenshotPathButton.clicked.connect(self.selectScreenshotPathButtonClicked)
         self.selectTorrentPathButton.clicked.connect(self.selectTorrentPathButtonClicked)
         self.selectInfoPathButton.clicked.connect(self.selectInfoPathButtonClicked)
+        self.testDownloader.clicked.connect(self.testDownloaderClicked)
 
     def saveButtonClicked(self):
         self.updateSettings()
@@ -55,6 +58,7 @@ class Settings(QDialog, Ui_Settings):
         self.pasteScreenshotUrl.setChecked(bool(get_settings("pasteScreenshotUrl")))
         self.deleteScreenshot.setChecked(bool(get_settings("deleteScreenshot")))
         self.makeDir.setChecked(bool(get_settings("makeDir")))
+        self.moveFile.setChecked(bool(get_settings("moveFile")))
         button_group_value = get_settings("buttonGroup")
         selected_id = int(button_group_value) if button_group_value != "None" else -2
         self.buttonGroup.button(selected_id).setChecked(True)
@@ -116,7 +120,37 @@ class Settings(QDialog, Ui_Settings):
             update_settings("makeDir", "True")
         else:
             update_settings("makeDir", "")
+        if self.moveFile.isChecked():
+            update_settings("moveFile", "True")
+        else:
+            update_settings("moveFile", "")
         if self.renameFile.isChecked():
             update_settings("renameFile", "True")
         else:
             update_settings("renameFile", "")
+
+    def testDownloaderClicked(self):
+        # 测试下载器
+        button_group_value = self.buttonGroup.checkedId()
+        if button_group_value == -2:
+            # qb
+            is_success, message = qb_download(self.downloaderHost.text(), self.downloaderUser.text(),
+                                              self.downloaderPass.text(), [], [], "")
+            if is_success:
+                QMessageBox.information(self, "提示", "测试成功", QMessageBox.StandardButton.Ok)
+            else:
+                # 弹窗提示错误信息
+                QMessageBox.warning(self, "警告", message, QMessageBox.StandardButton.Ok)
+
+        elif button_group_value == -3:
+            # tr
+            is_success, message = tr_download(self.downloaderHost.text(), self.downloaderUser.text(),
+                                              self.downloaderPass.text(), [], [], "")
+            if is_success:
+                QMessageBox.information(self, "提示", "测试成功", QMessageBox.StandardButton.Ok)
+            else:
+                # 弹窗提示错误信息
+                QMessageBox.warning(self, "警告", message, QMessageBox.StandardButton.Ok)
+        else:
+            # 弹窗提示错误的类型
+            QMessageBox.warning(self, "警告", "错误的下载器,请联系开发者", QMessageBox.StandardButton.Ok)
