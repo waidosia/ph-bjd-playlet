@@ -536,16 +536,16 @@ class GetName(QObject):
 
         if move_file:
             # 将文件夹移动到做种的路径
-            resource_path = get_settings("resourcePath")
+            resource_path = get_settings("moveFilePath")
             if resource_path == "" or resource_path is None or resource_path == "None":
-                self.parent.debugBrowser.append("未设置做种路径，自动跳过文件转移")
-                logger.warning("未设置做种路径，自动跳过文件转移")
+                self.parent.debugBrowser.append("未设置转移路径，自动跳过文件转移")
+                logger.warning("未设置转移路径，自动跳过文件转移")
                 return
             else:
                 # 判断原文件夹与做种文件是否相同
                 if resource_path == os.path.dirname(videoPath):
-                    self.parent.debugBrowser.append("原文件夹与做种文件夹相同，无需转移")
-                    logger.warning("原文件夹与做种文件夹相同，无需转移")
+                    self.parent.debugBrowser.append("原文件夹与转移文件夹相同，无需转移")
+                    logger.warning("原文件夹与转移文件夹相同，无需转移")
                     return
                 # 转移文件需要异步执行，防止界面卡死
                 self.parent.progress = 0
@@ -565,6 +565,8 @@ class GetName(QObject):
             if progress != 100:
                 self.parent.debugBrowser.append(f"文件移动中，当前进度：{progress}%")
             else:
+                print(res)
+                self.parent.videoPath.setText(res)
                 self.parent.debugBrowser.append("文件移动成功")
                 logger.info("文件移动成功")
         else:
@@ -686,7 +688,7 @@ class MakeTorrent(QObject):
                         torrent_path = os.path.join(current_working_directory, torrent_path)
                         torrent_path = os.path.abspath(torrent_path)
                         torrent_path = Path(torrent_path)
-                self.parent.torrentPathBrowser.setText(torrent_path)
+                self.parent.torrentPathBrowser.setText(str(torrent_path))
             else:
                 self.parent.debugBrowser.append("制作种子失败：" + response)
                 logger.error("制作种子失败：" + response)
@@ -1045,8 +1047,9 @@ class MoveFileThread(QThread):
                     p += 1
                     schedule = int(p / file_count * 100)
                     if schedule % 10 == 0:
-                        self.result_signal.emit(True, schedule, "")
+                        self.result_signal.emit(True, schedule, str(self.target_path))
                         logger.info(f'当前移动的进度为：{schedule}%')
+                shutil.rmtree(self.folder_path)
         except FileNotFoundError as e:
             logger.error(f"文件夹不存在：{e}")
             self.result_signal.emit(False, 0, f"文件夹不存在：{e}")

@@ -18,6 +18,7 @@ class Settings(QDialog, Ui_Settings):
         self.selectScreenshotPathButton.clicked.connect(self.selectScreenshotPathButtonClicked)
         self.selectTorrentPathButton.clicked.connect(self.selectTorrentPathButtonClicked)
         self.selectInfoPathButton.clicked.connect(self.selectInfoPathButtonClicked)
+        self.selectmovePathButton.clicked.connect(self.selectmovePathButtonClicked)
         self.testDownloader.clicked.connect(self.testDownloaderClicked)
 
     def saveButtonClicked(self):
@@ -42,6 +43,11 @@ class Settings(QDialog, Ui_Settings):
         if path != '':
             self.videoInfo.setText(path)
 
+    def selectmovePathButtonClicked(self):
+        path = get_folder_path()
+        if path != '':
+            self.moveFilePath.setText(path)
+
     def getSettings(self):
         self.screenshotPath.setText(str(get_settings("screenshotPath")))
         self.torrentPath.setText(str(get_settings("torrentPath")))
@@ -59,6 +65,7 @@ class Settings(QDialog, Ui_Settings):
         self.deleteScreenshot.setChecked(bool(get_settings("deleteScreenshot")))
         self.makeDir.setChecked(bool(get_settings("makeDir")))
         self.moveFile.setChecked(bool(get_settings("moveFile")))
+        self.moveFilePath.setText(get_settings("moveFilePath"))
         button_group_value = get_settings("buttonGroup")
         selected_id = int(button_group_value) if button_group_value != "None" else -2
         self.buttonGroup.button(selected_id).setChecked(True)
@@ -85,6 +92,7 @@ class Settings(QDialog, Ui_Settings):
         update_settings("screenshotThreshold", str(self.screenshotThreshold.text()))
         update_settings("screenshotStart", str(self.screenshotStart.text()))
         update_settings("screenshotEnd", str(self.screenshotEnd.text()))
+        update_settings("moveFilePath", str(self.moveFilePath.text()))
         update_settings("proxyUrl", str(self.proxyUrl.text()))
         update_settings("torrentSavePath", str(self.torrentSavePath.text()))
         update_settings("tjuCookie", str(self.tjuCookie.text()))
