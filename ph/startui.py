@@ -64,6 +64,8 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.peterTorrentPath = None
         self.kylinTorrentPath = None
         self.redLeavesTorrentPath = None
+
+        self.progress = 100
         # 初始化
         self.videoPath.setDragEnabled(True)
         self.introBrowser.setText("")
@@ -144,6 +146,12 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.agsvTorrentLink = None
         self.peterTorrentLink = None
         self.kylinTorrentLink = None
+        self.redLeavesTorrentPath = None
+        self.tjuTorrentPath = None
+        self.agsvTorrentPath = None
+        self.peterTorrentPath = None
+        self.kylinTorrentPath = None
+        self.progress = 100
         self.debugBrowser.append("所有输入框已清空")
         logger.info("所有输入框已清空")
 
@@ -222,6 +230,9 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         upload_handler.sendredLeavesClicked()
 
     def seedMakClicked(self):
+        if self.progress != 100:
+            QMessageBox.warning(self, "警告", "文件移动未完成", QMessageBox.StandardButton.Ok)
+            return
         seed_mak = SeedMak(self)
         logger.info("点击做种按钮")
         # 判断选择的是qb还是tr
@@ -415,7 +426,7 @@ class UploadImages(QObject):
 class GetName(QObject):
 
     def __init__(self, parent):
-        super().__init__()
+        super().__init__(parent)
         self.parent = parent
         self.move_file_thread = None
 
@@ -537,27 +548,29 @@ class GetName(QObject):
                     logger.warning("原文件夹与做种文件夹相同，无需转移")
                     return
                 # 转移文件需要异步执行，防止界面卡死
+                self.parent.progress = 0
                 self.parent.debugBrowser.append("开始移动文件到做种路径")
                 logger.info("开始移动文件到做种路径")
-                self.move_file_thread = None
                 self.move_file_thread = MoveFileThread(videoPath, resource_path)
+                logger.info("移动文件类初始化成功")
                 self.move_file_thread.result_signal.connect(self.handleMoveFileResult)  # 连接信号
+                logger.info("连接信号成功")
                 self.move_file_thread.start()
                 self.parent.debugBrowser.append("移动文件线程启动成功")
 
-    def handleMoveFileResult(self, get_success, res):
-        print(get_success, res)
-        self.parent.debugBrowser.append("开始处理移动文件后的逻辑")
-        # print("开始处理移动文件后的逻辑")
-        # if get_success:
-        #     if response != '100':
-        #         self.parent.debugBrowser.append(f"文件移动中，当前进度：{response}%")
-        #     else:
-        #         self.parent.debugBrowser.append("文件移动成功")
-        #         logger.info("文件移动成功")
-        # else:
-        #     self.parent.debugBrowser.append("文件移动失败：" + response)
-        #     logger.error("文件移动失败：" + response)
+    def handleMoveFileResult(self, get_success, progress, res):
+        print("开始处理移动文件后的逻辑")
+        if get_success:
+            self.parent.progress = progress
+            if progress != 100:
+                self.parent.debugBrowser.append(f"文件移动中，当前进度：{progress}%")
+            else:
+                self.parent.debugBrowser.append("文件移动成功")
+                logger.info("文件移动成功")
+        else:
+            self.parent.progress = 100
+            self.parent.debugBrowser.append("文件移动失败：" + res)
+            logger.error("文件移动失败：" + res)
 
 
 class WriteFile:
@@ -931,6 +944,7 @@ class SeedMak:
         self.downloaderPass = get_settings("downloaderPass")
         self.path = get_settings("resourcePath")
 
+
     def seed_qb(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
                         self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
@@ -1006,10 +1020,10 @@ class MakeTorrentThread(QThread):
 
 class MoveFileThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信
-    result_signal = pyqtSignal(bool, str)
+    result_signal = pyqtSignal(bool, int, str)
 
-    def __init__(self, folder_path, target_path, parent=None):
-        super().__init__(parent)
+    def __init__(self, folder_path, target_path):
+        super().__init__()
         self.folder_path = folder_path
         self.target_path = target_path
 
@@ -1030,19 +1044,18 @@ class MoveFileThread(QThread):
                     shutil.copy(str(src_path), str(dst_path))
                     p += 1
                     schedule = int(p / file_count * 100)
-                    print(schedule)
                     if schedule % 10 == 0:
-                        self.result_signal.emit(True, f'{schedule}%')
-                    logger.info(f"文件移动中，当前进度：{schedule}%")
-                    print(f"文件移动中，当前进度：{schedule}%")
-            # 删除原路径下的文件夹
-            shutil.rmtree(self.folder_path)
+                        self.result_signal.emit(True, schedule, "")
+                        logger.info(f'当前移动的进度为：{schedule}%')
         except FileNotFoundError as e:
             logger.error(f"文件夹不存在：{e}")
-            self.result_signal.emit(False, f"文件夹不存在：{e}")
+            self.result_signal.emit(False, 0, f"文件夹不存在：{e}")
         except shutil.Error as e:
             logger.error(f"文件拷贝失败：{e}")
-            self.result_signal.emit(False, f"文件拷贝失败：{e}")
+            self.result_signal.emit(False, 0, f"文件拷贝失败：{e}")
         except OSError as e:
             logger.error(f"创建目标文件夹失败：{e}")
-            self.result_signal.emit(False, f"创建目标文件夹失败：{e}")
+            self.result_signal.emit(False, 0, f"创建目标文件夹失败：{e}")
+        except Exception as e:
+            logger.error(f"发生异常: {e}")
+            self.result_signal.emit(False, 0, f"发生异常: {e}")

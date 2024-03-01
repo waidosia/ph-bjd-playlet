@@ -7,8 +7,8 @@ import subprocess
 def build_executable():
     # 执行 PyInstaller 命令
     pyinstaller_cmd = ('pyinstaller '
+                        '--clean '
                        '--onefile  '
-                       '--strip '
                        '--noconsole '
                        '--upx-dir=. '
                        '--icon=static/playlet_64.ico '
