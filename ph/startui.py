@@ -539,22 +539,25 @@ class GetName(QObject):
                 # 转移文件需要异步执行，防止界面卡死
                 self.parent.debugBrowser.append("开始移动文件到做种路径")
                 logger.info("开始移动文件到做种路径")
-
+                self.move_file_thread = None
                 self.move_file_thread = MoveFileThread(videoPath, resource_path)
                 self.move_file_thread.result_signal.connect(self.handleMoveFileResult)  # 连接信号
                 self.move_file_thread.start()
                 self.parent.debugBrowser.append("移动文件线程启动成功")
 
-    def handleMoveFileResult(self, get_success, response, error):
-        if get_success:
-            if response != '100':
-                self.parent.debugBrowser.append(f"文件移动中，当前进度：{response}%")
-            else:
-                self.parent.debugBrowser.append("文件移动成功")
-                logger.info("文件移动成功")
-        else:
-            self.parent.debugBrowser.append("文件移动失败：" + response)
-            logger.error("文件移动失败：" + response)
+    def handleMoveFileResult(self, get_success, res):
+        print(get_success, res)
+        self.parent.debugBrowser.append("开始处理移动文件后的逻辑")
+        # print("开始处理移动文件后的逻辑")
+        # if get_success:
+        #     if response != '100':
+        #         self.parent.debugBrowser.append(f"文件移动中，当前进度：{response}%")
+        #     else:
+        #         self.parent.debugBrowser.append("文件移动成功")
+        #         logger.info("文件移动成功")
+        # else:
+        #     self.parent.debugBrowser.append("文件移动失败：" + response)
+        #     logger.error("文件移动失败：" + response)
 
 
 class WriteFile:
@@ -1002,7 +1005,8 @@ class MakeTorrentThread(QThread):
 
 
 class MoveFileThread(QThread):
-    result_signal = pyqtSignal(bool, str, str)
+    # 创建一个信号，用于在数据处理完毕后与主线程通信
+    result_signal = pyqtSignal(bool, str)
 
     def __init__(self, folder_path, target_path, parent=None):
         super().__init__(parent)
@@ -1017,25 +1021,28 @@ class MoveFileThread(QThread):
             self.target_path = os.path.join(self.target_path, self.folder_path.name)
             # 创建目标文件夹
             os.makedirs(self.target_path, exist_ok=True)
-            progress = 0
+            p = 0
             file_count = sum(len(files) for _, _, files in os.walk(self.folder_path))
             for root, dirs, files in os.walk(self.folder_path):
                 for file in files:
                     src_path = os.path.join(root, file)
                     dst_path = os.path.join(self.target_path, file)
                     shutil.copy(str(src_path), str(dst_path))
-                    progress += 1
-                    self.result_signal.emit(True, str(int(progress / file_count * 100)), "")
-                    logger.info(f"文件移动中，当前进度：{int(progress / file_count * 100)}%")
-                    print(f"文件移动中，当前进度：{int(progress / file_count * 100)}%")
+                    p += 1
+                    schedule = int(p / file_count * 100)
+                    print(schedule)
+                    if schedule % 10 == 0:
+                        self.result_signal.emit(True, f'{schedule}%')
+                    logger.info(f"文件移动中，当前进度：{schedule}%")
+                    print(f"文件移动中，当前进度：{schedule}%")
             # 删除原路径下的文件夹
             shutil.rmtree(self.folder_path)
         except FileNotFoundError as e:
             logger.error(f"文件夹不存在：{e}")
-            self.result_signal.emit(False, f"文件夹不存在：{e}", "")
+            self.result_signal.emit(False, f"文件夹不存在：{e}")
         except shutil.Error as e:
             logger.error(f"文件拷贝失败：{e}")
-            self.result_signal.emit(False, f"文件拷贝失败：{e}", "")
+            self.result_signal.emit(False, f"文件拷贝失败：{e}")
         except OSError as e:
             logger.error(f"创建目标文件夹失败：{e}")
-            self.result_signal.emit(False, f"创建目标文件夹失败：{e}", "")
+            self.result_signal.emit(False, f"创建目标文件夹失败：{e}")
