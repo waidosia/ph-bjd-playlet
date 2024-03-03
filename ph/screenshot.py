@@ -4,13 +4,23 @@ import requests
 from bs4 import BeautifulSoup
 from requests import RequestException
 
+from ph.tool import get_settings
 from util.log import logger
 
 global token
 
+proxies = {}
 
 # 二次封装，把upload_screenshot函数封装成一个公共函数，在函数里调用不同的上传图床API
 def upload_screenshot(api_url, api_token, frame_path):
+    global proxies
+    proxy = get_settings("proxyUrl")
+    if proxy != '' or proxy is not None:
+        logger.info(f'使用代理:{proxy}')
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
     if "agsvpt" in api_url:
         logger.info("使用AGSV图床")
         return upload_agsv_screenshot(api_url, api_token, frame_path)
@@ -38,8 +48,6 @@ def upload_agsv_screenshot(api_url, api_token, frame_path):
             print("已成功获取文件流")
         except RequestException as e:
             logger.error("请求过程中出现错误:" + str(e))
-            print("请求过程中出现错误:", e)
-            print("请求过程中出现错误:", e)
             return False, {}
         files = {'uploadedFile': (frame_path, result.content, file_type)}
     else:
@@ -95,6 +103,7 @@ def upload_agsv_screenshot(api_url, api_token, frame_path):
 
 
 def get_token(api_url, api_token):
+    global proxies
     global token
     if token:
         return token
@@ -103,7 +112,7 @@ def get_token(api_url, api_token):
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/99.0.4844.51 Safari/537.36'}
     try:
-        response = requests.get(url=api_url, headers=headers)
+        response = requests.get(url=api_url, headers=headers, proxies=proxies, timeout=10)
     except Exception as r:
         logger.error(f'获取token失败，原因:{r}')
         return ''
@@ -119,6 +128,7 @@ def get_token(api_url, api_token):
 
 def chevereto_cookie_upload(api_url, api_token, frame_path):
     global token
+    global proxies
     token = ''
     auth_token = get_token(api_url, api_token)
     if auth_token == '':
@@ -139,7 +149,6 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
         except RequestException as e:
             logger.error("请求过程中出现错误:" + str(e))
             print("请求过程中出现错误:", e)
-            print("请求过程中出现错误:", e)
             return False, {}
         files = {'source': result.content}
     else:
@@ -154,7 +163,8 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
     data = {'type': 'file', 'action': 'upload', 'nsfw': 0, 'auth_token': auth_token}
 
     try:
-        req = requests.post(f'{api_url}/json', data=data, files=files, headers=headers)
+        req = requests.post(f'{api_url}/json', data=data, files=files, headers=headers, proxies=proxies)
+        logger.info(req.text)
     except Exception as r:
         logger.error(f'requests 获取失败，原因: {r}')
         return False, {}
