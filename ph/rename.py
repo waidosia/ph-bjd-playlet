@@ -37,10 +37,17 @@ def extract_video_info(media_info):
     commercial_name = ""
     channel_layout = ""
 
+    # 需判断视频为横屏还是竖排
+
     for track in media_info.tracks:
         if track.track_type == "Video":
             if track.other_width:
-                width = track.other_width[0]
+                width = track.other_width[0]  # 短剧 720  2560
+                high = track.other_height[0]  # 短剧 1280  1072
+                w = str(width).replace("pixels", "").replace(" ", "")
+                h = str(high).replace("pixels", "").replace(" ", "")
+                if int(w) > int(h):
+                    width, high = high, width
             if track.other_format:
                 _ = track.other_format[0]
             if track.other_hdr_format:
