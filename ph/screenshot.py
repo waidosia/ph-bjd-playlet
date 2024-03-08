@@ -21,7 +21,7 @@ def upload_screenshot(api_url, api_token, frame_path):
             'http': proxy,
             'https': proxy
         }
-    if "agsvpt" in api_url:
+    if "agsv" in api_url:
         logger.info("使用AGSV图床")
         return upload_agsv_screenshot(api_url, api_token, frame_path)
     elif "pterclub" in api_url:
