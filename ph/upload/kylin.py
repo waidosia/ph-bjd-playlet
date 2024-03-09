@@ -18,6 +18,11 @@ kylin_resolution_map = {
     '4K': '6',
 }
 
+kylin_video_codec_map = {
+    'H264': '1',
+    'H265': '6',
+}
+
 proxies = {}
 
 
@@ -56,7 +61,7 @@ def get_kylin(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, proxy, torrent_path) -> (bool, str):
+def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, proxy, torrent_path,feed) -> (bool, str):
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -68,6 +73,17 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
     get_success, get_str = get_kylin(cookies_str)
     if not get_success:
         return False, get_str, ""
+    main_title = main_title.replace('.', ' ')
+    logger.info("处理前的主标题为：" + main_title)
+    main_title = main_title.replace('AVC', 'H264')
+    main_title = main_title.replace('H 264', 'H264')
+    main_title = main_title.replace('HEVC', 'H265')
+    main_title = main_title.replace('H 265', 'H265')
+    logger.info("处理后的主标题为：" + main_title)
+    logger.info("副标题为：" + compose)
+    descr = descr.replace('[mediainfo]', '[quote]')
+    descr = descr.replace('[/mediainfo]', '[/quote]')
+    logger.info("处理后的简介为：" + descr)
     headers = {
         'Host': 'www.hdkyl.in',
         'Cookie': cookies_str,
@@ -90,8 +106,13 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
     # 从主标题中提取分辨率
     if len(main_title.split(' ')) > 6:
         resolution = main_title.split(' ')[-4].upper()
+        video_codec = main_title.split(' ')[-2].upper()
     else:
         return False, '主标题格式错误,无法正确获取分辨率或年', ""
+
+    tags = [5, 6, 15, 17]
+    if feed:
+        tags.append(1)
 
     data = {
         'name': main_title,
@@ -107,7 +128,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
         # 媒介 web_dl
         'medium_sel[4]': '31',
         # 视频编码 h.264
-        'codec_sel[4]': '1',
+        'codec_sel[4]': kylin_video_codec_map.get(video_codec, '1'),
         # 音频编码 aac
         'audiocodec_sel[4]': '6',
         # 分辨率
@@ -117,7 +138,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
         # 制作组
         'team_sel[4]': '9',
         # 标签
-        'tags[4][]': [1, 5, 6, 15],
+        'tags[4][]': tags,
         # 匿名发布
         'uplver': 'yes',
     }

@@ -11,6 +11,7 @@ global token
 
 proxies = {}
 
+
 # 二次封装，把upload_screenshot函数封装成一个公共函数，在函数里调用不同的上传图床API
 def upload_screenshot(api_url, api_token, frame_path):
     global proxies
@@ -111,11 +112,21 @@ def get_token(api_url, api_token):
         'cookie': api_token,
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/99.0.4844.51 Safari/537.36'}
-    try:
-        response = requests.get(url=api_url, headers=headers, proxies=proxies, timeout=10)
-    except Exception as r:
-        logger.error(f'获取token失败，原因:{r}')
-        return ''
+    response = None
+    retry_count = 0
+    while retry_count < 3:
+        try:
+            response = requests.get(url=api_url, headers=headers, proxies=proxies, timeout=10)
+            break
+        except Exception as r:
+            logger.error(f'获取token失败，原因:{r}')
+            retry_count += 1
+            if retry_count < 3:
+                logger.info(f'进行第{retry_count}次重试')
+            else:
+                logger.error(f'重试次数已用完')
+                return ''
+
     content = response.text
     soup = BeautifulSoup(content, 'lxml')
     for link in soup.find_all("a"):
@@ -161,13 +172,20 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
 
     headers = {'cookie': api_token}
     data = {'type': 'file', 'action': 'upload', 'nsfw': 0, 'auth_token': auth_token}
+    req = None
+    retry_count = 0
+    while retry_count < 3:
+        try:
+            req = requests.post(f'{api_url}/json', data=data, files=files, headers=headers, proxies=proxies)
+            logger.info(req.text)
+        except Exception as r:
+            retry_count += 1
+            if retry_count < 3:
+                logger.info(f'进行第{retry_count}次重试，错误原因是：{r}', )
+            else:
+                logger.error(f'重试次数已用完')
+                return False, {}
 
-    try:
-        req = requests.post(f'{api_url}/json', data=data, files=files, headers=headers, proxies=proxies)
-        logger.info(req.text)
-    except Exception as r:
-        logger.error(f'requests 获取失败，原因: {r}')
-        return False, {}
     try:
         res = req.json()
         logger.info(res)

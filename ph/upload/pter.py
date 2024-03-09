@@ -1,4 +1,5 @@
 import os
+import re
 import time
 from lxml import etree
 import requests
@@ -42,7 +43,7 @@ def get_pter(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, torrent_path) -> (bool, str):
+def upload_pter(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_pter(cookies_str)
     if not get_success:
@@ -54,6 +55,26 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, to
             'http': proxy,
             'https': proxy
         }
+    main_title = main_title.replace('.', ' ')
+    logger.info("处理前的主标题为：" + main_title)
+    main_title = main_title.replace('AVC', 'H.264')
+    main_title = main_title.replace('H264', 'H.264')
+    main_title = main_title.replace('H265', 'H.265')
+    main_title = main_title.replace('HEVC', 'H.265')
+    writing_library = re.search(r'Writing.*library.*:(.*)',
+                                media_info)
+    if writing_library:
+        if 'x264' in writing_library.group(1):
+            logger.info("Writing library中存在x264，主标题将被替换")
+            main_title = main_title.replace('H.264', 'x264')
+        if 'x265' in writing_library.group(1):
+            logger.info("Writing library中存在x265，主标题将被替换")
+            main_title = main_title.replace('H.265', 'x265')
+    logger.info("处理后的主标题为：" + main_title)
+    logger.info("副标题为：" + compose)
+    descr = descr.replace('[mediainfo]', '[hide=MediaInfo]')
+    descr = descr.replace('[/mediainfo]', '[/hide]')
+    logger.info("处理后的简介为：" + descr)
 
     headers = {
         'Host': 'pterclub.com',
@@ -87,8 +108,6 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, to
         'source_sel': '5',
         # 地区 大陆
         'team_sel': '1',
-        # 禁转
-        'jinzhuan': 'yes',
         # 国语
         'guoyu': 'yes',
         # 中字
@@ -96,6 +115,9 @@ def upload_pter(cookies_str, torrent_file, main_title, compose, descr, proxy, to
         # 匿名
         'uplver': 'yes',
     }
+
+    if feed:
+        data['jinzhuan'] = 'yes'
     # 验证一下，文件名带后缀，且去掉前面的路径
     filename = os.path.basename(torrent_file)
     files = {'file': (filename, file, 'application/x-bittorrent')}

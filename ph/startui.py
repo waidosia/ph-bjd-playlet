@@ -12,8 +12,9 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QMessageBox, QInputDialog
 from ui.mainwindow import Ui_Mainwindow
 from util.festival import get_festival_blessing
 from util.log import logger
-from .common import title_tem, medio_tem
+from .common import title_tem, medio_tem, prohibit
 from .mediainfo import get_media_info
+from .ptgen import fetch_and_format_ptgen_data
 from .rename import get_video_info
 from .screenshot import upload_screenshot
 from .seed import qb_download, tr_download
@@ -49,11 +50,6 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.setupUi(self)  # 设置界面
         self.mySettings = None
 
-        self.get_pt_gen_thread = None
-        self.get_pt_gen_for_name_thread = None
-        self.upload_thread = None
-        # self.torrent_path = None
-
         self.tjuTorrentLink = None
         self.agsvTorrentLink = None
         self.peterTorrentLink = None
@@ -75,6 +71,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.initialize_team_combobox()
         self.initialize_source_combobox()
         self.initialize_type_combobox()
+        self.feed.setChecked(True)
 
         # 绑定点击信号和槽函数
         self.actionsettings.triggered.connect(self.settingsClicked)
@@ -93,6 +90,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.clear.clicked.connect(self.clear_all_text_inputs)
         self.makeTorrentButton.clicked.connect(self.makeTorrentButtonClicked)
         self.writeButton.clicked.connect(self.writeButtonClicked)
+        self.generateButtot.clicked.connect(self.getPtGenClicked)
 
         self.debugBrowser.append("程序初始化成功，使用前请查看设置中的说明")
         logger.info("程序初始化成功")
@@ -131,6 +129,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
                                      QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if reply == QMessageBox.StandardButton.No:
             return
+        self.ptGen.setText("")
         self.videoPath.setText("")
         self.coverPath.setText("")
         self.mainTitleBrowser.setText("")
@@ -204,6 +203,11 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         logger.info("点击写入文件按钮")
         write_file.writeButtonClicked()
 
+    def getPtGenClicked(self):
+        get_pt_gen = GetPtGen(self)
+        logger.info("点击获取PTGen按钮")
+        get_pt_gen.getPtGenClicked()
+
     def sendTjuClicked(self):
         upload_handler = UploadHandler(self)
         logger.info("点击上传TJUPT按钮")
@@ -263,14 +267,15 @@ class UploadImages(QObject):
 
     def uploadCoverButtonClicked(self):
         # 点击上传封面按钮，需要同时判断中文名称，年份，简介与类型是否填写
-        if not self.parent.chineseNameEdit.text() or not self.parent.yearEdit.text() or not self.parent.info.text():
-            # 弹出警告框
-            QMessageBox.warning(self.parent, "警告", "请先填写中文名，年份，简介", QMessageBox.StandardButton.Ok)
-            return
-        # 判断是否选择了类型
-        if not self.parent.get_selected_categories():
-            QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
-            return
+        if not self.parent.ptGen.text():
+            if not self.parent.chineseNameEdit.text() or not self.parent.yearEdit.text() or not self.parent.info.text():
+                # 弹出警告框
+                QMessageBox.warning(self.parent, "警告", "请先填写中文名，年份，简介", QMessageBox.StandardButton.Ok)
+                return
+            # 判断是否选择了类型
+            if not self.parent.get_selected_categories():
+                QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
+                return
 
         if self.parent.coverPath.text():
             logger.info(f"上传封面{self.parent.coverPath.text()}")
@@ -377,22 +382,33 @@ class UploadImages(QObject):
                 else:
                     self.parent.debugBrowser.append(str(api_response) + '\n')
             if pasteScreenshotUrl:
-                if is_cover:
-                    category = self.parent.get_selected_categories()
-                    print('类型为：' + category)
-                    text = title_tem.format(bbsurl, self.parent.chineseNameEdit.text(),
-                                            self.parent.yearEdit.text(), category,
-                                            self.parent.info.text())
-                    self.parent.introBrowser.append(text)
-                    self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
-                    logger.info("成功将封面链接粘贴到简介前")
-                else:
-                    if bbsurl != "":
+                if bbsurl != "":
+                    if is_cover:
+                        # 如果ptgen不为空，且introBrowser存在内容，将封面链接替换原有封面链接
+                        if self.parent.ptGen.text() != "" and self.parent.introBrowser.toPlainText() != "":
+                            # 替换封面链接
+                            intro_text = self.parent.introBrowser.toPlainText()
+                            intro_text = re.sub(r"\[img\].*?\[\/img\]", f"{bbsurl}", intro_text, 1)
+                            self.parent.introBrowser.setText("")
+                            self.parent.introBrowser.setText(intro_text)
+                        else:
+                            text = ""
+                            if self.parent.feed.isChecked():
+                                text = prohibit
+                            category = self.parent.get_selected_categories()
+                            print('类型为：' + category)
+                            text = text + title_tem.format(bbsurl, self.parent.chineseNameEdit.text(),
+                                                           self.parent.yearEdit.text(), category,
+                                                           self.parent.info.text())
+                            self.parent.introBrowser.append(text)
+                            self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
+                            logger.info("成功将封面链接粘贴到简介前")
+                    else:
                         self.parent.introBrowser.append(bbsurl)
                         self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
                         logger.info("成功将封面链接粘贴到简介后")
-                if deleteScreenshot:
-                    self.delete_screenshot(screenshot_path)
+                    if deleteScreenshot:
+                        self.delete_screenshot(screenshot_path)
 
         else:
             self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
@@ -619,6 +635,38 @@ class WriteFile:
             logger.error(f"发生异常: {e}")
 
 
+class GetPtGen(QObject):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.pt_gen_thread = None
+
+    def getPtGenClicked(self):
+        if not self.parent.ptGen.text():
+            QMessageBox.warning(self.parent, "警告", "请先填写PTGen", QMessageBox.StandardButton.Ok)
+            return
+        pt_gen = self.parent.ptGen.text()
+        pt_gen_path = get_settings("ptGenPath")
+        self.parent.debugBrowser.append("开始获取PTGen")
+        self.pt_gen_thread = GetPtGenThread(pt_gen_path, pt_gen)
+        self.pt_gen_thread.result_signal.connect(self.handlePtGenResult)  # 连接信号
+        self.pt_gen_thread.start()
+        self.parent.debugBrowser.append("获取PTGen线程启动成功")
+        logger.info("制作种子线程启动成功")
+
+    def handlePtGenResult(self, get_success, response):
+        print("开始处理生成后的逻辑")
+        if get_success:
+            if self.parent.feed.isChecked():
+                response = prohibit + response
+            self.parent.debugBrowser.append("成功获取到PTGen")
+            self.parent.introBrowser.append(response)
+            logger.info("成功获取到PTGen")
+        else:
+            self.parent.debugBrowser.append("获取PTGen失败：" + response)
+            logger.error(f"发生异常: {response}")
+
+
 class GetMediaInfo:
     def __init__(self, parent):
         super().__init__()
@@ -718,17 +766,10 @@ class UploadHandler:
         logger.info("开始上传种子到TJUPT")
         cookie_str = get_settings("tjuCookie")
 
-        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace(' ', '.')
-        logger.info("处理前的主标题为：" + mainTitle)
-        mainTitle = mainTitle.replace('H264', 'H.264')
-        mainTitle = mainTitle.replace('AVC', 'H.264')
-        logger.info("处理后的主标题为：" + mainTitle)
+        mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
-        logger.info("简介为：" + introBrowser)
         chinese_name = self.parent.chineseNameEdit.text()
-        logger.info("中文名为：" + chinese_name)
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
@@ -737,7 +778,7 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, tju_link, tju_path = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle,
                                                           introBrowser,
-                                                          chinese_name, self.proxy_url, self.torrent_path)
+                                                          chinese_name, self.proxy_url, self.torrent_path,self.parent.feed.isChecked())
         if upload_success:
             self.parent.tjuTorrentLink = tju_link
             self.parent.tjuTorrentPath = tju_path
@@ -764,18 +805,9 @@ class UploadHandler:
         self.parent.debugBrowser.append("开始上传种子到agsv")
         logger.info("开始上传种子到agsv")
         cookie_str = get_settings("agsvCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
-        logger.info("处理前的主标题为：" + mainTitle)
-        mainTitle = mainTitle.replace('H264', 'AVC')
-        logger.info("处理后的主标题为：" + mainTitle)
+        mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
-        # 去除指定一段落的内容
-        modified_content = re.sub(
-            r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
-            '', introBrowser, flags=re.DOTALL)
-        logger.info("处理后的简介为：" + modified_content)
         media_info = self.parent.mediainfoBrowser.toPlainText()
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
@@ -784,8 +816,8 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, agsv_link, agsv_path = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                           modified_content,
-                                                           media_info, self.proxy_url, self.torrent_path)
+                                                           introBrowser,
+                                                           media_info, self.proxy_url, self.torrent_path,self.parent.feed.isChecked())
         if upload_success:
             self.parent.agsvTorrentLink = agsv_link
             self.parent.agsvTorrentPath = agsv_path
@@ -807,26 +839,10 @@ class UploadHandler:
         self.parent.debugBrowser.append("开始上传种子到Pter")
         logger.info("开始上传种子到Pter")
         cookie_str = get_settings("pterCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
-        logger.info("处理前的主标题为：" + mainTitle)
-        mainTitle = mainTitle.replace('AVC', 'H.264')
-        mainTitle = mainTitle.replace('H264', 'H.264')
+        mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
-        # 正则匹配Writing library                          : 的后的内容，如果存在x264则改写主标题
-        # Writing library                          :(.*)
-        # 提取括号内的内容
-        writing_library = re.search(r'Writing library                          :(.*)',
-                                    self.parent.mediainfoBrowser.toPlainText())
-        if writing_library:
-            if 'x264' in writing_library.group(1):
-                logger.info("Writing library中存在x264，主标题将被替换")
-                mainTitle = mainTitle.replace('H.264', 'x264')
-        logger.info("处理后的主标题为：" + mainTitle)
-        introBrowser = introBrowser.replace('[mediainfo]', '[hide=MediaInfo]')
-        introBrowser = introBrowser.replace('[/mediainfo]', '[/hide]')
-        logger.info("处理后的简介为：" + introBrowser)
+        media_info = self.parent.mediainfoBrowser.toPlainText()
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
@@ -834,8 +850,8 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, pter_link, pter_path = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                           introBrowser,
-                                                           self.proxy_url, self.torrent_path,
+                                                           introBrowser, media_info,
+                                                           self.proxy_url, self.torrent_path,self.parent.feed.isChecked(),
                                                            )
         if upload_success:
             self.parent.peterTorrentLink = pter_link
@@ -860,16 +876,9 @@ class UploadHandler:
         self.parent.debugBrowser.append("开始上传种子到Kylin")
         logger.info("开始上传种子到Kylin")
         cookie_str = get_settings("kylinCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
-        logger.info("处理前的主标题为：" + mainTitle)
-        mainTitle = mainTitle.replace('AVC', 'H264')
-        logger.info("处理后的主标题为：" + mainTitle)
+        mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
-        introBrowser = introBrowser.replace('[mediainfo]', '[quote]')
-        introBrowser = introBrowser.replace('[/mediainfo]', '[/quote]')
-        logger.info("处理后的简介为：" + introBrowser)
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         year = self.parent.yearEdit.text()
         current_working_directory = os.getcwd()
@@ -879,7 +888,7 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
                                                               introBrowser,
-                                                              year, self.proxy_url, self.torrent_path
+                                                              year, self.proxy_url, self.torrent_path,self.parent.feed.isChecked()
                                                               )
         if upload_success:
             self.parent.kylinTorrentLink = kylin_link
@@ -904,19 +913,9 @@ class UploadHandler:
         self.parent.debugBrowser.append("开始上传种子到redLeaves")
         logger.info("开始上传种子到redLeaves")
         cookie_str = get_settings("redLeavesCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText().replace('.', ' ')
-        logger.info("处理前的主标题为：" + mainTitle)
-        mainTitle = mainTitle.replace('AVC', 'H.264')
-        mainTitle = mainTitle.replace('H264', 'H.264')
-        logger.info("处理后的主标题为：" + mainTitle)
+        mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        logger.info("副标题为：" + secondTitle)
         introBrowser = self.parent.introBrowser.toPlainText()
-        # 去除指定一段落的内容
-        modified_content = re.sub(
-            r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
-            '', introBrowser, flags=re.DOTALL)
-        logger.info("处理后的简介为：" + modified_content)
         media_info = self.parent.mediainfoBrowser.toPlainText()
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
@@ -926,9 +925,9 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, redLeaves_link, redLeaves_torrent = upload_red_leaves(cookie_str, torrent_path, mainTitle,
                                                                               secondTitle,
-                                                                              modified_content,
+                                                                              introBrowser,
                                                                               media_info, self.proxy_url,
-                                                                              self.torrent_path,
+                                                                              self.torrent_path,self.parent.feed.isChecked(),
                                                                               )
         if upload_success:
             self.parent.redLeavesTorrentLink = redLeaves_link
@@ -945,7 +944,6 @@ class SeedMak:
         self.downloaderUser = get_settings("downloaderUser")
         self.downloaderPass = get_settings("downloaderPass")
         self.path = get_settings("resourcePath")
-
 
     def seed_qb(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
@@ -1019,6 +1017,27 @@ class MakeTorrentThread(QThread):
             print(f"异常发生: {e}")
             self.result_signal.emit(False, f"异常发生: {e}", str(e))
 
+
+class GetPtGenThread(QThread):
+    # 创建一个信号，用于在数据处理完毕后与主线程通信
+    result_signal = pyqtSignal(bool, str)
+
+    def __init__(self, api_url, resource_url):
+        super().__init__()
+        self.api_url = api_url
+        self.resource_url = resource_url
+
+    def run(self):
+        try:
+            # 这里放置耗时的HTTP请求操作
+            get_success, response = fetch_and_format_ptgen_data(self.api_url, self.resource_url)
+            # 发送信号，包括请求的结果
+            print("Pt-Gen请求成功，开始返回结果")
+            self.result_signal.emit(get_success, response)
+            print("返回结果成功")
+        except Exception as e:
+            print(f"异常发生: {e}")
+            self.result_signal.emit(False, str(e))
 
 class MoveFileThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信

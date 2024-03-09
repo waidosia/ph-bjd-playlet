@@ -1,7 +1,6 @@
 # 放格式化的模板
 
-title_tem = '''[quote][size=4]因组内调整，之后新发布，均禁止[color=Red]转载 [color=Black]谢谢！！[/size][/quote]
-{}
+title_tem = '''{}
 
 [img]https://img.pterclub.com/images/2024/01/10/GodDramas-.png[/img]
 ◎片　　名　{}
@@ -18,3 +17,10 @@ medio_tem = '''
 
 [img]https://img.pterclub.com/images/2024/01/10/3a3a0f41d507ffa05df76996a1ed69e7.png[/img]
 '''
+
+prohibit = '''[quote][size=4]因组内调整，之后新发布，均禁止[color=Red]转载 [color=Black]谢谢！！[/size][/quote]
+'''
+
+GroupMark = '''
+
+[img]https://img.pterclub.com/images/2024/01/10/GodDramas-.png[/img]'''

@@ -1331,7 +1331,7 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="torrentSavePath_2"/>
+      <widget class="QLineEdit" name="ptGenPath"/>
      </item>
     </layout>
    </item>

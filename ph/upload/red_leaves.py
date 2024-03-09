@@ -1,4 +1,5 @@
 import os
+import re
 import time
 from lxml import etree
 
@@ -6,15 +7,19 @@ import requests
 from bs4 import BeautifulSoup
 from util.log import logger
 
-
-
 red_leaves_resolution_map = {
     '720P': '3',
     '1080P': '1',
     '4K': '5',
 }
 
+red_leaves_video_codec_map = {
+    'H.264': '1',
+    'H.265': '10',
+}
+
 proxies = {}
+
 
 def get_red_leaves(cookies_str) -> (bool, str):
     global proxies
@@ -51,7 +56,7 @@ def get_red_leaves(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path) -> (
+def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (
         bool, str, str):
     global proxies
     if proxy != '' or proxy is not None:
@@ -64,6 +69,19 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
     get_success, get_str = get_red_leaves(cookies_str)
     if not get_success:
         return False, get_str, ""
+    main_title = main_title.replace('.', ' ')
+    logger.info("处理前的主标题为：" + main_title)
+    main_title = main_title.replace('AVC', 'H.264')
+    main_title = main_title.replace('H264', 'H.264')
+    main_title = main_title.replace('HEVC', 'H.265')
+    main_title = main_title.replace('H265', 'H.265')
+    logger.info("处理后的主标题为：" + main_title)
+    logger.info("副标题为：" + compose)
+    # 去除指定一段落的内容
+    modified_content = re.sub(
+        r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
+        '', descr, flags=re.DOTALL)
+    logger.info("处理后的简介为：" + modified_content)
     headers = {
         'Host': 'leaves.red',
         'Cookie': cookies_str,
@@ -86,9 +104,12 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
     # 从主标题中提取分辨率
     if len(main_title.split(' ')) > 6:
         resolution = main_title.split(' ')[-4].upper()
+        video_codec = main_title.split(' ')[-2].upper()
     else:
         return False, '主标题格式错误,无法正确获取分辨率或年', ""
-
+    tags = [3, 5, 6, 28]
+    if feed:
+        tags.append(1)
     data = {
         'name': main_title,
         'small_descr': compose,
@@ -100,7 +121,7 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
         # 媒介 web_dl
         'medium_sel[5]': '8',
         # 视频编码 h.264
-        'codec_sel[5]': '1',
+        'codec_sel[5]': red_leaves_video_codec_map.get(video_codec, '1'),
         # 音频编码 aac
         'audiocodec_sel[5]': '6',
         # 分辨率
@@ -110,7 +131,7 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
         # 制作组
         'team_sel[5]': '29',
         # 标签
-        'tags[5][]': [1, 3, 5, 6, 28],
+        'tags[5][]': tags,
         # 匿名发布
         'uplver': 'yes',
     }
@@ -198,4 +219,3 @@ def get_red_leaves_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str,
     except Exception as e:
         logger.exception(f'获取种子下载地址失败{e}')
         return False, '获取种子下载地址失败', ""
-

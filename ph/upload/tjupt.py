@@ -44,7 +44,7 @@ def get_tjupt(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_name, proxy, torrent_path) -> (
+def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_name, proxy, torrent_path,feed) -> (
         bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_tjupt(cookies_str)
@@ -57,6 +57,20 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
             'http': proxy,
             'https': proxy
         }
+
+    main_title = main_title.replace(' ', '.')
+    logger.info("处理前的主标题为：" + main_title)
+    main_title = main_title.replace('H264', 'H.264')
+    main_title = main_title.replace('AVC', 'H.264')
+    main_title = main_title.replace('H265', 'H.265')
+    main_title = main_title.replace('HEVC', 'H.265')
+    logger.info("处理后的主标题为：" + main_title)
+
+    logger.info("副标题为：" + compose)
+    logger.info("简介为：" + descr)
+    logger.info("中文名为：" + chinese_name)
+    logger.info("种子文件路径为：" + torrent_file)
+
     headers = {
         'Host': 'tjupt.org',
         'Cookie': cookies_str,
@@ -85,8 +99,10 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
         'descr': descr,
         'uplver': 'yes',
         'internal_team': 'yes',
-        'exclusive': 'yes',
     }
+    if feed:
+        data['exclusive'] = 'yes'
+
     # 验证一下，文件名带后缀，且去掉前面的路径
     filename = os.path.basename(torrent_file)
     files = {'file': (filename, file, 'application/x-bittorrent')}

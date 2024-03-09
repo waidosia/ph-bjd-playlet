@@ -1,4 +1,5 @@
 import os
+import re
 import time
 from lxml import etree
 
@@ -10,6 +11,11 @@ agsv_resolution_map = {
     '720P': '3',
     '1080P': '1',
     '4K': '5',
+}
+
+agsv_video_codec_map = {
+    'AVC': '1',
+    'HEVC': '6',
 }
 proxies = {}
 
@@ -48,7 +54,7 @@ def get_agsv(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path) -> (bool, str):
+def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_agsv(cookies_str)
     if not get_success:
@@ -60,6 +66,23 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
             'http': proxy,
             'https': proxy
         }
+    main_title = main_title.replace('.', ' ')
+    logger.info("处理前的主标题为：" + main_title)
+    main_title = main_title.replace('H264', 'AVC')
+    main_title = main_title.replace('H265', 'HEVC')
+    main_title = main_title.replace('H 264', 'AVC')
+    main_title = main_title.replace('H 265', 'HEVC')
+    logger.info("处理后的主标题为：" + main_title)
+
+    logger.info("副标题为：" + compose)
+
+    # 去除指定一段落的内容
+    modified_content = re.sub(
+        r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
+        '', descr, flags=re.DOTALL)
+    logger.info("处理后的简介为：" + modified_content)
+    logger.info("media_info为：" + media_info)
+    logger.info("种子文件路径为：" + torrent_file)
 
     headers = {
         'Host': 'www.agsvpt.com',
@@ -83,24 +106,24 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     # 从主标题中提取分辨率
     if len(main_title.split(' ')) > 4:
         resolution = main_title.split(' ')[-4].upper()
+        video_codec = main_title.split(' ')[-2].upper()
     else:
         return False, '主标题格式错误,无法正确获取分辨率', ""
+    tags = [5, 6, 19, 44, 34]
+    if feed:
+        tags.append(1)
     data = {
         'name': main_title,
         'small_descr': compose,
-        'price': '',
         'descr': descr,
-        'color': '0',
-        'font': '0',
-        'size': '0',
         # media_info信息
         'technical_info': media_info,
         # 类型 短剧
         'type': '419',
         # 媒介 web_dl
         'medium_sel[4]': '10',
-        # 编码 h.264,avc
-        'codec_sel[4]': '1',
+        # 编码 h.264,avc h.265,hevc
+        'codec_sel[4]': agsv_video_codec_map.get(video_codec, '1'),
         # 音频编码 aac
         'audiocodec_sel[4]': '6',
         # 分辨率
@@ -108,7 +131,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
         # 制作组
         'team_sel[4]': '23',
         # 标签 紧转 国语 中字 完结 驻站 冰种
-        'tags[4][]': [1, 5, 6, 19, 44, 34],
+        'tags[4][]': tags,
         # 匿名发布
         'uplver': 'yes',
 

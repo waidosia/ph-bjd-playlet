@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'ui/settings.ui'
+# Form implementation generated from reading ui file 'ui\settings.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -340,9 +340,9 @@ class Ui_Settings(object):
         self.label_26 = QtWidgets.QLabel(parent=Settings)
         self.label_26.setObjectName("label_26")
         self.horizontalLayout_23.addWidget(self.label_26)
-        self.torrentSavePath_2 = QtWidgets.QLineEdit(parent=Settings)
-        self.torrentSavePath_2.setObjectName("torrentSavePath_2")
-        self.horizontalLayout_23.addWidget(self.torrentSavePath_2)
+        self.ptGenPath = QtWidgets.QLineEdit(parent=Settings)
+        self.ptGenPath.setObjectName("ptGenPath")
+        self.horizontalLayout_23.addWidget(self.ptGenPath)
         self.gridLayout.addLayout(self.horizontalLayout_23, 1, 0, 1, 2)
         self.horizontalLayout_18 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_18.setObjectName("horizontalLayout_18")
