@@ -113,7 +113,7 @@ def upload_red_leaves(cookies_str, torrent_file, main_title, compose, descr, med
     data = {
         'name': main_title,
         'small_descr': compose,
-        'descr': descr,
+        'descr': modified_content,
         # media_info信息
         'technical_info': media_info,
         # 类型 短剧
