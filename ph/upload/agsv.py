@@ -10,6 +10,7 @@ agsv_resolution_map = {
     '480P': '4',
     '720P': '3',
     '1080P': '1',
+    '2160P': '5',
     '4K': '5',
 }
 
@@ -54,7 +55,8 @@ def get_agsv(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (bool, str):
+def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (
+bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_agsv(cookies_str)
     if not get_success:

@@ -10,6 +10,7 @@ from util.log import logger
 red_leaves_resolution_map = {
     '720P': '3',
     '1080P': '1',
+    '2160P': '5',
     '4K': '5',
 }
 

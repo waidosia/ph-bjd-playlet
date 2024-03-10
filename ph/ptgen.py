@@ -37,13 +37,15 @@ def fetch_and_format_ptgen_data(api_url, resource_url) -> (bool, str, dict):
     # 根据响应获取中文名与英文名与年份
     chinese_name = data.get("chinese_title") if "chinese_title" in data else data.get("data", {}).get("chinese_title",
                                                                                                       "")
-    trans_title = data.get("translated_title") if "translated_title" in data else data.get("data", {}).get(
-        "translated_title", "")
+    trans_title = data.get("aka") if "aka" in data else data.get("data", {}).get(
+        "aka", "")
     if trans_title != "":
-        if len(trans_title) > 1:
-            trans_title = trans_title[:1]
-        else:
-            trans_title = ""
+        for aka in trans_title:
+            # 匹配一个全是英文的字符串，可能包含空格，英文字符例如,.等等，但不能包含中文
+            if re.match(r'[a-zA-Z\s.,!?\'\"{}\[\]-]+$', aka):
+                trans_title = aka
+                break
+
     year = data.get("year") if "year" in data else data.get("data", {}).get("year", "")
     # 类型
     category = data.get("genre") if "genre" in data else data.get("data", {}).get("genre", "")

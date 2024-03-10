@@ -15,6 +15,7 @@ kylin_resolution_map = {
     '480P': '8',
     '720P': '3',
     '1080P': '1',
+    '2160P': '6',
     '4K': '6',
 }
 
@@ -61,7 +62,7 @@ def get_kylin(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, proxy, torrent_path,feed) -> (bool, str):
+def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy, torrent_path,feed) -> (bool, str):
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -107,6 +108,7 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, year, pr
     if len(main_title.split(' ')) > 6:
         resolution = main_title.split(' ')[-4].upper()
         video_codec = main_title.split(' ')[-2].upper()
+        year = main_title.split(' ')[-6]
     else:
         return False, '主标题格式错误,无法正确获取分辨率或年', ""
 

@@ -64,6 +64,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.english_name = ""
         self.category = None
         self.names = None
+        self.seed_start = 0
 
         self.progress = 100
         # 初始化
@@ -475,7 +476,7 @@ class GetName(QObject):
         if first_english_name == "":
             first_english_name = chinese_name_to_pinyin(first_chinese_name)
         # 弹窗显示英文名，并允许修改
-        name, ok = QInputDialog.getText(self.parent, "验证英文名", "英文名:", text=first_english_name)
+        first_english_name, ok = QInputDialog.getText(self.parent, "验证英文名", "英文名:", text=first_english_name)
         if not ok:
             return
         logger.info('获取英文名成功：' + first_english_name)
@@ -546,7 +547,7 @@ class GetName(QObject):
             renamed_files = rename_video_files(video_files, file_name)
             for renamed_file in renamed_files:
                 if renamed_file:
-                    self.parent.videoPath.setText(renamed_file)
+                    # self.parent.videoPath.setText(renamed_file)
                     videoPath = renamed_file
                     self.parent.debugBrowser.append("视频成功重新命名为：" + videoPath)
                     logger.info("视频成功重新命名为：" + videoPath)
@@ -602,7 +603,7 @@ class GetName(QObject):
                 self.parent.debugBrowser.append(f"文件移动中，当前进度：{progress}%")
             else:
                 print(res)
-                while self.parent.torrentPathBrowser.toPlainText() == "":
+                while self.parent.torrentPathBrowser.toPlainText() == "" and self.parent.seed_start == 1:
                     self.parent.debugBrowser.append("种子路径为空，等待种子制作完成")
                     time.sleep(3)
 
@@ -643,6 +644,9 @@ class WriteFile:
         torrentPath = self.parent.torrentPathBrowser.toPlainText()
         # 简介
         introBrowser = self.parent.introBrowser.toPlainText()
+        # mediaInfo
+        mediainfo = self.parent.mediainfoBrowser.toPlainText()
+
         # 获取保存目录
         video_info = get_settings("videoInfo")
         # 拼接文件路径
@@ -654,6 +658,7 @@ class WriteFile:
                 file.write(f'副标题为： {secondTitle}\n')
                 file.write(f'种子路径为： {torrentPath}\n')
                 file.write(f'发种排版信息为： \n{introBrowser}\n')
+                file.write(f'MediaInfo为： \n{mediainfo}\n')
             self.parent.debugBrowser.append("写入文件成功")
         except Exception as e:
             self.parent.debugBrowser.append(f"发生异常: {e}")
@@ -742,6 +747,7 @@ class MakeTorrent(QObject):
         if isVideoPath == 1 or isVideoPath == 2:
             torrent_path = str(get_settings("torrentPath"))
             folder_path = os.path.dirname(videoPath)
+            self.parent.seed_start = 1
             self.parent.debugBrowser.append("开始将" + folder_path + "制作种子，储存在" + torrent_path)
             logger.info("开始将" + folder_path + "制作种子，储存在" + torrent_path)
             self.make_torrent_thread = MakeTorrentThread(folder_path, torrent_path)
@@ -755,6 +761,7 @@ class MakeTorrent(QObject):
 
     def handleMakeTorrentResult(self, get_success, response, error):
         print("开始处理制作后的逻辑")
+        self.parent.seed_start = 0
         if error == "":
             if get_success:
                 self.parent.debugBrowser.append("成功制作种子：" + response)
@@ -915,7 +922,6 @@ class UploadHandler:
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
-        year = self.parent.yearEdit.text()
         current_working_directory = os.getcwd()
         if torrent_path:
             if not os.path.isabs(torrent_path):
@@ -923,7 +929,7 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
                                                               introBrowser,
-                                                              year, self.proxy_url, self.torrent_path,
+                                                              self.proxy_url, self.torrent_path,
                                                               self.parent.feed.isChecked()
                                                               )
         if upload_success:
