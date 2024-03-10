@@ -61,6 +61,10 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.kylinTorrentPath = None
         self.redLeavesTorrentPath = None
 
+        self.english_name = ""
+        self.category = None
+        self.names = None
+
         self.progress = 100
         # 初始化
         self.videoPath.setDragEnabled(True)
@@ -237,6 +241,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         if self.progress != 100:
             QMessageBox.warning(self, "警告", "文件移动未完成", QMessageBox.StandardButton.Ok)
             return
+
         seed_mak = SeedMak(self)
         logger.info("点击做种按钮")
         # 判断选择的是qb还是tr
@@ -447,20 +452,28 @@ class GetName(QObject):
         self.move_file_thread = None
 
     def getNameButtonClicked(self):
-        # 如果没有中文名，年份，类型，资源路径 点击获取名称按钮会弹出警告框
-        if not self.parent.chineseNameEdit.text() or not self.parent.yearEdit.text():
-            QMessageBox.warning(self.parent, "警告", "请先填写中文名，年份", QMessageBox.StandardButton.Ok)
-            return
+        # 针对PTGen的处理，如果可以，从PTGen获取中文名，年份，简介，类型
+        if not self.parent.ptGen.text():
+            # 如果没有中文名，年份，类型，资源路径 点击获取名称按钮会弹出警告框
+            if not self.parent.chineseNameEdit.text() or not self.parent.yearEdit.text():
+                QMessageBox.warning(self.parent, "警告", "请先填写中文名，年份", QMessageBox.StandardButton.Ok)
+                return
+            if not self.parent.get_selected_categories():
+                QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
+                return
         if not self.parent.videoPath.text():
             QMessageBox.warning(self.parent, "警告", "请先选择视频文件夹", QMessageBox.StandardButton.Ok)
             return
-        if not self.parent.get_selected_categories():
-            QMessageBox.warning(self.parent, "警告", "请先选择类型", QMessageBox.StandardButton.Ok)
+        if self.parent.ptGen.text() and not self.parent.chineseNameEdit.text():
+            QMessageBox.warning(self.parent, "警告", "请先点击PTGen生成按钮", QMessageBox.StandardButton.Ok)
             return
+
         # 弹窗判断英文名是否正确，不正确则允许修改，同时获取修改后的值
         first_chinese_name = self.parent.chineseNameEdit.text()
         self.parent.debugBrowser.append('获取中文名成功：' + first_chinese_name)
-        first_english_name = chinese_name_to_pinyin(first_chinese_name)
+        first_english_name = self.parent.english_name
+        if first_english_name == "":
+            first_english_name = chinese_name_to_pinyin(first_chinese_name)
         # 弹窗显示英文名，并允许修改
         name, ok = QInputDialog.getText(self.parent, "验证英文名", "英文名:", text=first_english_name)
         if not ok:
@@ -510,7 +523,13 @@ class GetName(QObject):
         festival = get_festival_blessing()
         print(main_title)
 
-        second_title = f"{first_chinese_name} | 全{len(video_files)}集 | {year}年 | {type} | 类型：{category} {festival}"
+        # 副标题生成时，需根据内容不同，生成不同的副标题
+        if self.parent.ptGen.text():
+            category = ' / '.join(self.parent.category)
+            names = ' / '.join(self.parent.names)
+            second_title = f"{first_chinese_name} | 全{len(video_files)}集 | {year}年 | {type} | 类型：{category} | 演员：{names} {festival}"
+        else:
+            second_title = f"{first_chinese_name} | 全{len(video_files)}集 | {year}年 | {type} | 类型：{category} {festival}"
         print("SecondTitle" + second_title)
 
         file_name = f"{first_chinese_name}.{first_english_name}.{year} S{season}E??.{width}.{source}.{format}.{hdr_format}.{commercial_name}{channel_layout}-{team}"
@@ -567,7 +586,8 @@ class GetName(QObject):
                 self.parent.progress = 0
                 self.parent.debugBrowser.append("开始移动文件到做种路径")
                 logger.info("开始移动文件到做种路径")
-                self.move_file_thread = MoveFileThread(videoPath, resource_path)
+                self.move_file_thread = MoveFileThread(videoPath, resource_path, self.parent.torrentPathBrowser
+                                                       .toPlainText())
                 logger.info("移动文件类初始化成功")
                 self.move_file_thread.result_signal.connect(self.handleMoveFileResult)  # 连接信号
                 logger.info("连接信号成功")
@@ -582,6 +602,11 @@ class GetName(QObject):
                 self.parent.debugBrowser.append(f"文件移动中，当前进度：{progress}%")
             else:
                 print(res)
+                while self.parent.torrentPathBrowser.toPlainText() == "":
+                    self.parent.debugBrowser.append("种子路径为空，等待种子制作完成")
+                    time.sleep(3)
+
+                shutil.rmtree(self.parent.videoPath.text())
                 self.parent.videoPath.setText(res)
                 self.parent.debugBrowser.append("文件移动成功")
                 logger.info("文件移动成功")
@@ -654,7 +679,7 @@ class GetPtGen(QObject):
         self.parent.debugBrowser.append("获取PTGen线程启动成功")
         logger.info("制作种子线程启动成功")
 
-    def handlePtGenResult(self, get_success, response):
+    def handlePtGenResult(self, get_success, response, info):
         print("开始处理生成后的逻辑")
         if get_success:
             if self.parent.feed.isChecked():
@@ -662,6 +687,12 @@ class GetPtGen(QObject):
             self.parent.debugBrowser.append("成功获取到PTGen")
             self.parent.introBrowser.append(response)
             logger.info("成功获取到PTGen")
+            if info:
+                self.parent.chineseNameEdit.setText(info['chinese_name'])
+                self.parent.yearEdit.setText(info['year'])
+                self.parent.english_name = info['trans_title']
+                self.parent.category = info['category']
+                self.parent.names = info['names']
         else:
             self.parent.debugBrowser.append("获取PTGen失败：" + response)
             logger.error(f"发生异常: {response}")
@@ -778,7 +809,8 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, tju_link, tju_path = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle,
                                                           introBrowser,
-                                                          chinese_name, self.proxy_url, self.torrent_path,self.parent.feed.isChecked())
+                                                          chinese_name, self.proxy_url, self.torrent_path,
+                                                          self.parent.feed.isChecked())
         if upload_success:
             self.parent.tjuTorrentLink = tju_link
             self.parent.tjuTorrentPath = tju_path
@@ -817,7 +849,8 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, agsv_link, agsv_path = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle,
                                                            introBrowser,
-                                                           media_info, self.proxy_url, self.torrent_path,self.parent.feed.isChecked())
+                                                           media_info, self.proxy_url, self.torrent_path,
+                                                           self.parent.feed.isChecked())
         if upload_success:
             self.parent.agsvTorrentLink = agsv_link
             self.parent.agsvTorrentPath = agsv_path
@@ -851,7 +884,8 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, pter_link, pter_path = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle,
                                                            introBrowser, media_info,
-                                                           self.proxy_url, self.torrent_path,self.parent.feed.isChecked(),
+                                                           self.proxy_url, self.torrent_path,
+                                                           self.parent.feed.isChecked(),
                                                            )
         if upload_success:
             self.parent.peterTorrentLink = pter_link
@@ -888,7 +922,8 @@ class UploadHandler:
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
                                                               introBrowser,
-                                                              year, self.proxy_url, self.torrent_path,self.parent.feed.isChecked()
+                                                              year, self.proxy_url, self.torrent_path,
+                                                              self.parent.feed.isChecked()
                                                               )
         if upload_success:
             self.parent.kylinTorrentLink = kylin_link
@@ -927,7 +962,8 @@ class UploadHandler:
                                                                               secondTitle,
                                                                               introBrowser,
                                                                               media_info, self.proxy_url,
-                                                                              self.torrent_path,self.parent.feed.isChecked(),
+                                                                              self.torrent_path,
+                                                                              self.parent.feed.isChecked(),
                                                                               )
         if upload_success:
             self.parent.redLeavesTorrentLink = redLeaves_link
@@ -1020,7 +1056,7 @@ class MakeTorrentThread(QThread):
 
 class GetPtGenThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信
-    result_signal = pyqtSignal(bool, str)
+    result_signal = pyqtSignal(bool, str, dict)
 
     def __init__(self, api_url, resource_url):
         super().__init__()
@@ -1030,23 +1066,25 @@ class GetPtGenThread(QThread):
     def run(self):
         try:
             # 这里放置耗时的HTTP请求操作
-            get_success, response = fetch_and_format_ptgen_data(self.api_url, self.resource_url)
+            get_success, response, info = fetch_and_format_ptgen_data(self.api_url, self.resource_url)
             # 发送信号，包括请求的结果
             print("Pt-Gen请求成功，开始返回结果")
-            self.result_signal.emit(get_success, response)
+            self.result_signal.emit(get_success, response, info)
             print("返回结果成功")
         except Exception as e:
             print(f"异常发生: {e}")
-            self.result_signal.emit(False, str(e))
+            self.result_signal.emit(False, str(e), {})
+
 
 class MoveFileThread(QThread):
     # 创建一个信号，用于在数据处理完毕后与主线程通信
     result_signal = pyqtSignal(bool, int, str)
 
-    def __init__(self, folder_path, target_path):
+    def __init__(self, folder_path, target_path, torrent_path):
         super().__init__()
         self.folder_path = folder_path
         self.target_path = target_path
+        self.torrent_path = torrent_path
 
     def run(self):
         try:
@@ -1068,7 +1106,6 @@ class MoveFileThread(QThread):
                     if schedule % 10 == 0:
                         self.result_signal.emit(True, schedule, str(self.target_path))
                         logger.info(f'当前移动的进度为：{schedule}%')
-                shutil.rmtree(self.folder_path)
         except FileNotFoundError as e:
             logger.error(f"文件夹不存在：{e}")
             self.result_signal.emit(False, 0, f"文件夹不存在：{e}")
