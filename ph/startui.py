@@ -688,6 +688,7 @@ class GetPtGen(QObject):
             self.parent.introBrowser.append(response)
             logger.info("成功获取到PTGen")
             if info:
+                self.parent.coverPath.setText(info['poster'])
                 self.parent.chineseNameEdit.setText(info['chinese_name'])
                 self.parent.yearEdit.setText(info['year'])
                 self.parent.english_name = info['trans_title']

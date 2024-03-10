@@ -40,20 +40,25 @@ def fetch_and_format_ptgen_data(api_url, resource_url) -> (bool, str, dict):
     trans_title = data.get("translated_title") if "translated_title" in data else data.get("data", {}).get(
         "translated_title", "")
     if trans_title != "":
-        trans_title = trans_title[:1]
+        if len(trans_title) > 1:
+            trans_title = trans_title[:1]
+        else:
+            trans_title = ""
     year = data.get("year") if "year" in data else data.get("data", {}).get("year", "")
     # 类型
     category = data.get("genre") if "genre" in data else data.get("data", {}).get("genre", "")
 
     cast = data.get("cast") if "cast" in data else data.get("data", {}).get("cast", "")
     names = [item["name"].split()[0] for item in cast if not any(char.isdigit() for char in item["name"])]
+    poster = data.get("poster") if "poster" in data else data.get("data", {}).get("poster", "")
 
     map = {
         "chinese_name": chinese_name,
         "trans_title": trans_title,
         "year": year,
         "category": category,
-        "names": names
+        "names": names,
+        "poster": poster,
     }
     # 根据响应结构获取format字段
     format_data = data.get("format") if "format" in data else data.get("data", {}).get("format", "")
