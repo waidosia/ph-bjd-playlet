@@ -356,12 +356,15 @@ class UploadImages(QObject):
                 upload_thread.start()
                 time.sleep(0.5)
             # 单独上传最后的缩略图
-            self.parent.debugBrowser.append(f"开始上传缩略图 {images['thumbnails']}")
-            if images['thumbnails'] != "":
-                upload_thread = UploadPictureThread(figureBedPath, figureBedToken, images['thumbnails'], False)
-                upload_thread.result_signal.connect(self.handleUploadPictureResult)
-                self.upload_picture_threads.append(upload_thread)
-                upload_thread.start()
+            if images.get("thumbnails") != "":
+                self.parent.debugBrowser.append(f"开始上传缩略图 {images['thumbnails']}")
+                if images['thumbnails'] != "":
+                    upload_thread = UploadPictureThread(figureBedPath, figureBedToken, images['thumbnails'], False)
+                    upload_thread.result_signal.connect(self.handleUploadPictureResult)
+                    self.upload_picture_threads.append(upload_thread)
+                    upload_thread.start()
+            else:
+                self.parent.debugBrowser.append(f"未获取到缩略图")
             self.parent.debugBrowser.append("上传图床线程启动")
         else:
             self.parent.debugBrowser.append("未选择自动上传图床功能，图片已储存在本地")
@@ -697,7 +700,9 @@ class GetPtGen(QObject):
                 self.parent.chineseNameEdit.setText(info['chinese_name'])
                 self.parent.yearEdit.setText(info['year'])
                 self.parent.english_name = info['trans_title']
+                self.parent.debugBrowser.append(f"PTGen中提取的英文名为：{info['trans_title']}")
                 self.parent.category = info['category']
+                self.parent.debugBrowser.append(f"PTGen中提取的标签为：{info['category']}")
                 self.parent.names = info['names']
         else:
             self.parent.debugBrowser.append("获取PTGen失败：" + response)

@@ -39,11 +39,12 @@ def fetch_and_format_ptgen_data(api_url, resource_url) -> (bool, str, dict):
                                                                                                       "")
     trans_title = data.get("aka") if "aka" in data else data.get("data", {}).get(
         "aka", "")
+    english_name = ""
     if trans_title != "":
         for aka in trans_title:
             # 匹配一个全是英文的字符串，可能包含空格，英文字符例如,.等等，但不能包含中文
             if re.match(r'[a-zA-Z\s.,!?\'\"{}\[\]-]+$', aka):
-                trans_title = aka
+                english_name = aka
                 break
 
     year = data.get("year") if "year" in data else data.get("data", {}).get("year", "")
@@ -56,7 +57,7 @@ def fetch_and_format_ptgen_data(api_url, resource_url) -> (bool, str, dict):
 
     map = {
         "chinese_name": chinese_name,
-        "trans_title": trans_title,
+        "trans_title": english_name,
         "year": year,
         "category": category,
         "names": names,

@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 import os
 import random
 import re
@@ -11,6 +12,8 @@ import cv2
 import numpy as np
 from pypinyin import pinyin, Style
 from torf import Torrent
+
+from util.log import logger
 
 
 def update_settings(parameter_name, value) -> None:
@@ -418,7 +421,7 @@ def extract_complex_keyframes(video_path, output_path, num_images, some_threshol
 
 
 def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
-    global video_capture
+    video_capture = None
     success, error_message = create_directory(output_path)
     if not success:
         return False, error_message
@@ -449,13 +452,14 @@ def get_thumbnails(video_path, output_path, cols, rows, start_pct, end_pct):
             ret, frame = video_capture.read()
 
             if not ret:
-                raise Exception(f"Error: 无法读取第 {i + 1} 张图像")
+                logger.warning(f"无法读取第 {i + 1} 张图像")
+                continue
 
             images.append(frame)
 
         # 处理图像数量小于预期的情况
         if len(images) < (rows * cols):
-            print(f"Warning: 只能获取 {len(images)} 张图像，小于预期的 {rows * cols} 张")
+            logger.warning(f"只能获取 {len(images)} 张图像，小于预期的 {rows * cols} 张")
 
         resized_images = [cv2.resize(image, (0, 0), fx=1.0 / cols, fy=1.0 / cols) for image in images]
 
