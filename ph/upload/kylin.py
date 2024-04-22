@@ -1,8 +1,10 @@
 import os
+import re
 import time
-from lxml import etree
 
 import requests
+from lxml import etree
+
 from util.log import logger
 
 kylin_year_map = {
@@ -62,7 +64,7 @@ def get_kylin(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy, torrent_path,feed) -> (bool, str):
+def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (bool, str):
     global proxies
     if proxy != '' or proxy is not None:
         logger.info(f'使用代理:{proxy}')
@@ -82,8 +84,11 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy, t
     main_title = main_title.replace('H 265', 'H265')
     logger.info("处理后的主标题为：" + main_title)
     logger.info("副标题为：" + compose)
-    descr = descr.replace('[mediainfo]', '[quote]')
-    descr = descr.replace('[/mediainfo]', '[/quote]')
+    # 去除指定一段落的内容
+    modified_content = re.sub(
+        r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
+        '', descr, flags=re.DOTALL)
+    logger.info("处理后的简介为：" + modified_content)
     logger.info("处理后的简介为：" + descr)
     headers = {
         'Host': 'www.hdkyl.in',
@@ -119,7 +124,8 @@ def upload_kylin(cookies_str, torrent_file, main_title, compose, descr, proxy, t
     data = {
         'name': main_title,
         'small_descr': compose,
-        'descr': descr,
+        'descr': modified_content,
+        'technical_info': media_info,
         'color': '0',
         'font': '0',
         'size': '0',

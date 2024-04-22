@@ -1,1639 +1,1639 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Settings</class>
- <widget class="QDialog" name="Settings">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>628</width>
-    <height>695</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>设置</string>
-  </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_6">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>图床api地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="figureBedPath">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_7">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>图床api密钥：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="figureBedToken">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="echoMode">
-        <enum>QLineEdit::Password</enum>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>截图储存地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="screenshotPath">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="selectScreenshotPathButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>浏览</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="2" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_12">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>种子储存地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="torrentPath">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="selectTorrentPathButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>浏览</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_7">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>截图数量：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="screenshotNumber">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="maximum">
-        <number>5</number>
-       </property>
-       <property name="value">
-        <number>1</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>关键帧复杂度：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="screenshotThreshold">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="decimals">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <double>5.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.010000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.100000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_11">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QCheckBox" name="getThumbnails">
-       <property name="text">
-        <string>生成缩略图</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_13">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>横向数量：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="rows">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>9</number>
-       </property>
-       <property name="value">
-        <number>4</number>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_8">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>纵向数量：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="cols">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="minimum">
-        <number>1</number>
-       </property>
-       <property name="maximum">
-        <number>9</number>
-       </property>
-       <property name="value">
-        <number>4</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="5" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_8">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_4">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>截图起始点（百分比）：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="screenshotStart">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="decimals">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.010000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.100000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>截图终止点（百分比）：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="screenshotEnd">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="decimals">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.010000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.900000000000000</double>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="6" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_9">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QCheckBox" name="autoUploadScreenshot">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>自动上传图床</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="pasteScreenshotUrl">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>将链接粘贴到简介后</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="deleteScreenshot">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>上传后删除本地图片</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_10">
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="label_10">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>获取标准命名时：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="renameFile">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>自动将文件（文件夹）重命名</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="makeDir">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>将文件放入同名文件夹</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="moveFile">
-       <property name="styleSheet">
-        <string>QPushButton {
-    display: inline-block;
-    padding: 5px 5px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-    background-color: #559e24;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: #4a8821;
-}
-
-QPushButton:pressed {
-    background-color: #3c6f1b;
-}
-</string>
-       </property>
-       <property name="text">
-        <string>将文件移动到做种文件夹</string>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="9" column="0">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_19">
-       <item>
-        <widget class="QLabel" name="label_22">
-         <property name="text">
-          <string>下载器类型：</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="qb">
-         <property name="toolTipDuration">
-          <number>1</number>
-         </property>
-         <property name="text">
-          <string>Qb</string>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">buttonGroup</string>
-         </attribute>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="tr">
-         <property name="text">
-          <string>Tr</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <attribute name="buttonGroup">
-          <string notr="true">buttonGroup</string>
-         </attribute>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item row="9" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <item>
-      <widget class="QLabel" name="label_14">
-       <property name="text">
-        <string>下载器地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="downloaderHost"/>
-     </item>
-    </layout>
-   </item>
-   <item row="10" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QLabel" name="label_15">
-       <property name="text">
-        <string>下载器用户名：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="downloaderUser"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_16">
-       <property name="text">
-        <string>下载器密码</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="downloaderPass"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="testDownloader">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>测试</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="11" column="0">
-    <layout class="QHBoxLayout" name="horizontalLayout_13">
-     <item>
-      <widget class="QLabel" name="label_18">
-       <property name="text">
-        <string>做种路径：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="resourcePath"/>
-     </item>
-    </layout>
-   </item>
-   <item row="11" column="1">
-    <layout class="QHBoxLayout" name="horizontalLayout_21">
-     <item>
-      <widget class="QLabel" name="label_24">
-       <property name="text">
-        <string>种子下载路径：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="torrentSavePath"/>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_23">
-     <item>
-      <widget class="QLabel" name="label_26">
-       <property name="text">
-        <string>PT Gen地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="ptGenPath"/>
-     </item>
-    </layout>
-   </item>
-   <item row="12" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_18">
-     <item>
-      <widget class="QLabel" name="label_21">
-       <property name="text">
-        <string>代理地址:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="proxyUrl">
-       <property name="placeholderText">
-        <string>格式为:http://xxx:7890</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="13" column="0" colspan="2">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_12">
-       <item>
-        <widget class="QLabel" name="label_17">
-         <property name="text">
-          <string>tju_cookie：</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="tjuCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_15">
-       <item>
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>agsv_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="agsvCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_16">
-       <item>
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>Pter_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="pterCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_20">
-       <item>
-        <widget class="QLabel" name="label_23">
-         <property name="text">
-          <string>redLeaves_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="redLeavesCookie"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_17">
-       <item>
-        <widget class="QLabel" name="label_20">
-         <property name="text">
-          <string>kylin_cookie:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="kylinCookie"/>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item row="14" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="leftMargin">
-      <number>30</number>
-     </property>
-     <property name="rightMargin">
-      <number>30</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="saveButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>保存</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>取消</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="8" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_22">
-     <item>
-      <widget class="QLabel" name="label_25">
-       <property name="text">
-        <string>文件转移路径：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="moveFilePath"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="selectmovePathButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>浏览</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="3" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_14">
-     <item>
-      <widget class="QLabel" name="label_19">
-       <property name="text">
-        <string>短剧信息储存地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="videoInfo"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="selectInfoPathButton">
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
-
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
-
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
-       </property>
-       <property name="text">
-        <string>浏览</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-  </layout>
- </widget>
- <resources/>
- <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
+    <class>Settings</class>
+    <widget class="QDialog" name="Settings">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>628</width>
+                <height>695</height>
+            </rect>
+        </property>
+        <property name="windowTitle">
+            <string>设置</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QLabel" name="label_6">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>图床api地址：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="figureBedPath">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string/>
+                            </property>
+                            <property name="clearButtonEnabled">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label_7">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>图床api密钥：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="figureBedToken">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string/>
+                            </property>
+                            <property name="echoMode">
+                                <enum>QLineEdit::Password</enum>
+                            </property>
+                            <property name="clearButtonEnabled">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="2" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QLabel" name="label_3">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>截图储存地址：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="screenshotPath">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string/>
+                            </property>
+                            <property name="clearButtonEnabled">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="selectScreenshotPathButton">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 3px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>浏览</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="2" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QLabel" name="label_12">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>种子储存地址：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="torrentPath">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string/>
+                            </property>
+                            <property name="clearButtonEnabled">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="selectTorrentPathButton">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 3px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>浏览</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="4" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QLabel" name="label">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>截图数量：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QSpinBox" name="screenshotNumber">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="maximum">
+                                <number>5</number>
+                            </property>
+                            <property name="value">
+                                <number>1</number>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label_2">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>关键帧复杂度：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QDoubleSpinBox" name="screenshotThreshold">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="decimals">
+                                <number>2</number>
+                            </property>
+                            <property name="maximum">
+                                <double>5.000000000000000</double>
+                            </property>
+                            <property name="singleStep">
+                                <double>0.010000000000000</double>
+                            </property>
+                            <property name="value">
+                                <double>0.100000000000000</double>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="4" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_11">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QCheckBox" name="getThumbnails">
+                            <property name="text">
+                                <string>生成缩略图</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label_13">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>横向数量：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QSpinBox" name="rows">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="minimum">
+                                <number>1</number>
+                            </property>
+                            <property name="maximum">
+                                <number>9</number>
+                            </property>
+                            <property name="value">
+                                <number>4</number>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label_8">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>纵向数量：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QSpinBox" name="cols">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="minimum">
+                                <number>1</number>
+                            </property>
+                            <property name="maximum">
+                                <number>9</number>
+                            </property>
+                            <property name="value">
+                                <number>4</number>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="5" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QLabel" name="label_4">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>截图起始点（百分比）：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QDoubleSpinBox" name="screenshotStart">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="decimals">
+                                <number>2</number>
+                            </property>
+                            <property name="maximum">
+                                <double>1.000000000000000</double>
+                            </property>
+                            <property name="singleStep">
+                                <double>0.010000000000000</double>
+                            </property>
+                            <property name="value">
+                                <double>0.100000000000000</double>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label_5">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>截图终止点（百分比）：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QDoubleSpinBox" name="screenshotEnd">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="decimals">
+                                <number>2</number>
+                            </property>
+                            <property name="maximum">
+                                <double>1.000000000000000</double>
+                            </property>
+                            <property name="singleStep">
+                                <double>0.010000000000000</double>
+                            </property>
+                            <property name="value">
+                                <double>0.900000000000000</double>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="6" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_9">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QCheckBox" name="autoUploadScreenshot">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>自动上传图床</string>
+                            </property>
+                            <property name="checked">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="pasteScreenshotUrl">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>将链接粘贴到简介后</string>
+                            </property>
+                            <property name="checked">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="deleteScreenshot">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>上传后删除本地图片</string>
+                            </property>
+                            <property name="checked">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="7" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                    <property name="leftMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                        <number>5</number>
+                    </property>
+                    <item>
+                        <widget class="QLabel" name="label_10">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>获取标准命名时：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="renameFile">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>自动将文件（文件夹）重命名</string>
+                            </property>
+                            <property name="checked">
+                                <bool>false</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="makeDir">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>将文件放入同名文件夹</string>
+                            </property>
+                            <property name="checked">
+                                <bool>false</bool>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QCheckBox" name="moveFile">
+                            <property name="styleSheet">
+                                <string>QPushButton {
+                                    display: inline-block;
+                                    padding: 5px 5px;
+                                    font-size: 16px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color: #559e24;
+                                    border: none;
+                                    border-radius: 15px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color: #4a8821;
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color: #3c6f1b;
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>将文件移动到做种文件夹</string>
+                            </property>
+                            <property name="checked">
+                                <bool>false</bool>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="9" column="0">
+                <layout class="QVBoxLayout" name="verticalLayout_2">
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_19">
+                            <item>
+                                <widget class="QLabel" name="label_22">
+                                    <property name="text">
+                                        <string>下载器类型：</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QRadioButton" name="qb">
+                                    <property name="toolTipDuration">
+                                        <number>1</number>
+                                    </property>
+                                    <property name="text">
+                                        <string>Qb</string>
+                                    </property>
+                                    <property name="checked">
+                                        <bool>false</bool>
+                                    </property>
+                                    <attribute name="buttonGroup">
+                                        <string notr="true">buttonGroup</string>
+                                    </attribute>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QRadioButton" name="tr">
+                                    <property name="text">
+                                        <string>Tr</string>
+                                    </property>
+                                    <property name="checked">
+                                        <bool>true</bool>
+                                    </property>
+                                    <attribute name="buttonGroup">
+                                        <string notr="true">buttonGroup</string>
+                                    </attribute>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+            <item row="9" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                    <item>
+                        <widget class="QLabel" name="label_14">
+                            <property name="text">
+                                <string>下载器地址：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="downloaderHost"/>
+                    </item>
+                </layout>
+            </item>
+            <item row="10" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                    <item>
+                        <widget class="QLabel" name="label_15">
+                            <property name="text">
+                                <string>下载器用户名：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="downloaderUser"/>
+                    </item>
+                    <item>
+                        <widget class="QLabel" name="label_16">
+                            <property name="text">
+                                <string>下载器密码</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="downloaderPass"/>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="testDownloader">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 6px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>测试</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="11" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <item>
+                        <widget class="QLabel" name="label_18">
+                            <property name="text">
+                                <string>做种路径：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="resourcePath"/>
+                    </item>
+                </layout>
+            </item>
+            <item row="11" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_21">
+                    <item>
+                        <widget class="QLabel" name="label_24">
+                            <property name="text">
+                                <string>种子下载路径：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="torrentSavePath"/>
+                    </item>
+                </layout>
+            </item>
+            <item row="1" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_23">
+                    <item>
+                        <widget class="QLabel" name="label_26">
+                            <property name="text">
+                                <string>PT Gen地址：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="ptGenPath"/>
+                    </item>
+                </layout>
+            </item>
+            <item row="12" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_18">
+                    <item>
+                        <widget class="QLabel" name="label_21">
+                            <property name="text">
+                                <string>代理地址:</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="proxyUrl">
+                            <property name="placeholderText">
+                                <string>格式为:http://xxx:7890</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="13" column="0" colspan="2">
+                <layout class="QVBoxLayout" name="verticalLayout">
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_12">
+                            <item>
+                                <widget class="QLabel" name="label_17">
+                                    <property name="text">
+                                        <string>tju_cookie：</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLineEdit" name="tjuCookie"/>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_15">
+                            <item>
+                                <widget class="QLabel" name="label_9">
+                                    <property name="text">
+                                        <string>agsv_cookie:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLineEdit" name="agsvCookie"/>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_16">
+                            <item>
+                                <widget class="QLabel" name="label_11">
+                                    <property name="text">
+                                        <string>Pter_cookie:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLineEdit" name="pterCookie"/>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_20">
+                            <item>
+                                <widget class="QLabel" name="label_23">
+                                    <property name="text">
+                                        <string>redLeaves_cookie:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLineEdit" name="redLeavesCookie"/>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_17">
+                            <item>
+                                <widget class="QLabel" name="label_20">
+                                    <property name="text">
+                                        <string>kylin_cookie:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLineEdit" name="kylinCookie"/>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </item>
+            <item row="14" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout">
+                    <property name="leftMargin">
+                        <number>30</number>
+                    </property>
+                    <property name="rightMargin">
+                        <number>30</number>
+                    </property>
+                    <item>
+                        <widget class="QPushButton" name="saveButton">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 6px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>保存</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="cancelButton">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 6px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>取消</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="8" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_22">
+                    <item>
+                        <widget class="QLabel" name="label_25">
+                            <property name="text">
+                                <string>文件转移路径：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="moveFilePath"/>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="selectmovePathButton">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 3px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>浏览</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+            <item row="3" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_14">
+                    <item>
+                        <widget class="QLabel" name="label_19">
+                            <property name="text">
+                                <string>短剧信息储存地址：</string>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <widget class="QLineEdit" name="videoInfo"/>
+                    </item>
+                    <item>
+                        <widget class="QPushButton" name="selectInfoPathButton">
+                            <property name="styleSheet">
+                                <string notr="true">QPushButton {
+                                    display: inline-block;
+                                    padding: 3px 6px;
+                                    font-size: 14px;
+                                    cursor: pointer;
+                                    text-align: center;
+                                    text-decoration: none;
+                                    outline: none;
+                                    color:#fff;
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #16bf9d,
+                                    stop:1 #10a266);
+                                    border: none;
+                                    border-radius: 8px;
+                                    box-shadow: 0 9px #999;
+                                    }
+
+                                    QPushButton:hover {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #11b998,
+                                    stop:1 #08965e);
+                                    }
+
+                                    QPushButton:pressed {
+                                    background-color:
+                                    qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                    stop:0 #0e9278,
+                                    stop:1 #0e925c);
+                                    }
+                                </string>
+                            </property>
+                            <property name="text">
+                                <string>浏览</string>
+                            </property>
+                        </widget>
+                    </item>
+                </layout>
+            </item>
+        </layout>
+    </widget>
+    <resources/>
+    <connections/>
+    <buttongroups>
+        <buttongroup name="buttonGroup"/>
+    </buttongroups>
 </ui>

@@ -1,9 +1,10 @@
 import os
 import re
 import time
-from lxml import etree
 
 import requests
+from lxml import etree
+
 from util.log import logger
 
 agsv_resolution_map = {
@@ -56,7 +57,7 @@ def get_agsv(cookies_str) -> (bool, str):
 
 
 def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (
-bool, str):
+        bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_agsv(cookies_str)
     if not get_success:
@@ -75,9 +76,7 @@ bool, str):
     main_title = main_title.replace('H 264', 'AVC')
     main_title = main_title.replace('H 265', 'HEVC')
     logger.info("处理后的主标题为：" + main_title)
-
     logger.info("副标题为：" + compose)
-
     # 去除指定一段落的内容
     modified_content = re.sub(
         r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',

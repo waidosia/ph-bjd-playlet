@@ -1,10 +1,12 @@
 import os
 import re
 import time
-from lxml import etree
-import requests
-from util.log import logger
 from urllib.parse import unquote
+
+import requests
+from lxml import etree
+
+from util.log import logger
 
 proxies = {}
 
@@ -43,7 +45,8 @@ def get_pter(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_pter(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (bool, str):
+def upload_pter(cookies_str, torrent_file, main_title, compose, descr, media_info, proxy, torrent_path, feed) -> (
+bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_pter(cookies_str)
     if not get_success:

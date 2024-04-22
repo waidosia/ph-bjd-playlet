@@ -2,7 +2,7 @@ import re
 
 import requests
 
-from ph.common import prohibit, GroupMark
+from ph.common import GroupMark
 from util.log import logger
 
 

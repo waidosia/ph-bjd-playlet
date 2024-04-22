@@ -1,10 +1,10 @@
 import os
 import re
 import time
-from lxml import etree
 
 import requests
-from bs4 import BeautifulSoup
+from lxml import etree
+
 from util.log import logger
 
 red_leaves_resolution_map = {

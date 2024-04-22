@@ -23,11 +23,11 @@ from .tool import get_settings, get_file_path, get_folder_path, check_path_and_f
     chinese_name_to_pinyin, \
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files, \
     replace_fullwidth_symbols
-from .upload.tjupt import upload_tjupt
 from .upload.agsv import upload_agsv
 from .upload.kylin import upload_kylin
 from .upload.pter import upload_pter
 from .upload.red_leaves import upload_red_leaves
+from .upload.tjupt import upload_tjupt
 
 
 def starui():
@@ -146,6 +146,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.chineseNameEdit.setText("")
         self.yearEdit.setText("")
         self.info.setText("")
+        self.coverUrl.setText("")
         self.tjuTorrentLink = None
         self.agsvTorrentLink = None
         self.peterTorrentLink = None
@@ -418,6 +419,7 @@ class UploadImages(QObject):
                         logger.info("成功将封面链接粘贴到简介后")
                     if deleteScreenshot:
                         self.delete_screenshot(screenshot_path)
+                    self.parent.coverUrl.setText(bbsurl)
 
         else:
             self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
@@ -605,7 +607,6 @@ class GetName(QObject):
             if progress != 100:
                 self.parent.debugBrowser.append(f"文件移动中，当前进度：{progress}%")
             else:
-                print(res)
                 while self.parent.torrentPathBrowser.toPlainText() == "" and self.parent.seed_start == 1:
                     self.parent.debugBrowser.append("种子路径为空，等待种子制作完成")
                     time.sleep(3)
@@ -926,6 +927,7 @@ class UploadHandler:
         mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
+        media_info = self.parent.mediainfoBrowser.toPlainText()
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
         if torrent_path:
@@ -933,7 +935,7 @@ class UploadHandler:
                 torrent_path = os.path.join(current_working_directory, torrent_path)
                 torrent_path = os.path.abspath(torrent_path)
         upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                              introBrowser,
+                                                              introBrowser,media_info,
                                                               self.proxy_url, self.torrent_path,
                                                               self.parent.feed.isChecked()
                                                               )

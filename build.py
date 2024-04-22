@@ -7,7 +7,7 @@ import subprocess
 def build_executable():
     # 执行 PyInstaller 命令
     pyinstaller_cmd = ('pyinstaller '
-                        '--clean '
+                       '--clean '
                        '--onefile  '
                        '--noconsole '
                        '--upx-dir=. '

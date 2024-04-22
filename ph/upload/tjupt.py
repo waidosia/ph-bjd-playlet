@@ -4,6 +4,7 @@ from urllib.parse import unquote
 
 import requests
 from bs4 import BeautifulSoup
+
 from util.log import logger
 
 proxies = {}
@@ -44,7 +45,7 @@ def get_tjupt(cookies_str) -> (bool, str):
         return False, '获取主页失败'
 
 
-def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_name, proxy, torrent_path,feed) -> (
+def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_name, proxy, torrent_path, feed) -> (
         bool, str):
     # 发布前，先请求一次主站，确定cookie是否是过期的
     get_success, get_str = get_tjupt(cookies_str)

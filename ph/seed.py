@@ -1,8 +1,8 @@
-from transmission_rpc import Client as trClient
-from qbittorrentapi import Client, LoginFailed
-
-import socket
 import re
+import socket
+
+from qbittorrentapi import Client, LoginFailed
+from transmission_rpc import Client as trClient
 
 from util.log import logger
 

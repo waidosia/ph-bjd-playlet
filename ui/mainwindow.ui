@@ -252,37 +252,37 @@
        <widget class="QPushButton" name="selectVideoFolderButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 3px 6px;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 8px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>文件夹</string>
@@ -317,37 +317,37 @@ QPushButton:pressed {
        <widget class="QPushButton" name="generateButtot">
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 3px 6px;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 8px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>生成</string>
@@ -388,37 +388,37 @@ QPushButton:pressed {
        <widget class="QPushButton" name="selectCoverFolderButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 3px 6px;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 8px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>浏览</string>
@@ -429,37 +429,37 @@ QPushButton:pressed {
        <widget class="QPushButton" name="uploadCoverButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 3px 6px;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 8px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>1、上传</string>
@@ -473,7 +473,7 @@ QPushButton:pressed {
       <item>
        <widget class="QLabel" name="label_19">
         <property name="text">
-         <string> 简介：</string>
+         <string>简介：</string>
         </property>
        </widget>
       </item>
@@ -725,42 +725,56 @@ QPushButton:pressed {
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>封面图床链接：</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="coverUrl"/>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPushButton" name="getNameButton">
           <property name="styleSheet">
            <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                                display: inline-block;
+                                                padding: 6px 6px;
+                                                font-size: 14px;
+                                                cursor: pointer;
+                                                text-align: center;
+                                                text-decoration: none;
+                                                outline: none;
+                                                color:#fff;
+                                                background-color:
+                                                qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                                stop:0 #16bf9d,
+                                                stop:1 #10a266);
+                                                border: none;
+                                                border-radius: 8px;
+                                                box-shadow: 0 9px #999;
+                                                }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                                QPushButton:hover {
+                                                background-color:
+                                                qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                                stop:0 #11b998,
+                                                stop:1 #08965e);
+                                                }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                                QPushButton:pressed {
+                                                background-color:
+                                                qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                                stop:0 #0e9278,
+                                                stop:1 #0e925c);
+                                                }
+                                            </string>
           </property>
           <property name="text">
            <string>2、重命名文件文件夹</string>
@@ -773,37 +787,37 @@ QPushButton:pressed {
            <widget class="QPushButton" name="makeTorrentButton">
             <property name="styleSheet">
              <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 3px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                                        display: inline-block;
+                                                        padding: 3px 6px;
+                                                        font-size: 14px;
+                                                        cursor: pointer;
+                                                        text-align: center;
+                                                        text-decoration: none;
+                                                        outline: none;
+                                                        color:#fff;
+                                                        background-color:
+                                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                                        stop:0 #16bf9d,
+                                                        stop:1 #10a266);
+                                                        border: none;
+                                                        border-radius: 8px;
+                                                        box-shadow: 0 9px #999;
+                                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                                        QPushButton:hover {
+                                                        background-color:
+                                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                                        stop:0 #11b998,
+                                                        stop:1 #08965e);
+                                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                                        QPushButton:pressed {
+                                                        background-color:
+                                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                                        stop:0 #0e9278,
+                                                        stop:1 #0e925c);
+                                                        }
+                                                    </string>
             </property>
             <property name="text">
              <string>3、制作种子</string>
@@ -853,7 +867,8 @@ QPushButton:pressed {
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'微软雅黑'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                        &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                    &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="tabStopDistance">
          <double>80.000000000000000</double>
@@ -864,37 +879,37 @@ p, li { white-space: pre-wrap; }
        <widget class="QPushButton" name="getMediaInfoButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 6px 6px;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 8px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>4、获取Mediainfo信息</string>
@@ -909,45 +924,42 @@ QPushButton:pressed {
        <widget class="QPushButton" name="getPictureButton">
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 6px 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 6px 6px;
+                                        font-size: 14px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 8px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>5、视频截图上传</string>
         </property>
        </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QTextBrowser" name="pictureUrlBrowser"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">
@@ -964,6 +976,9 @@ QPushButton:pressed {
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QTextBrowser" name="pictureUrlBrowser"/>
       </item>
      </layout>
     </item>
@@ -989,37 +1004,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>保存信息至txt</string>
@@ -1046,37 +1061,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>发北洋</string>
@@ -1103,37 +1118,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>发猫站</string>
@@ -1160,37 +1175,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>发末日</string>
@@ -1217,37 +1232,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>发红叶</string>
@@ -1274,37 +1289,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>发麒麟</string>
@@ -1331,37 +1346,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>做种</string>
@@ -1388,37 +1403,37 @@ QPushButton:pressed {
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color:#fff;
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #16bf9d,
-                                      stop:1 #10a266);
-    border: none;
-    border-radius: 20px;
-    box-shadow: 0 9px #999;
-}
+                                        display: inline-block;
+                                        padding: 15px 25px;
+                                        font-size: 24px;
+                                        cursor: pointer;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        outline: none;
+                                        color:#fff;
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #16bf9d,
+                                        stop:1 #10a266);
+                                        border: none;
+                                        border-radius: 20px;
+                                        box-shadow: 0 9px #999;
+                                        }
 
-QPushButton:hover {
-background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #11b998,
-                                      stop:1 #08965e);
-}
+                                        QPushButton:hover {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #11b998,
+                                        stop:1 #08965e);
+                                        }
 
-QPushButton:pressed {
-    background-color: 
-				qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                      stop:0 #0e9278,
-                                      stop:1 #0e925c);
-}
-</string>
+                                        QPushButton:pressed {
+                                        background-color:
+                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 #0e9278,
+                                        stop:1 #0e925c);
+                                        }
+                                    </string>
         </property>
         <property name="text">
          <string>清空</string>

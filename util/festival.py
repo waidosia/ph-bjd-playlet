@@ -1,5 +1,6 @@
 from datetime import date
-from borax.calendars.festivals2 import FestivalLibrary, WrappedDate
+
+from borax.calendars.festivals2 import FestivalLibrary
 
 library = FestivalLibrary.load_builtin()
 
