@@ -413,13 +413,14 @@ class UploadImages(QObject):
                             self.parent.introBrowser.append(text)
                             self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
                             logger.info("成功将封面链接粘贴到简介前")
+                            self.parent.coverUrl.setText(bbsurl)
                     else:
                         self.parent.introBrowser.append(bbsurl)
                         self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")
                         logger.info("成功将封面链接粘贴到简介后")
                     if deleteScreenshot:
                         self.delete_screenshot(screenshot_path)
-                    self.parent.coverUrl.setText(bbsurl)
+
 
         else:
             self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
