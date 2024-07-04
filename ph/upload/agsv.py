@@ -25,18 +25,18 @@ proxies = {}
 def get_agsv(cookies_str) -> (bool, str):
     global proxies
     headers = {
-        'Host': 'www.agsvpt.com',
+        'Host': 'new.agsvpt.com',
         'Cookie': cookies_str,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/112.0.5615.138 Safari/537.36',
-        'Referer': 'https://www.agsvpt.com/index.php',
+        'Referer': 'https://new.agsvpt.com/index.php',
         'Accept': '*/*',
         'Connection': 'keep-alive',
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'zh-CN,zh;q=0.9',
     }
     try:
-        response = requests.get('https://www.agsvpt.com/index.php', headers=headers, timeout=10, allow_redirects=False)
+        response = requests.get('https://new.agsvpt.com/index.php', headers=headers, timeout=10, allow_redirects=False)
         if response.status_code == 200:
             logger.info('获取主页成功')
             return True, response.text
@@ -86,16 +86,16 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     logger.info("种子文件路径为：" + torrent_file)
 
     headers = {
-        'Host': 'www.agsvpt.com',
+        'Host': 'new.agsvpt.com',
         'Cookie': cookies_str,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/112.0.5615.138 Safari/537.36',
-        'Referer': 'https://www.agsvpt.com/upload.php',
+        'Referer': 'https://new.agsvpt.com/upload.php',
         'Accept': '*/*',
         'Connection': 'keep-alive',
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'zh-CN,zh;q=0.9',
-        'Origin': 'https://www.agsvpt.com',
+        'Origin': 'https://new.agsvpt.com',
 
     }
     try:
@@ -142,7 +142,7 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
     files = {'file': (filename, file, 'application/x-bittorrent')}
 
     try:
-        response = requests.request("POST", 'https://www.agsvpt.com/takeupload.php', headers=headers,
+        response = requests.request("POST", 'https://new.agsvpt.com/takeupload.php', headers=headers,
                                     data=data, files=files, allow_redirects=False,
                                     timeout=10)
         if response.status_code == 302:
@@ -165,11 +165,11 @@ def upload_agsv(cookies_str, torrent_file, main_title, compose, descr, media_inf
 def get_agsv_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):
     global proxies
     headers = {
-        'Host': 'www.agsvpt.com',
+        'Host': 'new.agsvpt.com',
         'Cookie': cookies_str,
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/112.0.5615.138 Safari/537.36',
-        'Referer': 'https://www.agsvpt.com/index.php',
+        'Referer': 'https://new.agsvpt.com/index.php',
         'Accept': '*/*',
         'Connection': 'keep-alive',
         'Accept-Encoding': 'gzip, deflate',
@@ -178,7 +178,7 @@ def get_agsv_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):
     save_path = ""
     if torrent_path != '' and torrent_path is not None and torrent_path != 'None':
         try:
-            response = requests.get(f'https://www.agsvpt.com/download.php?id={torrent_id}', headers=headers, timeout=10,
+            response = requests.get(f'https://new.agsvpt.com/download.php?id={torrent_id}', headers=headers, timeout=10,
                                     proxies=proxies)
             if response.status_code == 200:
                 # 提取文件名
@@ -196,7 +196,7 @@ def get_agsv_torrent(cookies_str, torrent_id, torrent_path) -> (bool, str):
             logger.exception(f'下载种子失败{e}')
             return False, '下载种子失败', ""
     try:
-        response = requests.get(f'https://www.agsvpt.com/details.php?id={torrent_id}', headers=headers, timeout=10)
+        response = requests.get(f'https://new.agsvpt.com/details.php?id={torrent_id}', headers=headers, timeout=10)
         if response.status_code == 200:
             # 获取种子下载链接
             html = response.text

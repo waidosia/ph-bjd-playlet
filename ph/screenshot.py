@@ -178,6 +178,7 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
         try:
             req = requests.post(f'{api_url}/json', data=data, files=files, headers=headers, proxies=proxies)
             logger.info(req.text)
+            break
         except Exception as r:
             retry_count += 1
             if retry_count < 3:
@@ -188,22 +189,16 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
 
     try:
         res = req.json()
-        logger.info(res)
+        if not req.ok or  'error' in res or 'status_code' in res and res.get('status_code') != 200:
+            logger.error(
+                f"上传图片失败: HTTP {req.status_code}, reason: {req.reason} "
+                f"{res['error'].get('message') if 'error' in res else ''}")
+            return False, {}
+        if 'image' not in res or 'url' not in res['image']:
+            logger.error(f"图片直链获取失败")
+            return False, {}
+        return True, {"statusCode": str(res['status_code']), "bbsurl": "[img]" + res['image']['url'] + "[/img]"}
+
     except json.decoder.JSONDecodeError:
-        res = {}
-    if not req.ok:
-        logger.error(
-            f"上传图片失败: HTTP {req.status_code}, reason: {req.reason} "
-            f"{res['error'].get('message') if 'error' in res else ''}")
+        logger.error("序列化失败")
         return False, {}
-    if 'error' in res:
-        logger.error(
-            f"上传图片失败: [{res['error'].get('code')}] {res['error'].get('context')} {res['error'].get('message')}")
-        return {}
-    if 'status_code' in res and res.get('status_code') != 200:
-        logger.error(f"上传图片失败: [{res['status_code']}] {res.get('status_txt')}")
-        return False, {}
-    if 'image' not in res or 'url' not in res['image']:
-        logger.error(f"图片直链获取失败")
-        return False, {}
-    return True, {"statusCode": str(res['status_code']), "bbsurl": "[img]" + res['image']['url'] + "[/img]"}
