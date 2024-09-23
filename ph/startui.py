@@ -423,6 +423,7 @@ class UploadImages(QObject):
 
 
         else:
+            logger.info(api_response)
             self.parent.debugBrowser.append("图床响应不是有效的JSON格式")
             logger.error("图床响应不是有效的JSON格式")
 

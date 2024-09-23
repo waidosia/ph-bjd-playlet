@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file '.\ui\mainwindow.ui'
 #
 # Created by: PyQt6 UI code generator 6.6.1
 #
@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Mainwindow(object):
     def setupUi(self, Mainwindow):
         Mainwindow.setObjectName("Mainwindow")
-        Mainwindow.resize(1072, 1015)
+        Mainwindow.resize(1072, 1141)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(9)
@@ -22,49 +22,6 @@ class Ui_Mainwindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.label_7 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(21)
-        self.label_7.setFont(font)
-        self.label_7.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_7.setObjectName("label_7")
-        self.gridLayout_2.addWidget(self.label_7, 0, 0, 1, 1)
-        self.label_16 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(16)
-        self.label_16.setFont(font)
-        self.label_16.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_16.setObjectName("label_16")
-        self.gridLayout_2.addWidget(self.label_16, 1, 0, 1, 1)
-        self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(16)
-        self.label_4.setFont(font)
-        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_4.setObjectName("label_4")
-        self.gridLayout_2.addWidget(self.label_4, 1, 1, 1, 1)
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_2.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label.setObjectName("label")
-        self.horizontalLayout_2.addWidget(self.label)
-        self.chineseNameEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.chineseNameEdit.setObjectName("chineseNameEdit")
-        self.horizontalLayout_2.addWidget(self.chineseNameEdit)
-        self.label_9 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_9.setObjectName("label_9")
-        self.horizontalLayout_2.addWidget(self.label_9)
-        self.yearEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.yearEdit.setObjectName("yearEdit")
-        self.horizontalLayout_2.addWidget(self.yearEdit)
-        self.gridLayout_2.addLayout(self.horizontalLayout_2, 2, 0, 1, 1)
-        self.debugBrowser = QtWidgets.QTextBrowser(parent=self.centralwidget)
-        self.debugBrowser.setObjectName("debugBrowser")
-        self.gridLayout_2.addWidget(self.debugBrowser, 2, 1, 6, 1)
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setContentsMargins(5, 5, 5, 5)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
@@ -111,59 +68,7 @@ class Ui_Mainwindow(object):
         self.feed = QtWidgets.QCheckBox(parent=self.centralwidget)
         self.feed.setObjectName("feed")
         self.horizontalLayout_10.addWidget(self.feed)
-        self.gridLayout_2.addLayout(self.horizontalLayout_10, 3, 0, 1, 1)
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout.addWidget(self.label_2)
-        self.videoPath = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.videoPath.setText("")
-        self.videoPath.setDragEnabled(True)
-        self.videoPath.setClearButtonEnabled(True)
-        self.videoPath.setObjectName("videoPath")
-        self.horizontalLayout.addWidget(self.videoPath)
-        self.selectVideoFolderButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.selectVideoFolderButton.setStyleSheet("QPushButton {\n"
-"                                        display: inline-block;\n"
-"                                        padding: 3px 6px;\n"
-"                                        font-size: 14px;\n"
-"                                        cursor: pointer;\n"
-"                                        text-align: center;\n"
-"                                        text-decoration: none;\n"
-"                                        outline: none;\n"
-"                                        color:#fff;\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #16bf9d,\n"
-"                                        stop:1 #10a266);\n"
-"                                        border: none;\n"
-"                                        border-radius: 8px;\n"
-"                                        box-shadow: 0 9px #999;\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:hover {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #11b998,\n"
-"                                        stop:1 #08965e);\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:pressed {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #0e9278,\n"
-"                                        stop:1 #0e925c);\n"
-"                                        }\n"
-"                                    ")
-        self.selectVideoFolderButton.setObjectName("selectVideoFolderButton")
-        self.horizontalLayout.addWidget(self.selectVideoFolderButton)
-        self.gridLayout_2.addLayout(self.horizontalLayout, 4, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.horizontalLayout_10, 2, 0, 1, 1)
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
         self.label_20 = QtWidgets.QLabel(parent=self.centralwidget)
@@ -210,166 +115,10 @@ class Ui_Mainwindow(object):
 "                                    ")
         self.generateButtot.setObjectName("generateButtot")
         self.horizontalLayout_12.addWidget(self.generateButtot)
-        self.gridLayout_2.addLayout(self.horizontalLayout_12, 5, 0, 1, 1)
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.label_17 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
-        self.label_17.setFont(font)
-        self.label_17.setObjectName("label_17")
-        self.horizontalLayout_5.addWidget(self.label_17)
-        self.coverPath = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.coverPath.setText("")
-        self.coverPath.setDragEnabled(True)
-        self.coverPath.setClearButtonEnabled(True)
-        self.coverPath.setObjectName("coverPath")
-        self.horizontalLayout_5.addWidget(self.coverPath)
-        self.selectCoverFolderButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.selectCoverFolderButton.setStyleSheet("QPushButton {\n"
-"                                        display: inline-block;\n"
-"                                        padding: 3px 6px;\n"
-"                                        font-size: 14px;\n"
-"                                        cursor: pointer;\n"
-"                                        text-align: center;\n"
-"                                        text-decoration: none;\n"
-"                                        outline: none;\n"
-"                                        color:#fff;\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #16bf9d,\n"
-"                                        stop:1 #10a266);\n"
-"                                        border: none;\n"
-"                                        border-radius: 8px;\n"
-"                                        box-shadow: 0 9px #999;\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:hover {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #11b998,\n"
-"                                        stop:1 #08965e);\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:pressed {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #0e9278,\n"
-"                                        stop:1 #0e925c);\n"
-"                                        }\n"
-"                                    ")
-        self.selectCoverFolderButton.setObjectName("selectCoverFolderButton")
-        self.horizontalLayout_5.addWidget(self.selectCoverFolderButton)
-        self.uploadCoverButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.uploadCoverButton.setStyleSheet("QPushButton {\n"
-"                                        display: inline-block;\n"
-"                                        padding: 3px 6px;\n"
-"                                        font-size: 14px;\n"
-"                                        cursor: pointer;\n"
-"                                        text-align: center;\n"
-"                                        text-decoration: none;\n"
-"                                        outline: none;\n"
-"                                        color:#fff;\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #16bf9d,\n"
-"                                        stop:1 #10a266);\n"
-"                                        border: none;\n"
-"                                        border-radius: 8px;\n"
-"                                        box-shadow: 0 9px #999;\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:hover {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #11b998,\n"
-"                                        stop:1 #08965e);\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:pressed {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #0e9278,\n"
-"                                        stop:1 #0e925c);\n"
-"                                        }\n"
-"                                    ")
-        self.uploadCoverButton.setObjectName("uploadCoverButton")
-        self.horizontalLayout_5.addWidget(self.uploadCoverButton)
-        self.gridLayout_2.addLayout(self.horizontalLayout_5, 6, 0, 1, 1)
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.label_19 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_19.setObjectName("label_19")
-        self.horizontalLayout_4.addWidget(self.label_19)
-        self.info = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.info.setObjectName("info")
-        self.horizontalLayout_4.addWidget(self.info)
-        self.gridLayout_2.addLayout(self.horizontalLayout_4, 7, 0, 1, 1)
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_6.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.checkBox_0 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_0.setObjectName("checkBox_0")
-        self.horizontalLayout_6.addWidget(self.checkBox_0)
-        self.checkBox_1 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_1.setObjectName("checkBox_1")
-        self.horizontalLayout_6.addWidget(self.checkBox_1)
-        self.checkBox_2 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.horizontalLayout_6.addWidget(self.checkBox_2)
-        self.checkBox_3 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_3.setObjectName("checkBox_3")
-        self.horizontalLayout_6.addWidget(self.checkBox_3)
-        self.checkBox_4 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_4.setObjectName("checkBox_4")
-        self.horizontalLayout_6.addWidget(self.checkBox_4)
-        self.checkBox_5 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_5.setObjectName("checkBox_5")
-        self.horizontalLayout_6.addWidget(self.checkBox_5)
-        self.checkBox_6 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_6.setObjectName("checkBox_6")
-        self.horizontalLayout_6.addWidget(self.checkBox_6)
-        self.gridLayout_2.addLayout(self.horizontalLayout_6, 8, 0, 1, 1)
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.label_11 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(16)
-        self.label_11.setFont(font)
-        self.label_11.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_11.setObjectName("label_11")
-        self.verticalLayout_6.addWidget(self.label_11)
-        self.introBrowser = QtWidgets.QTextEdit(parent=self.centralwidget)
-        self.introBrowser.setObjectName("introBrowser")
-        self.verticalLayout_6.addWidget(self.introBrowser)
-        self.gridLayout_2.addLayout(self.verticalLayout_6, 8, 1, 3, 1)
-        self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_11.setContentsMargins(5, 5, 5, 5)
-        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.checkBox_7 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_7.setObjectName("checkBox_7")
-        self.horizontalLayout_11.addWidget(self.checkBox_7)
-        self.checkBox_8 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_8.setObjectName("checkBox_8")
-        self.horizontalLayout_11.addWidget(self.checkBox_8)
-        self.checkBox_9 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_9.setObjectName("checkBox_9")
-        self.horizontalLayout_11.addWidget(self.checkBox_9)
-        self.checkBox_10 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_10.setObjectName("checkBox_10")
-        self.horizontalLayout_11.addWidget(self.checkBox_10)
-        self.checkBox_11 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_11.setObjectName("checkBox_11")
-        self.horizontalLayout_11.addWidget(self.checkBox_11)
-        self.checkBox_12 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_12.setObjectName("checkBox_12")
-        self.horizontalLayout_11.addWidget(self.checkBox_12)
-        self.checkBox_13 = QtWidgets.QCheckBox(parent=self.centralwidget)
-        self.checkBox_13.setObjectName("checkBox_13")
-        self.horizontalLayout_11.addWidget(self.checkBox_13)
-        self.gridLayout_2.addLayout(self.horizontalLayout_11, 9, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.horizontalLayout_12, 4, 0, 1, 1)
+        self.debugBrowser = QtWidgets.QTextBrowser(parent=self.centralwidget)
+        self.debugBrowser.setObjectName("debugBrowser")
+        self.gridLayout_2.addWidget(self.debugBrowser, 1, 1, 6, 1)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_12 = QtWidgets.QLabel(parent=self.centralwidget)
@@ -507,108 +256,9 @@ class Ui_Mainwindow(object):
         self.verticalLayout_5.addWidget(self.makeTorrentButton)
         self.verticalLayout_2.addLayout(self.verticalLayout_5)
         self.verticalLayout.addLayout(self.verticalLayout_2)
-        self.gridLayout_2.addLayout(self.verticalLayout, 10, 0, 2, 1)
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_4.setContentsMargins(5, 5, 5, 5)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_10 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(16)
-        self.label_10.setFont(font)
-        self.label_10.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_10.setObjectName("label_10")
-        self.verticalLayout_4.addWidget(self.label_10)
-        self.mediainfoBrowser = QtWidgets.QTextBrowser(parent=self.centralwidget)
-        self.mediainfoBrowser.setTabStopDistance(80.0)
-        self.mediainfoBrowser.setObjectName("mediainfoBrowser")
-        self.verticalLayout_4.addWidget(self.mediainfoBrowser)
-        self.getMediaInfoButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.getMediaInfoButton.setStyleSheet("QPushButton {\n"
-"                                        display: inline-block;\n"
-"                                        padding: 6px 6px;\n"
-"                                        font-size: 14px;\n"
-"                                        cursor: pointer;\n"
-"                                        text-align: center;\n"
-"                                        text-decoration: none;\n"
-"                                        outline: none;\n"
-"                                        color:#fff;\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #16bf9d,\n"
-"                                        stop:1 #10a266);\n"
-"                                        border: none;\n"
-"                                        border-radius: 8px;\n"
-"                                        box-shadow: 0 9px #999;\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:hover {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #11b998,\n"
-"                                        stop:1 #08965e);\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:pressed {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #0e9278,\n"
-"                                        stop:1 #0e925c);\n"
-"                                        }\n"
-"                                    ")
-        self.getMediaInfoButton.setObjectName("getMediaInfoButton")
-        self.verticalLayout_4.addWidget(self.getMediaInfoButton)
-        self.gridLayout_2.addLayout(self.verticalLayout_4, 11, 1, 2, 1)
-        self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.setObjectName("gridLayout")
-        self.getPictureButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.getPictureButton.setStyleSheet("QPushButton {\n"
-"                                        display: inline-block;\n"
-"                                        padding: 6px 6px;\n"
-"                                        font-size: 14px;\n"
-"                                        cursor: pointer;\n"
-"                                        text-align: center;\n"
-"                                        text-decoration: none;\n"
-"                                        outline: none;\n"
-"                                        color:#fff;\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #16bf9d,\n"
-"                                        stop:1 #10a266);\n"
-"                                        border: none;\n"
-"                                        border-radius: 8px;\n"
-"                                        box-shadow: 0 9px #999;\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:hover {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #11b998,\n"
-"                                        stop:1 #08965e);\n"
-"                                        }\n"
-"\n"
-"                                        QPushButton:pressed {\n"
-"                                        background-color:\n"
-"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
-"                                        stop:0 #0e9278,\n"
-"                                        stop:1 #0e925c);\n"
-"                                        }\n"
-"                                    ")
-        self.getPictureButton.setObjectName("getPictureButton")
-        self.gridLayout.addWidget(self.getPictureButton, 3, 0, 1, 1)
-        self.label_5 = QtWidgets.QLabel(parent=self.centralwidget)
-        font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(16)
-        self.label_5.setFont(font)
-        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.label_5.setObjectName("label_5")
-        self.gridLayout.addWidget(self.label_5, 1, 0, 1, 1)
-        self.pictureUrlBrowser = QtWidgets.QTextBrowser(parent=self.centralwidget)
-        self.pictureUrlBrowser.setObjectName("pictureUrlBrowser")
-        self.gridLayout.addWidget(self.pictureUrlBrowser, 2, 0, 1, 1)
-        self.gridLayout_2.addLayout(self.gridLayout, 12, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.verticalLayout, 9, 0, 2, 1)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setContentsMargins(-1, -1, -1, 50)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.writeButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.writeButton.setMinimumSize(QtCore.QSize(0, 80))
@@ -962,7 +612,350 @@ class Ui_Mainwindow(object):
 "                                    ")
         self.clear.setObjectName("clear")
         self.horizontalLayout_9.addWidget(self.clear)
-        self.gridLayout_2.addLayout(self.horizontalLayout_9, 13, 0, 1, 2)
+        self.gridLayout_2.addLayout(self.horizontalLayout_9, 12, 0, 1, 2)
+        self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(16)
+        self.label_4.setFont(font)
+        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.gridLayout_2.addWidget(self.label_4, 0, 1, 1, 1)
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.label_17 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.label_17.setFont(font)
+        self.label_17.setObjectName("label_17")
+        self.horizontalLayout_5.addWidget(self.label_17)
+        self.coverPath = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.coverPath.setText("")
+        self.coverPath.setDragEnabled(True)
+        self.coverPath.setClearButtonEnabled(True)
+        self.coverPath.setObjectName("coverPath")
+        self.horizontalLayout_5.addWidget(self.coverPath)
+        self.selectCoverFolderButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.selectCoverFolderButton.setStyleSheet("QPushButton {\n"
+"                                        display: inline-block;\n"
+"                                        padding: 3px 6px;\n"
+"                                        font-size: 14px;\n"
+"                                        cursor: pointer;\n"
+"                                        text-align: center;\n"
+"                                        text-decoration: none;\n"
+"                                        outline: none;\n"
+"                                        color:#fff;\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #16bf9d,\n"
+"                                        stop:1 #10a266);\n"
+"                                        border: none;\n"
+"                                        border-radius: 8px;\n"
+"                                        box-shadow: 0 9px #999;\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:hover {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #11b998,\n"
+"                                        stop:1 #08965e);\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:pressed {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #0e9278,\n"
+"                                        stop:1 #0e925c);\n"
+"                                        }\n"
+"                                    ")
+        self.selectCoverFolderButton.setObjectName("selectCoverFolderButton")
+        self.horizontalLayout_5.addWidget(self.selectCoverFolderButton)
+        self.uploadCoverButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.uploadCoverButton.setStyleSheet("QPushButton {\n"
+"                                        display: inline-block;\n"
+"                                        padding: 3px 6px;\n"
+"                                        font-size: 14px;\n"
+"                                        cursor: pointer;\n"
+"                                        text-align: center;\n"
+"                                        text-decoration: none;\n"
+"                                        outline: none;\n"
+"                                        color:#fff;\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #16bf9d,\n"
+"                                        stop:1 #10a266);\n"
+"                                        border: none;\n"
+"                                        border-radius: 8px;\n"
+"                                        box-shadow: 0 9px #999;\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:hover {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #11b998,\n"
+"                                        stop:1 #08965e);\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:pressed {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #0e9278,\n"
+"                                        stop:1 #0e925c);\n"
+"                                        }\n"
+"                                    ")
+        self.uploadCoverButton.setObjectName("uploadCoverButton")
+        self.horizontalLayout_5.addWidget(self.uploadCoverButton)
+        self.gridLayout_2.addLayout(self.horizontalLayout_5, 5, 0, 1, 1)
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
+        self.getPictureButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.getPictureButton.setStyleSheet("QPushButton {\n"
+"                                        display: inline-block;\n"
+"                                        padding: 6px 6px;\n"
+"                                        font-size: 14px;\n"
+"                                        cursor: pointer;\n"
+"                                        text-align: center;\n"
+"                                        text-decoration: none;\n"
+"                                        outline: none;\n"
+"                                        color:#fff;\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #16bf9d,\n"
+"                                        stop:1 #10a266);\n"
+"                                        border: none;\n"
+"                                        border-radius: 8px;\n"
+"                                        box-shadow: 0 9px #999;\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:hover {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #11b998,\n"
+"                                        stop:1 #08965e);\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:pressed {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #0e9278,\n"
+"                                        stop:1 #0e925c);\n"
+"                                        }\n"
+"                                    ")
+        self.getPictureButton.setObjectName("getPictureButton")
+        self.gridLayout.addWidget(self.getPictureButton, 3, 0, 1, 1)
+        self.label_5 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(16)
+        self.label_5.setFont(font)
+        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_5.setObjectName("label_5")
+        self.gridLayout.addWidget(self.label_5, 1, 0, 1, 1)
+        self.pictureUrlBrowser = QtWidgets.QTextBrowser(parent=self.centralwidget)
+        self.pictureUrlBrowser.setObjectName("pictureUrlBrowser")
+        self.gridLayout.addWidget(self.pictureUrlBrowser, 2, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.gridLayout, 11, 0, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(10)
+        self.label_2.setFont(font)
+        self.label_2.setObjectName("label_2")
+        self.horizontalLayout.addWidget(self.label_2)
+        self.videoPath = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.videoPath.setText("")
+        self.videoPath.setDragEnabled(True)
+        self.videoPath.setClearButtonEnabled(True)
+        self.videoPath.setObjectName("videoPath")
+        self.horizontalLayout.addWidget(self.videoPath)
+        self.selectVideoFolderButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.selectVideoFolderButton.setStyleSheet("QPushButton {\n"
+"                                        display: inline-block;\n"
+"                                        padding: 3px 6px;\n"
+"                                        font-size: 14px;\n"
+"                                        cursor: pointer;\n"
+"                                        text-align: center;\n"
+"                                        text-decoration: none;\n"
+"                                        outline: none;\n"
+"                                        color:#fff;\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #16bf9d,\n"
+"                                        stop:1 #10a266);\n"
+"                                        border: none;\n"
+"                                        border-radius: 8px;\n"
+"                                        box-shadow: 0 9px #999;\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:hover {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #11b998,\n"
+"                                        stop:1 #08965e);\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:pressed {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #0e9278,\n"
+"                                        stop:1 #0e925c);\n"
+"                                        }\n"
+"                                    ")
+        self.selectVideoFolderButton.setObjectName("selectVideoFolderButton")
+        self.horizontalLayout.addWidget(self.selectVideoFolderButton)
+        self.gridLayout_2.addLayout(self.horizontalLayout, 3, 0, 1, 1)
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.checkBox_0 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_0.setObjectName("checkBox_0")
+        self.horizontalLayout_6.addWidget(self.checkBox_0)
+        self.checkBox_1 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_1.setObjectName("checkBox_1")
+        self.horizontalLayout_6.addWidget(self.checkBox_1)
+        self.checkBox_2 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_2.setObjectName("checkBox_2")
+        self.horizontalLayout_6.addWidget(self.checkBox_2)
+        self.checkBox_3 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_3.setObjectName("checkBox_3")
+        self.horizontalLayout_6.addWidget(self.checkBox_3)
+        self.checkBox_4 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_4.setObjectName("checkBox_4")
+        self.horizontalLayout_6.addWidget(self.checkBox_4)
+        self.checkBox_5 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_5.setObjectName("checkBox_5")
+        self.horizontalLayout_6.addWidget(self.checkBox_5)
+        self.checkBox_6 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_6.setObjectName("checkBox_6")
+        self.horizontalLayout_6.addWidget(self.checkBox_6)
+        self.gridLayout_2.addLayout(self.horizontalLayout_6, 7, 0, 1, 1)
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_4.setContentsMargins(5, 5, 5, 5)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.label_10 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(16)
+        self.label_10.setFont(font)
+        self.label_10.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_10.setObjectName("label_10")
+        self.verticalLayout_4.addWidget(self.label_10)
+        self.mediainfoBrowser = QtWidgets.QTextBrowser(parent=self.centralwidget)
+        self.mediainfoBrowser.setTabStopDistance(80.0)
+        self.mediainfoBrowser.setObjectName("mediainfoBrowser")
+        self.verticalLayout_4.addWidget(self.mediainfoBrowser)
+        self.getMediaInfoButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.getMediaInfoButton.setStyleSheet("QPushButton {\n"
+"                                        display: inline-block;\n"
+"                                        padding: 6px 6px;\n"
+"                                        font-size: 14px;\n"
+"                                        cursor: pointer;\n"
+"                                        text-align: center;\n"
+"                                        text-decoration: none;\n"
+"                                        outline: none;\n"
+"                                        color:#fff;\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #16bf9d,\n"
+"                                        stop:1 #10a266);\n"
+"                                        border: none;\n"
+"                                        border-radius: 8px;\n"
+"                                        box-shadow: 0 9px #999;\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:hover {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #11b998,\n"
+"                                        stop:1 #08965e);\n"
+"                                        }\n"
+"\n"
+"                                        QPushButton:pressed {\n"
+"                                        background-color:\n"
+"                                        qlineargradient(x1:0, y1:0, x2:0, y2:1,\n"
+"                                        stop:0 #0e9278,\n"
+"                                        stop:1 #0e925c);\n"
+"                                        }\n"
+"                                    ")
+        self.getMediaInfoButton.setObjectName("getMediaInfoButton")
+        self.verticalLayout_4.addWidget(self.getMediaInfoButton)
+        self.gridLayout_2.addLayout(self.verticalLayout_4, 10, 1, 2, 1)
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.label_11 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(16)
+        self.label_11.setFont(font)
+        self.label_11.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_11.setObjectName("label_11")
+        self.verticalLayout_6.addWidget(self.label_11)
+        self.introBrowser = QtWidgets.QTextEdit(parent=self.centralwidget)
+        self.introBrowser.setObjectName("introBrowser")
+        self.verticalLayout_6.addWidget(self.introBrowser)
+        self.gridLayout_2.addLayout(self.verticalLayout_6, 7, 1, 3, 1)
+        self.label_16 = QtWidgets.QLabel(parent=self.centralwidget)
+        font = QtGui.QFont()
+        font.setFamily("微软雅黑")
+        font.setPointSize(16)
+        self.label_16.setFont(font)
+        self.label_16.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_16.setObjectName("label_16")
+        self.gridLayout_2.addWidget(self.label_16, 0, 0, 1, 1)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.label = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label.setObjectName("label")
+        self.horizontalLayout_2.addWidget(self.label)
+        self.chineseNameEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.chineseNameEdit.setObjectName("chineseNameEdit")
+        self.horizontalLayout_2.addWidget(self.chineseNameEdit)
+        self.label_9 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_9.setObjectName("label_9")
+        self.horizontalLayout_2.addWidget(self.label_9)
+        self.yearEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.yearEdit.setObjectName("yearEdit")
+        self.horizontalLayout_2.addWidget(self.yearEdit)
+        self.gridLayout_2.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_11.setContentsMargins(5, 5, 5, 5)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.checkBox_7 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_7.setObjectName("checkBox_7")
+        self.horizontalLayout_11.addWidget(self.checkBox_7)
+        self.checkBox_8 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_8.setObjectName("checkBox_8")
+        self.horizontalLayout_11.addWidget(self.checkBox_8)
+        self.checkBox_9 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_9.setObjectName("checkBox_9")
+        self.horizontalLayout_11.addWidget(self.checkBox_9)
+        self.checkBox_10 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_10.setObjectName("checkBox_10")
+        self.horizontalLayout_11.addWidget(self.checkBox_10)
+        self.checkBox_11 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_11.setObjectName("checkBox_11")
+        self.horizontalLayout_11.addWidget(self.checkBox_11)
+        self.checkBox_12 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_12.setObjectName("checkBox_12")
+        self.horizontalLayout_11.addWidget(self.checkBox_12)
+        self.checkBox_13 = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.checkBox_13.setObjectName("checkBox_13")
+        self.horizontalLayout_11.addWidget(self.checkBox_13)
+        self.gridLayout_2.addLayout(self.horizontalLayout_11, 8, 0, 1, 1)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_19 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_19.setObjectName("label_19")
+        self.horizontalLayout_4.addWidget(self.label_19)
+        self.info = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.info.setObjectName("info")
+        self.horizontalLayout_4.addWidget(self.info)
+        self.gridLayout_2.addLayout(self.horizontalLayout_4, 6, 0, 1, 1)
         Mainwindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=Mainwindow)
         self.statusbar.setObjectName("statusbar")
@@ -984,39 +977,13 @@ class Ui_Mainwindow(object):
     def retranslateUi(self, Mainwindow):
         _translate = QtCore.QCoreApplication.translate
         Mainwindow.setWindowTitle(_translate("Mainwindow", "ph-bjd"))
-        self.label_7.setText(_translate("Mainwindow", "GodDramas发种工具"))
-        self.label_16.setText(_translate("Mainwindow", "短剧信息输入"))
-        self.label_4.setText(_translate("Mainwindow", "debug窗口"))
-        self.label.setText(_translate("Mainwindow", "中文名称："))
-        self.label_9.setText(_translate("Mainwindow", "发布年份："))
         self.label_8.setText(_translate("Mainwindow", "季数："))
         self.label_18.setText(_translate("Mainwindow", "类型："))
         self.label_3.setText(_translate("Mainwindow", "来源："))
         self.label_6.setText(_translate("Mainwindow", "小组："))
         self.feed.setText(_translate("Mainwindow", "禁转"))
-        self.label_2.setText(_translate("Mainwindow", "资源路径："))
-        self.selectVideoFolderButton.setText(_translate("Mainwindow", "文件夹"))
         self.label_20.setText(_translate("Mainwindow", "PTGen："))
         self.generateButtot.setText(_translate("Mainwindow", "生成"))
-        self.label_17.setText(_translate("Mainwindow", "封面路径："))
-        self.selectCoverFolderButton.setText(_translate("Mainwindow", "浏览"))
-        self.uploadCoverButton.setText(_translate("Mainwindow", "1、上传"))
-        self.label_19.setText(_translate("Mainwindow", "简介："))
-        self.checkBox_0.setText(_translate("Mainwindow", "剧情"))
-        self.checkBox_1.setText(_translate("Mainwindow", "爱情"))
-        self.checkBox_2.setText(_translate("Mainwindow", "喜剧"))
-        self.checkBox_3.setText(_translate("Mainwindow", "甜虐"))
-        self.checkBox_4.setText(_translate("Mainwindow", "甜宠"))
-        self.checkBox_5.setText(_translate("Mainwindow", "恐怖"))
-        self.checkBox_6.setText(_translate("Mainwindow", "动作"))
-        self.label_11.setText(_translate("Mainwindow", "发种排版信息"))
-        self.checkBox_7.setText(_translate("Mainwindow", "穿越"))
-        self.checkBox_8.setText(_translate("Mainwindow", "重生"))
-        self.checkBox_9.setText(_translate("Mainwindow", "逆袭"))
-        self.checkBox_10.setText(_translate("Mainwindow", "科幻"))
-        self.checkBox_11.setText(_translate("Mainwindow", "武侠"))
-        self.checkBox_12.setText(_translate("Mainwindow", "都市"))
-        self.checkBox_13.setText(_translate("Mainwindow", "古装"))
         self.label_12.setText(_translate("Mainwindow", "命名信息"))
         self.label_13.setText(_translate("Mainwindow", "主标题："))
         self.label_14.setText(_translate("Mainwindow", "副标题："))
@@ -1024,16 +991,6 @@ class Ui_Mainwindow(object):
         self.label_21.setText(_translate("Mainwindow", "封面图床链接："))
         self.getNameButton.setText(_translate("Mainwindow", "2、重命名文件文件夹"))
         self.makeTorrentButton.setText(_translate("Mainwindow", "3、制作种子"))
-        self.label_10.setText(_translate("Mainwindow", "MediaInfo信息"))
-        self.mediainfoBrowser.setHtml(_translate("Mainwindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'微软雅黑\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                        </p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                    </p></body></html>"))
-        self.getMediaInfoButton.setText(_translate("Mainwindow", "4、获取Mediainfo信息"))
-        self.getPictureButton.setText(_translate("Mainwindow", "5、视频截图上传"))
-        self.label_5.setText(_translate("Mainwindow", "视频截图图床链接"))
         self.writeButton.setText(_translate("Mainwindow", "保存信息至txt"))
         self.sendTjuButton.setText(_translate("Mainwindow", "发北洋"))
         self.sendPeterButton.setText(_translate("Mainwindow", "发猫站"))
@@ -1042,5 +999,40 @@ class Ui_Mainwindow(object):
         self.sendKylinButton.setText(_translate("Mainwindow", "发麒麟"))
         self.seedMak.setText(_translate("Mainwindow", "做种"))
         self.clear.setText(_translate("Mainwindow", "清空"))
+        self.label_4.setText(_translate("Mainwindow", "debug窗口"))
+        self.label_17.setText(_translate("Mainwindow", "封面路径："))
+        self.selectCoverFolderButton.setText(_translate("Mainwindow", "浏览"))
+        self.uploadCoverButton.setText(_translate("Mainwindow", "1、上传"))
+        self.getPictureButton.setText(_translate("Mainwindow", "5、视频截图上传"))
+        self.label_5.setText(_translate("Mainwindow", "视频截图图床链接"))
+        self.label_2.setText(_translate("Mainwindow", "资源路径："))
+        self.selectVideoFolderButton.setText(_translate("Mainwindow", "文件夹"))
+        self.checkBox_0.setText(_translate("Mainwindow", "剧情"))
+        self.checkBox_1.setText(_translate("Mainwindow", "爱情"))
+        self.checkBox_2.setText(_translate("Mainwindow", "喜剧"))
+        self.checkBox_3.setText(_translate("Mainwindow", "甜虐"))
+        self.checkBox_4.setText(_translate("Mainwindow", "甜宠"))
+        self.checkBox_5.setText(_translate("Mainwindow", "恐怖"))
+        self.checkBox_6.setText(_translate("Mainwindow", "动作"))
+        self.label_10.setText(_translate("Mainwindow", "MediaInfo信息"))
+        self.mediainfoBrowser.setHtml(_translate("Mainwindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'微软雅黑\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                        </p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">                                    </p></body></html>"))
+        self.getMediaInfoButton.setText(_translate("Mainwindow", "4、获取Mediainfo信息"))
+        self.label_11.setText(_translate("Mainwindow", "发种排版信息"))
+        self.label_16.setText(_translate("Mainwindow", "短剧信息输入"))
+        self.label.setText(_translate("Mainwindow", "中文名称："))
+        self.label_9.setText(_translate("Mainwindow", "发布年份："))
+        self.checkBox_7.setText(_translate("Mainwindow", "穿越"))
+        self.checkBox_8.setText(_translate("Mainwindow", "重生"))
+        self.checkBox_9.setText(_translate("Mainwindow", "逆袭"))
+        self.checkBox_10.setText(_translate("Mainwindow", "科幻"))
+        self.checkBox_11.setText(_translate("Mainwindow", "武侠"))
+        self.checkBox_12.setText(_translate("Mainwindow", "都市"))
+        self.checkBox_13.setText(_translate("Mainwindow", "古装"))
+        self.label_19.setText(_translate("Mainwindow", "简介："))
         self.menu.setTitle(_translate("Mainwindow", "工具"))
         self.actionsettings.setText(_translate("Mainwindow", "设置"))

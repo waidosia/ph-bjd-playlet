@@ -1,4 +1,5 @@
 import json
+import logging
 
 import requests
 from bs4 import BeautifulSoup
@@ -22,12 +23,16 @@ def upload_screenshot(api_url, api_token, frame_path):
             'http': proxy,
             'https': proxy
         }
+    logger.info("api_url")
     if "agsv" in api_url:
         logger.info("使用AGSV图床")
         return upload_agsv_screenshot(api_url, api_token, frame_path)
     elif "pterclub" in api_url:
         logger.info("使用猫图床")
         return chevereto_cookie_upload(api_url, api_token, frame_path)
+    elif "" in api_url:
+        logger.info("使用pixhost图床")
+        return pixhost_picture_bed(api_url, api_token, frame_path)
     else:
         logger.error("未知图床")
         return False, {}
@@ -91,7 +96,7 @@ def upload_agsv_screenshot(api_url, api_token, frame_path):
                 logger.error("重试次数已用完")
                 return False, {}
     # 将响应文本转换为字典
-    print(res.text)
+    logger.info(res.text)
     try:
         api_response = json.loads(res.text)
     except json.JSONDecodeError:
@@ -202,3 +207,39 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
     except json.decoder.JSONDecodeError:
         logger.error("序列化失败")
         return False, {}
+
+
+
+
+def pixhost_picture_bed(api_url, api_token, frame_path):
+    print('接受到上传pixhost图床请求')
+    url = api_url
+    files = {'img': (frame_path, open(frame_path, 'rb'), "image/jpeg")}
+    data = {'content_type': 0, 'max_th_size': 420}
+    headers = {'Accept': 'application/json'}
+    print('值已经获取')
+
+    try:
+        # 发送POST请求
+        print("开始发送上传图床的请求")
+        res = requests.post(url, headers=headers, data=data, files=files)
+        print("已成功发送上传图床的请求")
+    except requests.RequestException as e:
+        print("请求过程中出现错误：", e)
+        return False, "请求过程中出现错误：" + str(e)
+
+    try:
+        data = json.loads(res.text)
+        # 提取所需的URL
+        image_url = data["th_url"]
+        image_url = image_url.replace("//t", "//img")
+        image_url = image_url.replace("/thumbs/", "/images/")
+        print(image_url)
+
+        return True,  {"statusCode":"200","bbsurl":'[img]' + image_url + '[/img]'}
+    except KeyError as e:
+        print(False, "图床响应结果缺少所需的值：" + str(e))
+        return False, "图床响应结果缺少所需的值：" + str(e) + str(res)
+    except json.JSONDecodeError as e:
+        print(False, "处理返回的JSON过程中出现错误：" + str(e))
+        return False, "处理返回的JSON过程中出现错误：" + str(e) + str(res)
