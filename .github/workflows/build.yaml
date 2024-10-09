@@ -30,8 +30,8 @@ jobs:
 
       - name: Verify build output
         run: |
-          if (!(Test-Path "your_build_folder")) {
-            Write-Error "Build folder 'your_build_folder' does not exist."
+          if (!(Test-Path "dist")) {
+            Write-Error "Build folder 'dist' does not exist."
             exit 1
           }
 
