@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # 使用 Windows 环境
 
     steps:
       # 检出代码
@@ -36,7 +36,7 @@ jobs:
       - name: Compress build folder
         run: |
           mkdir -p build_output
-          zip -r build_output/package.zip ./your_build_folder  # 替换your_build_folder为实际生成的文件夹
+          zip -r build_output/package.zip ./dist
 
       # 上传压缩后的文件
       - name: Upload Artifact
