@@ -1,0 +1,46 @@
+name: Build and Package Python Project
+
+on:
+  push:
+    branches:
+      - dev  # 在推送到 main 分支时触发
+  pull_request:
+    branches:
+      - dev  # 在向 main 提交 PR 时触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 设置 Python 3.11 环境
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # 安装依赖（如果有 requirements.txt）
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # 执行 build.py 文件来进行打包
+      - name: Run build script
+        run: python build.py
+
+      # 将打包的文件夹压缩成 zip 文件
+      - name: Compress build folder
+        run: |
+          mkdir -p build_output
+          zip -r build_output/package.zip ./your_build_folder  # 替换your_build_folder为实际生成的文件夹
+
+      # 上传压缩后的文件
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: python-project-build
+          path: build_output/package.zip
