@@ -226,7 +226,7 @@ def pixhost_picture_bed(api_url, api_token, frame_path):
         print("已成功发送上传图床的请求")
     except requests.RequestException as e:
         print("请求过程中出现错误：", e)
-        return False, "请求过程中出现错误：" + str(e)
+        return False, {}
 
     try:
         data = json.loads(res.text)
@@ -239,7 +239,7 @@ def pixhost_picture_bed(api_url, api_token, frame_path):
         return True,  {"statusCode":"200","bbsurl":'[img]' + image_url + '[/img]'}
     except KeyError as e:
         print(False, "图床响应结果缺少所需的值：" + str(e))
-        return False, "图床响应结果缺少所需的值：" + str(e) + str(res)
+        return False, {}
     except json.JSONDecodeError as e:
         print(False, "处理返回的JSON过程中出现错误：" + str(e))
-        return False, "处理返回的JSON过程中出现错误：" + str(e) + str(res)
+        return False, {}
