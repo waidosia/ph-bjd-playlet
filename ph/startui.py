@@ -413,7 +413,8 @@ class UploadImages(QObject):
                             self.parent.introBrowser.append(text)
                             self.parent.debugBrowser.append("成功将封面链接粘贴到简介前")
                             logger.info("成功将封面链接粘贴到简介前")
-                            self.parent.coverUrl.setText(bbsurl)
+                            move_bbsurl = bbsurl.replace("[img]","").replace("[/img]","")
+                            self.parent.coverUrl.setText(move_bbsurl)
                     else:
                         self.parent.introBrowser.append(bbsurl)
                         self.parent.debugBrowser.append("成功将图片链接粘贴到简介后")

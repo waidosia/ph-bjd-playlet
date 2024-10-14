@@ -17,14 +17,14 @@ def build_executable():
                        '--name=playlet '
                        'main.py')
     subprocess.run(pyinstaller_cmd, shell=True)
-    # 将static目录复制到dist目录
-    source_static = 'static'
-    destination_static = os.path.join('dist', 'static')
-    try:
-        shutil.rmtree(destination_static)
-    except FileNotFoundError:
-        pass
-    shutil.copytree(source_static, destination_static)
+    # # 将static目录复制到dist目录
+    # source_static = 'static'
+    # destination_static = os.path.join('dist', 'static')
+    # try:
+    #     shutil.rmtree(destination_static)
+    # except FileNotFoundError:
+    #     pass
+    # shutil.copytree(source_static, destination_static)
 
 
 if __name__ == '__main__':
