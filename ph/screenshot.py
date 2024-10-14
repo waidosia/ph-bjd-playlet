@@ -214,7 +214,21 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
 def pixhost_picture_bed(api_url, api_token, frame_path):
     print('接受到上传pixhost图床请求')
     url = api_url
-    files = {'img': (frame_path, open(frame_path, 'rb'), "image/jpeg")}
+    # 判断frame_path为url还是本地路径
+    if frame_path.startswith("http") or frame_path.startswith("https"):
+        logger.info("输入一个在线图片链接")
+        file_type = 'image/jpeg'
+        # 请求文件拿到文件流
+        try:
+            result = requests.get(frame_path)
+            logger.info("已成功获取文件流")
+            print("已成功获取文件流")
+        except RequestException as e:
+            logger.error("请求过程中出现错误:" + str(e))
+            return False, {}
+        files = {'img': (frame_path, result.content, file_type)}
+    else:
+        files = {'img': (frame_path, open(frame_path, 'rb'), "image/jpeg")}
     data = {'content_type': 0, 'max_th_size': 420}
     headers = {'Accept': 'application/json'}
     print('值已经获取')
