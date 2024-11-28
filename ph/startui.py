@@ -818,22 +818,22 @@ class UploadHandler(QObject):
         self.proxy_url = get_settings("proxyUrl")
         self.torrent_path = get_settings("torrentSavePath")
 
-    # def _validate_inputs(self):
-    #     if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-    #         QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
-    #                             QMessageBox.StandardButton.Ok)
-    #         return False
-    #     if not self.parent.torrentPathBrowser.toPlainText():
-    #         QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
-    #         return False
-    #     if not self.parent.introBrowser.toPlainText():
-    #         QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
-    #         return False
-    #     return True
+    def _validate_inputs(self):
+        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
+                                QMessageBox.StandardButton.Ok)
+            return False
+        if not self.parent.torrentPathBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
+            return False
+        if not self.parent.introBrowser.toPlainText():
+            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
+            return False
+        return True
 
     def start_upload(self,platform):
-        # if not self._validate_inputs():
-        #     return
+        if not self._validate_inputs():
+            return
         logger.info(f"开始上传到 {platform}")
         self.parent.debugBrowser.append(f"开始上传种子到 {platform}")
         cookie_str = get_settings(f"{platform}Cookie")
@@ -1232,72 +1232,65 @@ class UploadWorker(QThread):
 
     def run(self):
         if self.platform == "tju":
-            # result = upload_tjupt(self.cookie_str,
-            #                       self.torrent_path,
-            #                       self.mainTitle,
-            #                       self.secondTitle,
-            #                       self.introBrowser,
-            #                       self.chinese_name,
-            #                       self.proxy_url,
-            #                       self.torrent_path,
-            #                       self.parent.feed.isChecked()
-            #                       )
-            result = AAA()
+            result = upload_tjupt(self.cookie_str,
+                                  self.torrent_path,
+                                  self.mainTitle,
+                                  self.secondTitle,
+                                  self.introBrowser,
+                                  self.chinese_name,
+                                  self.proxy_url,
+                                  self.torrent_path,
+                                  self.parent.feed.isChecked()
+                                  )
         elif self.platform == "agsv":
-            # result = upload_agsv(self.cookie_str,
-            #                      self.torrent_path,
-            #                      self.mainTitle,
-            #                      self.secondTitle,
-            #                      self.introBrowser,
-            #                      self.media_info,
-            #                      self.proxy_url,
-            #                      self.torrent_path,
-            #                      self.parent.feed.isChecked())
-            result = AAA()
-
+            result = upload_agsv(self.cookie_str,
+                                 self.torrent_path,
+                                 self.mainTitle,
+                                 self.secondTitle,
+                                 self.introBrowser,
+                                 self.media_info,
+                                 self.proxy_url,
+                                 self.torrent_path,
+                                 self.parent.feed.isChecked())
         elif self.platform == "peter":
-            # result = upload_pter(self.cookie_str,
-            #                      self.torrent_path,
-            #                      self.mainTitle,
-            #                      self.secondTitle,
-            #                      self.introBrowser,
-            #                      self.media_info,
-            #                      self.proxy_url,
-            #                      self.torrent_path,
-            #                      self.parent.feed.isChecked())
-            result = AAA()
+            result = upload_pter(self.cookie_str,
+                                 self.torrent_path,
+                                 self.mainTitle,
+                                 self.secondTitle,
+                                 self.introBrowser,
+                                 self.media_info,
+                                 self.proxy_url,
+                                 self.torrent_path,
+                                 self.parent.feed.isChecked())
         elif self.platform == "kylin":
-            # result = upload_kylin(self.cookie_str,
-            #                       self.torrent_path,
-            #                       self.mainTitle,
-            #                       self.secondTitle,
-            #                       self.introBrowser,
-            #                       self.media_info,
-            #                       self.proxy_url,
-            #                       self.torrent_path,
-            #                       self.parent.feed.isChecked())
-            result = AAA()
+            result = upload_kylin(self.cookie_str,
+                                  self.torrent_path,
+                                  self.mainTitle,
+                                  self.secondTitle,
+                                  self.introBrowser,
+                                  self.media_info,
+                                  self.proxy_url,
+                                  self.torrent_path,
+                                  self.parent.feed.isChecked())
         elif self.platform == "redLeaves":
-            # result = upload_red_leaves(self.cookie_str,
-            #                            self.torrent_path,
-            #                            self.mainTitle,
-            #                            self.secondTitle,
-            #                            self.introBrowser,
-            #                            self.media_info,
-            #                            self.proxy_url,
-            #                            self.torrent_path,
-            #                            self.parent.feed.isChecked())
-            result = AAA()
+            result = upload_red_leaves(self.cookie_str,
+                                       self.torrent_path,
+                                       self.mainTitle,
+                                       self.secondTitle,
+                                       self.introBrowser,
+                                       self.media_info,
+                                       self.proxy_url,
+                                       self.torrent_path,
+                                       self.parent.feed.isChecked())
         elif self.platform == "dream":
-            # result = upload_dream(self.cookie_str,
-            #                       self.torrent_path,
-            #                       self.mainTitle,
-            #                       self.secondTitle,
-            #                       self.introBrowser,
-            #                       self.proxy_url,
-            #                       self.torrent_path,
-            #                       self.parent.feed.isChecked())
-            result = AAA()
+            result = upload_dream(self.cookie_str,
+                                  self.torrent_path,
+                                  self.mainTitle,
+                                  self.secondTitle,
+                                  self.introBrowser,
+                                  self.proxy_url,
+                                  self.torrent_path,
+                                  self.parent.feed.isChecked())
         else:
             logger.error(f"未支持的平台: {self.platform}")
             self.result_signal.emit(self.platform, False, "未支持的平台", "","")
@@ -1308,12 +1301,4 @@ class UploadWorker(QThread):
             self.result_signal.emit(self.platform, success,"成功", link_or_error, path)
         self.result_signal.emit(self.platform, False, "发布失败", "", "")
 
-
-def AAA():
-    i = random.randint(1,4)
-    time.sleep(i)
-    print(i)
-    if i% 2 == 0:
-        return True, str(i),str(i)
-    return False, str(i),str(i)
 
