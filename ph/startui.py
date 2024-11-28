@@ -24,6 +24,7 @@ from .tool import get_settings, get_file_path, get_folder_path, check_path_and_f
     get_video_files, extract_and_get_thumbnails, rename_directory_if_needed, rename_video_files, \
     replace_fullwidth_symbols
 from .upload.agsv import upload_agsv
+from .upload.dream import upload_dream
 from .upload.kylin import upload_kylin
 from .upload.pter import upload_pter
 from .upload.red_leaves import upload_red_leaves
@@ -55,11 +56,14 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.peterTorrentLink = None
         self.kylinTorrentLink = None
         self.redLeavesTorrentLink = None
+        self.dreamTorrentLink = None
+
         self.tjuTorrentPath = None
         self.agsvTorrentPath = None
         self.peterTorrentPath = None
         self.kylinTorrentPath = None
         self.redLeavesTorrentPath = None
+        self.dreamTorrentPath = None
 
         self.english_name = ""
         self.category = None
@@ -86,11 +90,12 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.selectCoverFolderButton.clicked.connect(self.selectCoverFolderButtonClicked)
         self.getMediaInfoButton.clicked.connect(self.getMediaInfoButtonClicked)
         self.getNameButton.clicked.connect(self.getNameButtonClicked)
-        self.sendTjuButton.clicked.connect(self.sendTjuClicked)
-        self.sendAgsvButton.clicked.connect(self.sendAgsvClicked)
-        self.sendPeterButton.clicked.connect(self.sendPeterClicked)
-        self.sendredLeavesButton.clicked.connect(self.sendredLeavesClicked)
-        self.sendKylinButton.clicked.connect(self.sendKylinClicked)
+        self.sendTjuButton.clicked.connect(lambda: self.upload("tju"))
+        self.sendAgsvButton.clicked.connect(lambda: self.upload("agsv"))
+        self.sendPeterButton.clicked.connect(lambda: self.upload("peter"))
+        self.sendredLeavesButton.clicked.connect(lambda: self.upload("redLeaves"))
+        self.sendKylinButton.clicked.connect(lambda: self.upload("kylin"))
+        self.sendDreamButton.clicked.connect(lambda : self.upload("dream"))
         self.seedMak.clicked.connect(self.seedMakClicked)
         self.clear.clicked.connect(self.clear_all_text_inputs)
         self.makeTorrentButton.clicked.connect(self.makeTorrentButtonClicked)
@@ -214,30 +219,38 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         logger.info("点击获取PTGen按钮")
         get_pt_gen.getPtGenClicked()
 
-    def sendTjuClicked(self):
-        upload_handler = UploadHandler(self)
-        logger.info("点击上传TJUPT按钮")
-        upload_handler.sendTjuClicked()
+    # def sendTjuClicked(self):
+    #     upload_handler = UploadHandler(self)
+    #     upload_handler.start_upload(platform)
+    #
+    # def sendAgsvClicked(self):
+    #     upload_handler = UploadHandler(self)
+    #     logger.info("点击上传agsv按钮")
+    #     upload_handler.sendAgsvClicked()
+    #
+    # def sendPeterClicked(self):
+    #     upload_handler = UploadHandler(self)
+    #     logger.info("点击上传Pter按钮")
+    #     upload_handler.sendPeterClicked()
+    #
+    # def sendKylinClicked(self):
+    #     upload_handler = UploadHandler(self)
+    #     logger.info("点击上传Kylin按钮")
+    #     upload_handler.sendKylinClicked()
+    #
+    # def sendredLeavesClicked(self):
+    #     upload_handler = UploadHandler(self)
+    #     logger.info("点击上传redLeaves按钮")
+    #     upload_handler.sendredLeavesClicked()
+    #
+    # def sendDreamClicked(self):
+    #     upload_handler = UploadHandler(self)
+    #     logger.info("点击上传Dream按钮")
+    #     upload_handler.sendDreamClicked()
 
-    def sendAgsvClicked(self):
+    def upload(self, platform):
         upload_handler = UploadHandler(self)
-        logger.info("点击上传agsv按钮")
-        upload_handler.sendAgsvClicked()
-
-    def sendPeterClicked(self):
-        upload_handler = UploadHandler(self)
-        logger.info("点击上传Pter按钮")
-        upload_handler.sendPeterClicked()
-
-    def sendKylinClicked(self):
-        upload_handler = UploadHandler(self)
-        logger.info("点击上传Kylin按钮")
-        upload_handler.sendKylinClicked()
-
-    def sendredLeavesClicked(self):
-        upload_handler = UploadHandler(self)
-        logger.info("点击上传redLeaves按钮")
-        upload_handler.sendredLeavesClicked()
+        upload_handler.start_upload(platform)
 
     def seedMakClicked(self):
         if self.progress != 100:
@@ -799,194 +812,252 @@ class UploadHandler:
         self.proxy_url = get_settings("proxyUrl")
         self.torrent_path = get_settings("torrentSavePath")
 
-    def sendTjuClicked(self):
+    def _validate_inputs(self):
         if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
                                 QMessageBox.StandardButton.Ok)
-            return
+            return False
         if not self.parent.torrentPathBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
-            return
+            return False
         if not self.parent.introBrowser.toPlainText():
             QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
-            return
-        self.parent.debugBrowser.append("开始上传种子到TJUPT")
-        logger.info("开始上传种子到TJUPT")
-        cookie_str = get_settings("tjuCookie")
+            return False
+        return True
 
+    def start_upload(self,platform):
+        if not self._validate_inputs():
+            return
+        logger.info(f"开始上传到 {platform}")
+        self.parent.debugBrowser.append(f"开始上传种子到 {platform}")
+        cookie_str = get_settings(f"{platform}Cookie")
         mainTitle = self.parent.mainTitleBrowser.toPlainText()
         secondTitle = self.parent.secondTitleBrowser.toPlainText()
         introBrowser = self.parent.introBrowser.toPlainText()
         chinese_name = self.parent.chineseNameEdit.text()
-        torrent_path = self.parent.torrentPathBrowser.toPlainText()
-        current_working_directory = os.getcwd()
-        if torrent_path:
-            if not os.path.isabs(torrent_path):
-                torrent_path = os.path.join(current_working_directory, torrent_path)
-                torrent_path = os.path.abspath(torrent_path)
-        upload_success, tju_link, tju_path = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                          introBrowser,
-                                                          chinese_name, self.proxy_url, self.torrent_path,
-                                                          self.parent.feed.isChecked())
-        if upload_success:
-            self.parent.tjuTorrentLink = tju_link
-            self.parent.tjuTorrentPath = tju_path
-            self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + tju_link)
-            logger.info("上传种子到TJUPT成功,种子链接为：" + tju_link)
-        else:
-            self.parent.debugBrowser.append("上传种子到TJUPT失败，失败原因为：" + tju_link)
-            logger.error("上传种子到TJUPT失败，失败原因为：" + tju_link)
-
-    def sendAgsvClicked(self):
-        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
-                                QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.mediainfoBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先获取MediaInfo", QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.torrentPathBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.introBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
-            return
-        self.parent.debugBrowser.append("开始上传种子到agsv")
-        logger.info("开始上传种子到agsv")
-        cookie_str = get_settings("agsvCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText()
-        secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        introBrowser = self.parent.introBrowser.toPlainText()
         media_info = self.parent.mediainfoBrowser.toPlainText()
         torrent_path = self.parent.torrentPathBrowser.toPlainText()
         current_working_directory = os.getcwd()
-        if torrent_path:
-            if not os.path.isabs(torrent_path):
-                torrent_path = os.path.join(current_working_directory, torrent_path)
-                torrent_path = os.path.abspath(torrent_path)
-        upload_success, agsv_link, agsv_path = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                           introBrowser,
-                                                           media_info, self.proxy_url, self.torrent_path,
-                                                           self.parent.feed.isChecked())
-        if upload_success:
-            self.parent.agsvTorrentLink = agsv_link
-            self.parent.agsvTorrentPath = agsv_path
-            self.parent.debugBrowser.append("上传种子到agsv成功,种子链接为：" + agsv_link)
-        else:
-            self.parent.debugBrowser.append("上传种子到agsv失败，失败原因为：" + agsv_link)
+        if torrent_path and not os.path.isabs(torrent_path):
+            torrent_path = os.path.abspath(os.path.join(current_working_directory, torrent_path))
+        feed_checked = self.parent.feed.isChecked()
 
-    def sendPeterClicked(self):
-        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
-                                QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.torrentPathBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.introBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
-            return
-        self.parent.debugBrowser.append("开始上传种子到Pter")
-        logger.info("开始上传种子到Pter")
-        cookie_str = get_settings("pterCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText()
-        secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        introBrowser = self.parent.introBrowser.toPlainText()
-        media_info = self.parent.mediainfoBrowser.toPlainText()
-        torrent_path = self.parent.torrentPathBrowser.toPlainText()
-        current_working_directory = os.getcwd()
-        if torrent_path:
-            if not os.path.isabs(torrent_path):
-                torrent_path = os.path.join(current_working_directory, torrent_path)
-                torrent_path = os.path.abspath(torrent_path)
-        upload_success, pter_link, pter_path = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                           introBrowser, media_info,
-                                                           self.proxy_url, self.torrent_path,
-                                                           self.parent.feed.isChecked(),
-                                                           )
-        if upload_success:
-            self.parent.peterTorrentLink = pter_link
-            self.parent.peterTorrentPath = pter_path
-            self.parent.debugBrowser.append("上传种子到Pter成功,种子链接为：" + pter_link)
-            logger.info("上传种子到Pter成功,种子链接为：" + pter_link)
-        else:
-            self.parent.debugBrowser.append("上传种子到Pter失败，失败原因为：" + pter_link)
-            logger.error("上传种子到Pter失败，失败原因为：" + pter_link)
+        self.upload_thread = UploadWorker(
+            platform,
+            cookie_str,
+            torrent_path,
+            mainTitle,
+            secondTitle,
+            introBrowser,
+            chinese_name,
+            media_info,
+            self.proxy_url,
+            self.torrent_path,
+            feed_checked,
+        )
+        self.upload_thread.upload_finished.connect(self.on_upload_finished)
+        self.upload_thread.start()
 
-    def sendKylinClicked(self):
-        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
-                                QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.torrentPathBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.introBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
-            return
-        self.parent.debugBrowser.append("开始上传种子到Kylin")
-        logger.info("开始上传种子到Kylin")
-        cookie_str = get_settings("kylinCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText()
-        secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        introBrowser = self.parent.introBrowser.toPlainText()
-        media_info = self.parent.mediainfoBrowser.toPlainText()
-        torrent_path = self.parent.torrentPathBrowser.toPlainText()
-        current_working_directory = os.getcwd()
-        if torrent_path:
-            if not os.path.isabs(torrent_path):
-                torrent_path = os.path.join(current_working_directory, torrent_path)
-                torrent_path = os.path.abspath(torrent_path)
-        upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
-                                                              introBrowser,media_info,
-                                                              self.proxy_url, self.torrent_path,
-                                                              self.parent.feed.isChecked()
-                                                              )
-        if upload_success:
-            self.parent.kylinTorrentLink = kylin_link
-            self.parent.kylinTorrentPath = kylin_path
-            self.parent.debugBrowser.append("上传种子到kylin成功,种子链接为：" + kylin_link)
-            logger.info("上传种子到kylin成功,种子链接为：" + kylin_link)
+    def on_upload_finished(self, platform, success, link_or_error, path):
+        if success:
+            if platform == "tju":
+                self.parent.tjuTorrentLink = link_or_error
+                self.parent.tjuTorrentPath = path
+            elif platform == "agsv":
+                self.parent.agsvTorrentLink = link_or_error
+                self.parent.agsvTorrentPath = path
+            elif platform == "peter":
+                self.parent.peterTorrentLink = link_or_error
+                self.parent.peterTorrentPath = path
+            elif platform == "kylin":
+                self.parent.kylinTorrentLink = link_or_error
+                self.parent.kylinTorrentPath = path
+            elif platform == "redLeaves":
+                self.parent.redLeavesTorrentLink = link_or_error
+                self.parent.redLeavesTorrentPath = path
+            elif platform == "dream":
+                self.parent.dreamTorrentLink = link_or_error
+                self.parent.dreamTorrentPath = path
+            else:
+                return
+            self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + link_or_error)
+            logger.info("上传种子到TJUPT成功,种子链接为：" + link_or_error)
         else:
-            self.parent.debugBrowser.append("上传种子到kylin失败，失败原因为：" + kylin_link)
-            logger.error("上传种子到kylin失败，失败原因为：" + kylin_link)
+            self.parent.debugBrowser.append(f"上传种子到 {platform} 失败，失败原因：{link_or_error}")
+            logger.error(f"上传到 {platform} 失败，失败原因：{link_or_error}")
 
-    def sendredLeavesClicked(self):
-        if not self.parent.mainTitleBrowser.toPlainText() or not self.parent.secondTitleBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先点击重命名文件文件夹按钮，生成标准名称",
-                                QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.torrentPathBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请先制作种子", QMessageBox.StandardButton.Ok)
-            return
-        if not self.parent.introBrowser.toPlainText():
-            QMessageBox.warning(self.parent, "警告", "请按照流程，生成发种排版信息", QMessageBox.StandardButton.Ok)
-            return
-        self.parent.debugBrowser.append("开始上传种子到redLeaves")
-        logger.info("开始上传种子到redLeaves")
-        cookie_str = get_settings("redLeavesCookie")
-        mainTitle = self.parent.mainTitleBrowser.toPlainText()
-        secondTitle = self.parent.secondTitleBrowser.toPlainText()
-        introBrowser = self.parent.introBrowser.toPlainText()
-        media_info = self.parent.mediainfoBrowser.toPlainText()
-        torrent_path = self.parent.torrentPathBrowser.toPlainText()
-        current_working_directory = os.getcwd()
-        if torrent_path:
-            if not os.path.isabs(torrent_path):
-                torrent_path = os.path.join(current_working_directory, torrent_path)
-                torrent_path = os.path.abspath(torrent_path)
-        upload_success, redLeaves_link, redLeaves_torrent = upload_red_leaves(cookie_str, torrent_path, mainTitle,
-                                                                              secondTitle,
-                                                                              introBrowser,
-                                                                              media_info, self.proxy_url,
-                                                                              self.torrent_path,
-                                                                              self.parent.feed.isChecked(),
-                                                                              )
-        if upload_success:
-            self.parent.redLeavesTorrentLink = redLeaves_link
-            self.parent.redLeavesTorrentPath = redLeaves_torrent
-            self.parent.debugBrowser.append("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
-            logger.info("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
+
+    # def sendTjuClicked(self):
+    #     if not self._validate_inputs():
+    #        return
+    #     self.parent.debugBrowser.append("开始上传种子到TJUPT")
+    #     logger.info("开始上传种子到TJUPT")
+    #     cookie_str = get_settings("tjuCookie")
+    #
+    #     mainTitle = self.parent.mainTitleBrowser.toPlainText()
+    #     secondTitle = self.parent.secondTitleBrowser.toPlainText()
+    #     introBrowser = self.parent.introBrowser.toPlainText()
+    #     chinese_name = self.parent.chineseNameEdit.text()
+    #     torrent_path = self.parent.torrentPathBrowser.toPlainText()
+    #     current_working_directory = os.getcwd()
+    #     if torrent_path:
+    #         if not os.path.isabs(torrent_path):
+    #             torrent_path = os.path.join(current_working_directory, torrent_path)
+    #             torrent_path = os.path.abspath(torrent_path)
+    #     upload_success, tju_link, tju_path = upload_tjupt(cookie_str, torrent_path, mainTitle, secondTitle,
+    #                                                       introBrowser,
+    #                                                       chinese_name, self.proxy_url, self.torrent_path,
+    #                                                       self.parent.feed.isChecked())
+    #     if upload_success:
+    #         self.parent.tjuTorrentLink = tju_link
+    #         self.parent.tjuTorrentPath = tju_path
+    #         self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + tju_link)
+    #         logger.info("上传种子到TJUPT成功,种子链接为：" + tju_link)
+    #     else:
+    #         self.parent.debugBrowser.append("上传种子到TJUPT失败，失败原因为：" + tju_link)
+    #         logger.error("上传种子到TJUPT失败，失败原因为：" + tju_link)
+    #
+    # def sendAgsvClicked(self):
+    #     if not self._validate_inputs():
+    #         return
+    #     self.parent.debugBrowser.append("开始上传种子到agsv")
+    #     logger.info("开始上传种子到agsv")
+    #     cookie_str = get_settings("agsvCookie")
+    #     mainTitle = self.parent.mainTitleBrowser.toPlainText()
+    #     secondTitle = self.parent.secondTitleBrowser.toPlainText()
+    #     introBrowser = self.parent.introBrowser.toPlainText()
+    #     media_info = self.parent.mediainfoBrowser.toPlainText()
+    #     torrent_path = self.parent.torrentPathBrowser.toPlainText()
+    #     current_working_directory = os.getcwd()
+    #     if torrent_path:
+    #         if not os.path.isabs(torrent_path):
+    #             torrent_path = os.path.join(current_working_directory, torrent_path)
+    #             torrent_path = os.path.abspath(torrent_path)
+    #     upload_success, agsv_link, agsv_path = upload_agsv(cookie_str, torrent_path, mainTitle, secondTitle,
+    #                                                        introBrowser,
+    #                                                        media_info, self.proxy_url, self.torrent_path,
+    #                                                        self.parent.feed.isChecked())
+    #     if upload_success:
+    #         self.parent.agsvTorrentLink = agsv_link
+    #         self.parent.agsvTorrentPath = agsv_path
+    #         self.parent.debugBrowser.append("上传种子到agsv成功,种子链接为：" + agsv_link)
+    #     else:
+    #         self.parent.debugBrowser.append("上传种子到agsv失败，失败原因为：" + agsv_link)
+    #
+    # def sendPeterClicked(self):
+    #     if not self._validate_inputs():
+    #         return
+    #     self.parent.debugBrowser.append("开始上传种子到Pter")
+    #     logger.info("开始上传种子到Pter")
+    #     cookie_str = get_settings("pterCookie")
+    #     mainTitle = self.parent.mainTitleBrowser.toPlainText()
+    #     secondTitle = self.parent.secondTitleBrowser.toPlainText()
+    #     introBrowser = self.parent.introBrowser.toPlainText()
+    #     media_info = self.parent.mediainfoBrowser.toPlainText()
+    #     torrent_path = self.parent.torrentPathBrowser.toPlainText()
+    #     current_working_directory = os.getcwd()
+    #     if torrent_path:
+    #         if not os.path.isabs(torrent_path):
+    #             torrent_path = os.path.join(current_working_directory, torrent_path)
+    #             torrent_path = os.path.abspath(torrent_path)
+    #     upload_success, pter_link, pter_path = upload_pter(cookie_str, torrent_path, mainTitle, secondTitle,
+    #                                                        introBrowser, media_info,
+    #                                                        self.proxy_url, self.torrent_path,
+    #                                                        self.parent.feed.isChecked(),
+    #                                                        )
+    #     if upload_success:
+    #         self.parent.peterTorrentLink = pter_link
+    #         self.parent.peterTorrentPath = pter_path
+    #         self.parent.debugBrowser.append("上传种子到Pter成功,种子链接为：" + pter_link)
+    #         logger.info("上传种子到Pter成功,种子链接为：" + pter_link)
+    #     else:
+    #         self.parent.debugBrowser.append("上传种子到Pter失败，失败原因为：" + pter_link)
+    #         logger.error("上传种子到Pter失败，失败原因为：" + pter_link)
+    #
+    # def sendKylinClicked(self):
+    #     if not self._validate_inputs():
+    #         return
+    #     self.parent.debugBrowser.append("开始上传种子到Kylin")
+    #     logger.info("开始上传种子到Kylin")
+    #     cookie_str = get_settings("kylinCookie")
+    #     mainTitle = self.parent.mainTitleBrowser.toPlainText()
+    #     secondTitle = self.parent.secondTitleBrowser.toPlainText()
+    #     introBrowser = self.parent.introBrowser.toPlainText()
+    #     media_info = self.parent.mediainfoBrowser.toPlainText()
+    #     torrent_path = self.parent.torrentPathBrowser.toPlainText()
+    #     current_working_directory = os.getcwd()
+    #     if torrent_path:
+    #         if not os.path.isabs(torrent_path):
+    #             torrent_path = os.path.join(current_working_directory, torrent_path)
+    #             torrent_path = os.path.abspath(torrent_path)
+    #     upload_success, kylin_link, kylin_path = upload_kylin(cookie_str, torrent_path, mainTitle, secondTitle,
+    #                                                           introBrowser,media_info,
+    #                                                           self.proxy_url, self.torrent_path,
+    #                                                           self.parent.feed.isChecked()
+    #                                                           )
+    #     if upload_success:
+    #         self.parent.kylinTorrentLink = kylin_link
+    #         self.parent.kylinTorrentPath = kylin_path
+    #         self.parent.debugBrowser.append("上传种子到kylin成功,种子链接为：" + kylin_link)
+    #         logger.info("上传种子到kylin成功,种子链接为：" + kylin_link)
+    #     else:
+    #         self.parent.debugBrowser.append("上传种子到kylin失败，失败原因为：" + kylin_link)
+    #         logger.error("上传种子到kylin失败，失败原因为：" + kylin_link)
+    #
+    # def sendredLeavesClicked(self):
+    #     if not self._validate_inputs():
+    #         return
+    #     self.parent.debugBrowser.append("开始上传种子到redLeaves")
+    #     logger.info("开始上传种子到redLeaves")
+    #     cookie_str = get_settings("redLeavesCookie")
+    #     mainTitle = self.parent.mainTitleBrowser.toPlainText()
+    #     secondTitle = self.parent.secondTitleBrowser.toPlainText()
+    #     introBrowser = self.parent.introBrowser.toPlainText()
+    #     media_info = self.parent.mediainfoBrowser.toPlainText()
+    #     torrent_path = self.parent.torrentPathBrowser.toPlainText()
+    #     current_working_directory = os.getcwd()
+    #     if torrent_path:
+    #         if not os.path.isabs(torrent_path):
+    #             torrent_path = os.path.join(current_working_directory, torrent_path)
+    #             torrent_path = os.path.abspath(torrent_path)
+    #     upload_success, redLeaves_link, redLeaves_torrent = upload_red_leaves(cookie_str, torrent_path, mainTitle,
+    #                                                                           secondTitle,
+    #                                                                           introBrowser,
+    #                                                                           media_info, self.proxy_url,
+    #                                                                           self.torrent_path,
+    #                                                                           self.parent.feed.isChecked(),
+    #                                                                           )
+    #     if upload_success:
+    #         self.parent.redLeavesTorrentLink = redLeaves_link
+    #         self.parent.redLeavesTorrentPath = redLeaves_torrent
+    #         self.parent.debugBrowser.append("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
+    #         logger.info("上传种子到redLeaves成功,种子链接为：" + redLeaves_link)
+    #
+    # def sendDreamClicked(self):
+    #     if not self._validate_inputs():
+    #         return
+    #     self.parent.debugBrowser.append("开始上传种子到织梦")
+    #     logger.info("开始上传种子到织梦")
+    #     cookie_str = get_settings("DreamCookie")
+    #     mainTitle = self.parent.mainTitleBrowser.toPlainText()
+    #     secondTitle = self.parent.secondTitleBrowser.toPlainText()
+    #     introBrowser = self.parent.introBrowser.toPlainText()
+    #     torrent_path = self.parent.torrentPathBrowser.toPlainText()
+    #     current_working_directory = os.getcwd()
+    #     if torrent_path:
+    #         if not os.path.isabs(torrent_path):
+    #             torrent_path = os.path.join(current_working_directory, torrent_path)
+    #             torrent_path = os.path.abspath(torrent_path)
+    #     upload_success, dream_link, dream_path = upload_dream(cookie_str, torrent_path, mainTitle, secondTitle,
+    #                                                        introBrowser,
+    #                                                         self.proxy_url, self.torrent_path,
+    #                                                        self.parent.feed.isChecked())
+    #     if upload_success:
+    #         self.parent.dreamTorrentLink= dream_link
+    #         self.parent.dreamTorrentPath = dream_path
+    #         self.parent.debugBrowser.append("上传种子到织梦成功,种子链接为：" + dream_link)
+    #     else:
+    #         self.parent.debugBrowser.append("上传种子到织梦失败，失败原因为：" + dream_path)
 
 
 class SeedMak:
@@ -1000,9 +1071,9 @@ class SeedMak:
 
     def seed_qb(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
-                        self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
+                        self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink,self.parent.dreamTorrentLink]
         torrent_paths = [self.parent.tjuTorrentPath, self.parent.agsvTorrentPath, self.parent.peterTorrentPath,
-                         self.parent.kylinTorrentPath, self.parent.redLeavesTorrentPath]
+                         self.parent.kylinTorrentPath, self.parent.redLeavesTorrentPath,self.parent.dreamTorrentPath]
         add_success, result_text = qb_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
                                                torrent_urls, torrent_paths, self.path)
         if add_success:
@@ -1012,9 +1083,9 @@ class SeedMak:
 
     def seed_tr(self):
         torrent_urls = [self.parent.tjuTorrentLink, self.parent.agsvTorrentLink, self.parent.peterTorrentLink,
-                        self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink]
+                        self.parent.kylinTorrentLink, self.parent.redLeavesTorrentLink,self.parent.dreamTorrentLink]
         torrent_paths = [self.parent.tjuTorrentPath, self.parent.agsvTorrentPath, self.parent.peterTorrentPath,
-                         self.parent.kylinTorrentPath, self.parent.redLeavesTorrentPath]
+                         self.parent.kylinTorrentPath, self.parent.redLeavesTorrentPath,self.parent.dreamTorrentPath]
         add_success, result_text = tr_download(self.downloaderHost, self.downloaderUser, self.downloaderPass,
                                                torrent_urls, torrent_paths, self.path)
         if add_success:
@@ -1135,3 +1206,94 @@ class MoveFileThread(QThread):
         except Exception as e:
             logger.error(f"发生异常: {e}")
             self.result_signal.emit(False, 0, f"发生异常: {e}")
+
+
+class UploadWorker(QThread):
+    result_signal = pyqtSignal(str,bool, str, str,str)  # 上传结果信号 (成功标志, 消息, 种子链接)
+
+    def __init__(self, platform, cookie,torrent_path,main_title,second_title,
+                 intro,chinese_name,media_info,proxy_url,torrent_save_path,feed_checked):
+        super().__init__()
+        self.platform = platform
+        self.cookie = cookie
+        self.torrent_path = torrent_path
+        self.main_title = main_title
+        self.second_title = second_title
+        self.intro = intro
+        self.chinese_name = chinese_name
+        self.media_info = media_info
+        self.proxy_url = proxy_url
+        self.torrent_save_path = torrent_save_path
+        self.feed_checked = feed_checked
+
+    def run(self):
+        if self.platform == "tju":
+            result = upload_tjupt(self.cookie_str,
+                                  self.torrent_path,
+                                  self.mainTitle,
+                                  self.secondTitle,
+                                  self.introBrowser,
+                                  self.chinese_name,
+                                  self.proxy_url,
+                                  self.torrent_path,
+                                  self.parent.feed.isChecked()
+                                  )
+        elif self.platform == "agsv":
+            result = upload_agsv(self.cookie_str,
+                                 self.torrent_path,
+                                 self.mainTitle,
+                                 self.secondTitle,
+                                 self.introBrowser,
+                                 self.media_info,
+                                 self.proxy_url,
+                                 self.torrent_path,
+                                 self.parent.feed.isChecked())
+
+        elif self.platform == "peter":
+            result = upload_pter(self.cookie_str,
+                                 self.torrent_path,
+                                 self.mainTitle,
+                                 self.secondTitle,
+                                 self.introBrowser,
+                                 self.media_info,
+                                 self.proxy_url,
+                                 self.torrent_path,
+                                 self.parent.feed.isChecked())
+        elif self.platform == "kylin":
+            result = upload_kylin(self.cookie_str,
+                                  self.torrent_path,
+                                  self.mainTitle,
+                                  self.secondTitle,
+                                  self.introBrowser,
+                                  self.media_info,
+                                  self.proxy_url,
+                                  self.torrent_path,
+                                  self.parent.feed.isChecked())
+        elif self.platform == "redLeaves":
+            result = upload_red_leaves(self.cookie_str,
+                                       self.torrent_path,
+                                       self.mainTitle,
+                                       self.secondTitle,
+                                       self.introBrowser,
+                                       self.media_info,
+                                       self.proxy_url,
+                                       self.torrent_path,
+                                       self.parent.feed.isChecked())
+        elif self.platform == "dream":
+            result = upload_dream(self.cookie_str,
+                                  self.torrent_path,
+                                  self.mainTitle,
+                                  self.secondTitle,
+                                  self.introBrowser,
+                                  self.proxy_url,
+                                  self.torrent_path,
+                                  self.parent.feed.isChecked())
+        else:
+            logger.error(f"未支持的平台: {self.platform}")
+            self.upload_finished.emit(self.platform, False, "未支持的平台", "","")
+            return
+
+        success, link_or_error, path = result
+        if success:
+            self.upload_finished.emit(self.platform, success, link_or_error, path)
+        self.upload_finished.emit(self.platform, False, "发布失败", "", "")

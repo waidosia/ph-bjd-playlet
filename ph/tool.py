@@ -107,11 +107,6 @@ def rename_directory(current_dir, new_name) -> Tuple[bool, str]:
 
 
 def generate_image_filename(base_path) -> str:
-    """
-    生成一个新的图片文件名
-    :param base_path: 图片文件的基本路径
-    :return: 新的图片文件名
-    """
     now = datetime.datetime.now()
     date_time = now.strftime("%Y-%m-%d_%H-%M-%S")
     random_str = uuid.uuid4().hex[:6]
@@ -121,10 +116,6 @@ def generate_image_filename(base_path) -> str:
 
 
 def get_file_path() -> str or None:
-    """
-    打开文件选择对话框，返回选择的文件路径
-    :return: 选择的文件路径
-    """
     file_types = [('Picture files', '*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.webp'),
                   ('All files', '*.*')]
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=file_types)

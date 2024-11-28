@@ -214,6 +214,7 @@ def chevereto_cookie_upload(api_url, api_token, frame_path):
 def pixhost_picture_bed(api_url, api_token, frame_path):
     print('接受到上传pixhost图床请求')
     url = api_url
+    global proxies
     # 判断frame_path为url还是本地路径
     if frame_path.startswith("http") or frame_path.startswith("https"):
         logger.info("输入一个在线图片链接")
@@ -236,7 +237,7 @@ def pixhost_picture_bed(api_url, api_token, frame_path):
     try:
         # 发送POST请求
         print("开始发送上传图床的请求")
-        res = requests.post(url, headers=headers, data=data, files=files)
+        res = requests.post(url, headers=headers, data=data, files=files,proxies=proxies)
         print("已成功发送上传图床的请求")
     except requests.RequestException as e:
         print("请求过程中出现错误：", e)
