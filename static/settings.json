@@ -29,9 +29,10 @@
     "proxyUrl": "http://192.168.1.106:7890",
     "torrentSavePath": "D:\\\\__easyHelper__\\\\10.1",
     "redLeavesCookie": "None",
-    "downloaderHost": "http://192.168.1.106:8080/",
+    "downloaderHost": "192.168.3.155:8080/",
     "downloaderUser": "admin",
     "downloaderPass": "adminadmin",
     "buttonGroup": -2,
-    "moveFile": "True"
+    "moveFile": "True",
+    "dreamCookie": "None"
 }
