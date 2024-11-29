@@ -93,7 +93,7 @@ class MainWindow(QMainWindow, Ui_Mainwindow):
         self.getNameButton.clicked.connect(self.getNameButtonClicked)
         self.sendTjuButton.clicked.connect(lambda: self.upload("tju"))
         self.sendAgsvButton.clicked.connect(lambda: self.upload("agsv"))
-        self.sendPeterButton.clicked.connect(lambda: self.upload("peter"))
+        self.sendPeterButton.clicked.connect(lambda: self.upload("pter"))
         self.sendredLeavesButton.clicked.connect(lambda: self.upload("redLeaves"))
         self.sendKylinButton.clicked.connect(lambda: self.upload("kylin"))
         self.sendDreamButton.clicked.connect(lambda : self.upload("dream"))
@@ -865,6 +865,8 @@ class UploadHandler(QObject):
         self.upload_thread.start()
 
     def on_upload_finished(self, platform, success, message,link_or_error, path):
+        logger.info(f"{platform}发种状态，{success}-{message}")
+        self.parent.debugBrowser.append(f"{platform}发种状态，{success}-{message}")
         if success:
             if platform == "tju":
                 self.parent.tjuTorrentLink = link_or_error
@@ -884,8 +886,8 @@ class UploadHandler(QObject):
             elif platform == "dream":
                 self.parent.dreamTorrentLink = link_or_error
                 self.parent.dreamTorrentPath = path
-            self.parent.debugBrowser.append("上传种子到TJUPT成功,种子链接为：" + link_or_error)
-            logger.info("上传种子到TJUPT成功,种子链接为：" + link_or_error)
+            self.parent.debugBrowser.append(f"上传种子到{platform}成功,种子链接为：" + link_or_error)
+            logger.info(f"上传种子到{platform}成功,种子链接为：" + link_or_error)
         else:
             self.parent.debugBrowser.append(f"上传种子到 {platform} 失败，失败原因：{link_or_error}")
             logger.error(f"上传到 {platform} 失败，失败原因：{link_or_error}")
@@ -1239,7 +1241,7 @@ class UploadWorker(QThread):
                                   self.introBrowser,
                                   self.chinese_name,
                                   self.proxy_url,
-                                  self.torrent_path,
+                                  self.torrent_save_path,
                                   self.feed_checked
                                   )
         elif self.platform == "agsv":
@@ -1250,7 +1252,7 @@ class UploadWorker(QThread):
                                  self.introBrowser,
                                  self.media_info,
                                  self.proxy_url,
-                                 self.torrent_path,
+                                 self.torrent_save_path,
                                  self.feed_checked)
         elif self.platform == "peter":
             result = upload_pter(self.cookie_str,
@@ -1260,7 +1262,7 @@ class UploadWorker(QThread):
                                  self.introBrowser,
                                  self.media_info,
                                  self.proxy_url,
-                                 self.torrent_path,
+                                 self.torrent_save_path,
                                  self.feed_checked)
         elif self.platform == "kylin":
             result = upload_kylin(self.cookie_str,
@@ -1270,7 +1272,7 @@ class UploadWorker(QThread):
                                   self.introBrowser,
                                   self.media_info,
                                   self.proxy_url,
-                                  self.torrent_path,
+                                  self.torrent_save_path,
                                   self.feed_checked)
         elif self.platform == "redLeaves":
             result = upload_red_leaves(self.cookie_str,
@@ -1280,7 +1282,7 @@ class UploadWorker(QThread):
                                        self.introBrowser,
                                        self.media_info,
                                        self.proxy_url,
-                                       self.torrent_path,
+                                       self.torrent_save_path,
                                        self.feed_checked)
         elif self.platform == "dream":
             result = upload_dream(self.cookie_str,
@@ -1289,7 +1291,7 @@ class UploadWorker(QThread):
                                   self.secondTitle,
                                   self.introBrowser,
                                   self.proxy_url,
-                                  self.torrent_path,
+                                  self.torrent_save_path,
                                   self.feed_checked)
         else:
             logger.error(f"未支持的平台: {self.platform}")
@@ -1298,7 +1300,7 @@ class UploadWorker(QThread):
 
         success, link_or_error, path = result
         if success:
-            self.result_signal.emit(self.platform, success,"成功", link_or_error, path)
+            self.result_signal.emit(self.platform, True,"成功", link_or_error, path)
         self.result_signal.emit(self.platform, False, "发布失败", "", "")
 
 
