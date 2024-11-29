@@ -1219,11 +1219,11 @@ class UploadWorker(QThread):
                  intro,chinese_name,media_info,proxy_url,torrent_save_path,feed_checked):
         super().__init__()
         self.platform = platform
-        self.cookie = cookie
+        self.cookie_str = cookie
         self.torrent_path = torrent_path
-        self.main_title = main_title
-        self.second_title = second_title
-        self.intro = intro
+        self.mainTitle = main_title
+        self.secondTitle = second_title
+        self.introBrowser = intro
         self.chinese_name = chinese_name
         self.media_info = media_info
         self.proxy_url = proxy_url
@@ -1240,7 +1240,7 @@ class UploadWorker(QThread):
                                   self.chinese_name,
                                   self.proxy_url,
                                   self.torrent_path,
-                                  self.parent.feed.isChecked()
+                                  self.feed_checked
                                   )
         elif self.platform == "agsv":
             result = upload_agsv(self.cookie_str,
@@ -1251,7 +1251,7 @@ class UploadWorker(QThread):
                                  self.media_info,
                                  self.proxy_url,
                                  self.torrent_path,
-                                 self.parent.feed.isChecked())
+                                 self.feed_checked)
         elif self.platform == "peter":
             result = upload_pter(self.cookie_str,
                                  self.torrent_path,
@@ -1261,7 +1261,7 @@ class UploadWorker(QThread):
                                  self.media_info,
                                  self.proxy_url,
                                  self.torrent_path,
-                                 self.parent.feed.isChecked())
+                                 self.feed_checked)
         elif self.platform == "kylin":
             result = upload_kylin(self.cookie_str,
                                   self.torrent_path,
@@ -1271,7 +1271,7 @@ class UploadWorker(QThread):
                                   self.media_info,
                                   self.proxy_url,
                                   self.torrent_path,
-                                  self.parent.feed.isChecked())
+                                  self.feed_checked)
         elif self.platform == "redLeaves":
             result = upload_red_leaves(self.cookie_str,
                                        self.torrent_path,
@@ -1281,7 +1281,7 @@ class UploadWorker(QThread):
                                        self.media_info,
                                        self.proxy_url,
                                        self.torrent_path,
-                                       self.parent.feed.isChecked())
+                                       self.feed_checked)
         elif self.platform == "dream":
             result = upload_dream(self.cookie_str,
                                   self.torrent_path,
@@ -1290,7 +1290,7 @@ class UploadWorker(QThread):
                                   self.introBrowser,
                                   self.proxy_url,
                                   self.torrent_path,
-                                  self.parent.feed.isChecked())
+                                  self.feed_checked)
         else:
             logger.error(f"未支持的平台: {self.platform}")
             self.result_signal.emit(self.platform, False, "未支持的平台", "","")
