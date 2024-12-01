@@ -874,7 +874,7 @@ class UploadHandler(QObject):
             elif platform == "agsv":
                 self.parent.agsvTorrentLink = link_or_error
                 self.parent.agsvTorrentPath = path
-            elif platform == "peter":
+            elif platform == "pter":
                 self.parent.peterTorrentLink = link_or_error
                 self.parent.peterTorrentPath = path
             elif platform == "kylin":
@@ -1254,7 +1254,7 @@ class UploadWorker(QThread):
                                  self.proxy_url,
                                  self.torrent_save_path,
                                  self.feed_checked)
-        elif self.platform == "peter":
+        elif self.platform == "pter":
             result = upload_pter(self.cookie_str,
                                  self.torrent_path,
                                  self.mainTitle,
@@ -1301,6 +1301,7 @@ class UploadWorker(QThread):
         success, link_or_error, path = result
         if success:
             self.result_signal.emit(self.platform, True,"成功", link_or_error, path)
+            return
         self.result_signal.emit(self.platform, False, "发布失败", "", "")
 
 

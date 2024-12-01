@@ -1,8 +1,8 @@
 altgraph==0.17.4
-certifi==2023.11.17
+certifi==2024.7.4
 charset-normalizer==3.3.2
 flatbencode==0.2.1
-idna==3.6
+idna==3.7
 numpy==1.26.3
 opencv-python==4.9.0.80
 packaging==23.2
@@ -14,9 +14,9 @@ PyQt6==6.6.1
 PyQt6-Qt6==6.6.1
 PyQt6-sip==13.6.0
 pywin32-ctypes==0.2.2
-requests==2.31.0
+requests==2.32.0
 torf==4.2.4
-urllib3==2.1.0
+urllib3==2.2.2
 xpinyin==0.7.6
 qbittorrent-api==2024.1.58
 transmission-rpc==7.0.3
