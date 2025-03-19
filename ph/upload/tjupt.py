@@ -92,7 +92,7 @@ def upload_tjupt(cookies_str, torrent_file, main_title, compose, descr, chinese_
 
     data = {
         'referid': '',
-        'type': '402',
+        'type': '412',
         'cname': chinese_name,
         'ename': main_title,
         'specificcat': '大陆',
