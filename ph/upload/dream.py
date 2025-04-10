@@ -73,7 +73,7 @@ def upload_dream(cookies_str, torrent_file, main_title, compose, descr, proxy, t
     #     r'\[img\]https://img.pterclub.com/images/2024/01/10/49401952f8353abd4246023bff8de2cc.png\[/img\].*?\[mediainfo\].*?\[/mediainfo\]',
     #     '', descr, flags=re.DOTALL)
     modified_content = descr.replace('[mediainfo]', '[quote]')
-    modified_content = descr.replace('[/mediainfo]', '[/quote]')
+    modified_content = modified_content.replace('[/mediainfo]', '[/quote]')
     logger.info("处理后的简介为：" + modified_content)
 
     logger.info("种子文件路径为：" + torrent_file)
