@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>628</width>
-    <height>627</height>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1394,11 +1394,25 @@
       </layout>
      </item>
      <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_25">
+       <item>
+        <widget class="QLabel" name="label_28">
+         <property name="text">
+          <string>playet_cookie:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="playetCookie"/>
+       </item>
+      </layout>
+     </item>
+     <item>
       <layout class="QHBoxLayout" name="horizontalLayout_24">
        <item>
         <widget class="QLabel" name="label_27">
          <property name="text">
-          <string>织梦_cookie:</string>
+          <string>zm_cookie:</string>
          </property>
         </widget>
        </item>
@@ -1406,6 +1420,24 @@
         <widget class="QLineEdit" name="dreamCookie"/>
        </item>
       </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="12" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="label_21">
+       <property name="text">
+        <string>代理地址:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="proxyUrl">
+       <property name="placeholderText">
+        <string>格式为:http://xxx:7890</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -1501,24 +1533,6 @@
      </item>
     </layout>
    </item>
-   <item row="12" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_18">
-     <item>
-      <widget class="QLabel" name="label_21">
-       <property name="text">
-        <string>代理地址:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="proxyUrl">
-       <property name="placeholderText">
-        <string>格式为:http://xxx:7890</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="8" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_22">
      <item>
@@ -1574,20 +1588,6 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_23">
-     <item>
-      <widget class="QLabel" name="label_26">
-       <property name="text">
-        <string>PT Gen地址：</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="ptGenPath"/>
-     </item>
-    </layout>
-   </item>
    <item row="3" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_14">
      <item>
@@ -1640,6 +1640,20 @@
         <string>浏览</string>
        </property>
       </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout_23">
+     <item>
+      <widget class="QLabel" name="label_26">
+       <property name="text">
+        <string>PT Gen地址：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="ptGenPath"/>
      </item>
     </layout>
    </item>
